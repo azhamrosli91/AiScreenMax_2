@@ -1,0 +1,316 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IConfiguration Configuration
+@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@Configuration["ProjectName"]</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/Max_logo_2.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/icon32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/icon16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+    <link rel="manifest" href="~/Images/manifest.json">
+    <meta name="msapplication-TileImage" content="~/Images/mstile-150x150.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="~/vendor/simplebar/simplebar.min.js"></script>
+    <script src="~/js/config.js"></script>
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+
+    <link href="~/vendor/simplebar/simplebar.min.css" rel="stylesheet">
+    <link href="~/vendor/flatpickr/flatpickr.min.css" rel="stylesheet">
+    <link href="~/vendor/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="~/fonts/unicons/css/line.css" type="text/css" rel="stylesheet">
+    <link href="~/css/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
+    <link href="~/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
+    <link href="~/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
+    <link href="~/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
+
+    <link href="~/lib/datatables/css/datatables.bootstrap5.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.checkboxes.css" rel="stylesheet" />
+    <link href="~/css/mobilecss.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <link href="~/vendor/choices/choices.min.css" rel="stylesheet" />
+
+    <script>
+        var phoenixIsRTL = window.config.config.phoenixIsRTL;
+        if (phoenixIsRTL) {
+          var linkDefault = document.getElementById('style-default');
+          var userLinkDefault = document.getElementById('user-style-default');
+          linkDefault.setAttribute('disabled', true);
+          userLinkDefault.setAttribute('disabled', true);
+          document.querySelector('html').setAttribute('dir', 'rtl');
+        } else {
+          var linkRTL = document.getElementById('style-rtl');
+          var userLinkRTL = document.getElementById('user-style-rtl');
+          linkRTL.setAttribute('disabled', true);
+          userLinkRTL.setAttribute('disabled', true);
+        }
+    </script>
+    @* <script src="~/lib/select2-4.1.0/js/select2.min.js"></script> *@
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+    <script src="~/lib/datatables/js/jquery.datatables.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap.js"></script>
+    <script src="~/lib/datatables/js/datatables.select.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap5.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.checkboxes.min.js"></script>
+
+    <script src="~/vendor/popper/popper.min.js"></script>
+    <script src="~/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="~/vendor/anchorjs/anchor.min.js"></script>
+    <script src="~/vendor/is/is.min.js"></script>
+    <script src="~/vendor/fontawesome/all.min.js"></script>
+    <script src="~/vendor/lodash/lodash.min.js"></script>
+    <script src="~/vendor/list.js/list.min.js"></script>
+    <script src="~/vendor/feather-icons/feather.min.js"></script>
+    <script src="~/vendor/dayjs/dayjs.min.js"></script>
+    <script src="~/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/js/phoenix.js"></script>
+    <script src="~/js/userprofile.js"></script>
+    <script src="~/js/mainjs.js"></script>
+    <script src="~/vendor/dropzone/dropzone-min.js"></script>
+    <script src="~/vendor/dayjs/dayjs.min.js"></script>
+    <script src="~/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="~/vendor/prism/prism.js"></script>
+    <script src="~/vendor/choices/choices.min.js"></script>
+
+</head>
+@{
+    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"]
+               ?? User.FindFirst(ClaimTypes.Name)?.Value
+               ?? User.Identity?.Name
+               ?? "Guest";
+    var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
+    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+    var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
+}
+
+<body>
+    <!--TOAST-->
+    <div class="ms-toast-container"></div>
+    <!-- Loading Spinner -->
+    <div class="spanner">
+        <img src="~/Images/loading12.gif" alt="Loading" style="width: 85px; height: auto" />
+    </div>
+
+    <main class="main" id="top">
+        <header class="navbar-container">
+            <nav class="navbar navbar-top fixed-top navbar-expand" id="navbarDefault">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="navbar-logo">
+
+                    <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+                        <a class="navbar-brand me-1 me-sm-3">@* href="../MM_UserProfile/Index" *@
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                                    <img src="~/Images/AIScreenMaxLogo.png" alt="MaxSystem" width="47" />
+                                    <h5 class="logo-text ms-2 d-none d-sm-block">AI Screen Max</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/AiResume/Index">Screening Resume</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/AiResume/History">History</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/AiResume/ShortListed">Shortlisted</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/AiResume/Guide">Guide</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/AiResume/Subscription">Subscription</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/AiResume/HelpCenter">Help Center</a>
+                        </li>
+                    </ul>
+                <ul class="navbar-nav navbar-nav-icons flex-row">
+                    <li class="nav-item">
+                        <div class="theme-control-toggle fa-icon-wait px-2">
+                            <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
+                            <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style="height:32px;width:32px;"><span class="icon" data-feather="moon"></span></label>
+                            <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style="height:32px;width:32px;"><span class="icon" data-feather="sun"></span></label>
+                        </div>
+                    </li>
+                    <li class="nav-item d-lg-none"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchBoxModal"><span data-feather="search" style="height:19px;width:19px;margin-bottom: 2px;"></span></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span class="d-block" style="height:20px;width:20px;"><span data-feather="bell" style="height:20px;width:20px;"></span></span></a>
+
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
+                            <div class="card position-relative border-0">
+                                <div class="card-header p-2">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="text-body-emphasis mb-0">Notifications</h5>
+                                        <button class="btn btn-link p-0 fs-9 fw-normal" type="button">Mark all as read</button>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="scrollbar-overlay">
+                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
+                                            <div class="d-flex align-items-center justify-content-between position-relative">
+                                                No Notification
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-0 border-top border-translucent border-0">
+                                    <div class="my-2 text-center fw-bold fs-10 text-body-tertiary text-opactity-85"><a class="fw-bolder" href="#">Notification history</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-l ">
+                                    <img class="rounded-circle img-userprofile"
+                                         src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
+                                         alt="user image"
+                                         title="@username"
+                                         style="height:32px;width:32px;object-fit:cover;" />
+                                    <input type="hidden" value="@useremail" id="txtuseremail" />
+                                    <input type="hidden" value="@userID" id="txtUserID" />
+                            </div>
+
+                        </a>
+                            <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
+                                <div class="card position-relative border-0">
+                                    <div class="card-body p-0">
+                                        <div class="text-center pt-4 pb-3">
+                                            <div class="avatar avatar-xl ">
+
+                                                <input type="hidden" value="@useremail" id="txtuseremail" />
+                                                <input type="hidden" value="@userID" id="txtUserID" />
+
+                                                @if (User.Identity.IsAuthenticated)
+                                                {
+
+                                                    if (string.IsNullOrEmpty(profileImage))
+                                                    {
+
+                                                        <img class="rounded-circle img-userprofile" src="~/Images/user-avatar.png" alt="user image" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@profileImage" id="img-userprofile" alt="user profile" class="img-userprofile rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
+                                                    }
+                                                }
+                                            </div>
+                                            <h6 class="mt-2 text-body-emphasis">
+                                                @(User.Identity.IsAuthenticated ? username : "Login Required")
+                                            </h6>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <span class="badge bg-success-subtle text-success fs-10">Subscription: PRO</span>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="overflow-auto scrollbar" style="height: auto;">
+                                        <ul class="nav d-flex flex-column mb-2 pb-1">
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"><span class="me-2 text-body align-bottom" data-feather="help-circle"></span>Help Center</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-footer p-0 border-top border-translucent">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <div class="mt-3 px-3">
+                                                <a href="@Url.Action("SignOut2", "Account")" class="btn btn-phoenix-danger d-flex flex-center w-100">
+                                                    <span class="me-2" data-feather="log-out"></span>Sign Out
+                                                </a>
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="mt-3 px-3">
+                                                <a class="btn btn-outline-primary d-flex align-items-center justify-content-center w-100"
+                                                   asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="Sign">
+                                                    <img src="~/Images/Microsoft_logo.svg" style="height: 20px; margin-right: 8px;" /> Sign in with Microsoft
+                                                </a>
+                                            </div>
+                                            <div class="mt-2 px-3">
+                                                <a class="btn btn-outline-danger d-flex align-items-center justify-content-center w-100"
+                                                   href="/login-google">
+                                                    <img src="https://developers.google.com/identity/images/g-logo.png" style="height: 20px; margin-right: 8px;" /> Sign in with Google
+                                                </a>
+                                            </div>
+                                        }
+
+                                        <div class="my-2 text-center fw-bold fs-10 text-body-quaternary">
+                                            <a class="text-body-quaternary me-1" href="#!">Privacy policy</a> &bull;
+                                            <a class="text-body-quaternary mx-1" href="#!">Terms</a>
+                                        </div>
+                                        <div class="text-center text-muted fs-10 mb-3">
+                                            Powered by <strong>Max System Solution Sdn Bhd</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        </header>
+        <div class="content">
+            @RenderBody()
+            @* <footer class="footer position-absolute">
+                <div class="row g-0 justify-content-between align-items-center h-100">
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2025 &copy;<a class="mx-1" href="https://themewagon.com">Themewagon</a></p>
+                    </div>
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-body-tertiary text-opacity-85">v1.22.0</p>
+                    </div>
+                </div>
+            </footer> *@
+        </div>
+       
+        <script>
+            var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
+            var navbarTop = document.querySelector('.navbar-top');
+            if (navbarTopStyle === 'darker') {
+              navbarTop.setAttribute('data-navbar-appearance', 'darker');
+            }
+
+            var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
+            var navbarVertical = document.querySelector('.navbar-vertical');
+            if (navbarVertical && navbarVerticalStyle === 'darker') {
+              navbarVertical.setAttribute('data-navbar-appearance', 'darker');
+            }
+        </script>
+    </main>
+    <footer class="footer text-center py-3 mt-auto border-top bg-light text-muted">
+        <small>
+            &copy; @DateTime.Now.Year Powered by <strong>Max System Solution Sdn Bhd</strong>
+        </small>
+    </footer>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

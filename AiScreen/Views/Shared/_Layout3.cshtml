@@ -1,0 +1,1412 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@Configuration["ProjectName"]</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/Max_logo_2.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/icon32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/icon16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+    <link rel="manifest" href="~/Images/manifest.json">
+    <meta name="msapplication-TileImage" content="~/Images/mstile-150x150.png">
+    <meta name="theme-color" content="#ffffff">
+    <script src="~/vendor/simplebar/simplebar.min.js"></script>
+    <script src="~/js/config.js"></script>
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="/vendor/simplebar/simplebar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link href="~/css/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
+    <link href="~/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
+    <link href="~/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
+    <link href="~/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <!-- ✅ Core DataTables JS (MUST come before the Bootstrap adapter) -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- DataTables Bootstrap 5 integration -->
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/mobilecss.css" rel="stylesheet" />
+    <script src="~/js/mainJS.js"></script>
+
+    <script>
+        var phoenixIsRTL = window.config.config.phoenixIsRTL;
+        if (phoenixIsRTL) {
+          var linkDefault = document.getElementById('style-default');
+          var userLinkDefault = document.getElementById('user-style-default');
+          linkDefault.setAttribute('disabled', true);
+          userLinkDefault.setAttribute('disabled', true);
+          document.querySelector('html').setAttribute('dir', 'rtl');
+        } else {
+          var linkRTL = document.getElementById('style-rtl');
+          var userLinkRTL = document.getElementById('user-style-rtl');
+          linkRTL.setAttribute('disabled', true);
+          userLinkRTL.setAttribute('disabled', true);
+        }
+    </script>
+    <script src="~/lib/select2-4.1.0/js/select2.min.js"></script>
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+
+    <style>
+        .content {
+            height: 100vh;
+            padding: 4rem 0 0 0 !important;
+        }
+
+        .main-container {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main-resizable-container {
+            display: flex;
+            min-width: 0;
+            height: 100%;
+            flex: 1;
+            position: relative;
+        }
+
+        .main-resizable-left {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            flex-shrink: 0;
+            min-width: 400px;
+            max-width: 50%;
+        }
+
+        .main-resizable-right {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .main-resizer {
+            width: 5px;
+            background: transparent;
+            cursor: col-resize;
+            user-select: none;
+            position: relative;
+            z-index: 2;
+        }
+
+            .main-resizer:hover {
+                background-color: #0c66e4;
+            }
+
+        .main-resizer-ghostline {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #0c66e4;
+            pointer-events: none;
+            display: none;
+            z-index: 9999;
+        }
+    </style>
+
+</head>
+@{
+    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"];
+    var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
+    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+    var employeeID = HttpContextAccessor.HttpContext.Request.Cookies["ID_MM_COMPANY"];
+    var companyName = HttpContextAccessor.HttpContext.Request.Cookies["MM_COMPANY_NAME"];
+    var workNO = HttpContextAccessor.HttpContext.Request.Cookies["WORK_NO"];
+    var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
+    var solat_zone = HttpContextAccessor.HttpContext.Request.Cookies["SOLAT_ZONE"];
+    var code = HttpContextAccessor.HttpContext.Request.Cookies["COMPANY_CODE"];
+    var level = HttpContextAccessor.HttpContext.Request.Cookies["ACCESS_LEVEL"];
+}
+
+<body>
+    <main class="main" id="top">
+        <nav class="navbar navbar-vertical navbar-expand-lg">
+            <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+                <!-- scrollbar removed-->
+                <div class="navbar-vertical-content">
+                    <ul class="navbar-nav flex-column" id="navbarVerticalNav">
+                        <li class="nav-item">
+                            <!-- parent pages HOME-->
+                            <div class="nav-item-wrapper">
+                                <a class="nav-link dropdown-indicator label-1" href="#nv-home" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-home">
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="pie-chart"></span></span><span class="nav-link-text">Home</span>
+                                    </div>
+                                </a>
+                                <div class="parent-wrapper label-1">
+                                    <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-home">
+                                        <li class="collapsed-nav-item-title d-none">
+                                            Home
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../index.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">E commerce</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../dashboard/project-management.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Project management</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../dashboard/crm.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">CRM</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../dashboard/travel-agency.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Travel agency</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../dashboard/stock.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Stock</span><span class="badge ms-2 badge badge-phoenix badge-phoenix-warning ">new</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/social/feed.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Social feed</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <!-- label-->
+                            <p class="navbar-vertical-label">
+                                Apps
+                            </p>
+                            <hr class="navbar-vertical-line" />
+                            <!-- parent pages Employee Information-->
+                            <div class="nav-item-wrapper">
+                                <a class="nav-link dropdown-indicator label-1" href="#nv-e-commerce" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-e-commerce">
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="shopping-cart"></span></span><span class="nav-link-text">Employee Information</span>
+                                    </div>
+                                </a>
+                                <div class="parent-wrapper label-1">
+                                    <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-e-commerce">
+                                        <li class="collapsed-nav-item-title d-none">
+                                            Employee Information
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link dropdown-indicator" href="#nv-admin" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-admin">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-text">Admin</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                            <div class="parent-wrapper">
+                                                <ul class="nav collapse parent show" data-bs-parent="#e-commerce" id="nv-admin">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/add-product.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Add product</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/products.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Products</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/customers.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Customers</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/customer-details.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Customer details</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/orders.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Orders</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/order-details.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Order details</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/refund.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Refund</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link dropdown-indicator" href="#nv-customer" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-customer">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-text">Customer</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                            <div class="parent-wrapper">
+                                                <ul class="nav collapse parent show" data-bs-parent="#e-commerce" id="nv-customer">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/homepage.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Homepage</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/product-details.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Product details</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/products-filter.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Products filter</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/cart.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Cart</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/checkout.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Checkout</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/shipping-info.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Shipping info</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/profile.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Profile</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/favourite-stores.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Favourite stores</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/wishlist.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Wishlist</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/order-tracking.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Order tracking</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/invoice.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Invoice</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- parent pages Appraise-->
+                            <div class="nav-item-wrapper">
+                                <a class="nav-link dropdown-indicator label-1" href="#nv-appraise" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-appraise">
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="shopping-cart"></span></span><span class="nav-link-text">Appraise</span>
+                                    </div>
+                                </a>
+                                <div class="parent-wrapper label-1">
+                                    <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-appraise">
+                                        <li class="collapsed-nav-item-title d-none">
+                                            Employee Information
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link dropdown-indicator" href="#nv-admin" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-admin">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-text">Admin</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                            <div class="parent-wrapper">
+                                                <ul class="nav collapse parent show" data-bs-parent="#appraise" id="nv-admin">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/add-product.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Add product</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/products.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Products</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/customers.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Customers</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/customer-details.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Customer details</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/orders.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Orders</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/order-details.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Order details</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/admin/refund.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Refund</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link dropdown-indicator" href="#nv-customer" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-customer">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-text">Customer</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                            <div class="parent-wrapper">
+                                                <ul class="nav collapse parent show" data-bs-parent="#e-commerce" id="nv-customer">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/homepage.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Homepage</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/product-details.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Product details</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/products-filter.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Products filter</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/cart.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Cart</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/checkout.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Checkout</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/shipping-info.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Shipping info</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/profile.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Profile</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/favourite-stores.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Favourite stores</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/wishlist.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Wishlist</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/order-tracking.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Order tracking</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="../apps/e-commerce/landing/invoice.html">
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="nav-link-text">Invoice</span>
+                                                            </div>
+                                                        </a>
+                                                        <!-- more inner pages-->
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- parent pages Leave Application-->
+                            <div class="nav-item-wrapper">
+                                <a class="nav-link dropdown-indicator label-1" href="#nv-CRM" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-CRM">
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="phone"></span></span><span class="nav-link-text">Leave Application</span>
+                                    </div>
+                                </a>
+                                <div class="parent-wrapper label-1">
+                                    <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-CRM">
+                                        <li class="collapsed-nav-item-title d-none">
+                                            Leave Application
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/analytics.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Analytics</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/deals.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Deals</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/deal-details.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Deal details</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/leads.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Leads</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/lead-details.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Lead details</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/reports.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Reports</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/report-details.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Report details</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/add-contact.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Add contact</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- parent pages Ai Screening-->
+                            <div class="nav-item-wrapper">
+                                <a class="nav-link dropdown-indicator label-1" href="#nv-aiScreening" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-aiScreening">
+                                    <div class="d-flex align-items-center">
+                                        <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="phone"></span></span><span class="nav-link-text">Ai Screening</span>
+                                    </div>
+                                </a>
+                                <div class="parent-wrapper label-1">
+                                    <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-aiScreening">
+                                        <li class="collapsed-nav-item-title d-none">
+                                            Leave Application
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/analytics.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Analytics</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/deals.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Deals</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/deal-details.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Deal details</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/leads.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Leads</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/lead-details.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Lead details</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/reports.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Reports</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/report-details.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Report details</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="../apps/crm/add-contact.html">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="nav-link-text">Add contact</span>
+                                                </div>
+                                            </a>
+                                            <!-- more inner pages-->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar-vertical-footer">
+                <button class="btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center"><span class="uil uil-left-arrow-to-left fs-8"></span><span class="uil uil-arrow-from-right fs-8"></span><span class="navbar-vertical-footer-text ms-2">Collapsed View</span></button>
+            </div>
+        </nav>
+        <nav class="navbar navbar-top fixed-top navbar-expand" id="navbarDefault">
+            <div class="collapse navbar-collapse justify-content-between">
+                <div class="navbar-logo">
+
+                    <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+                    <a class="navbar-brand me-1 me-sm-3" href="../index.html">
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="~/Images/icon64.png" alt="MaxSystem" width="27" />
+                                <h5 class="logo-text ms-2 d-none d-sm-block">Max System Solution</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="search-box navbar-top-search-box d-none d-lg-block" data-list='{"valueNames":["title"]}' style="width:25rem;">
+                    <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+                        <input class="form-control search-input fuzzy-search rounded-pill form-control-sm" type="search" placeholder="Search..." aria-label="Search" />
+                        <span class="fas fa-search search-box-icon"></span>
+
+                    </form>
+                    <div class="btn-close position-absolute end-0 top-50 translate-middle cursor-pointer shadow-none" data-bs-dismiss="search">
+                        <button class="btn btn-link p-0" aria-label="Close"></button>
+                    </div>
+                    <div class="dropdown-menu border start-0 py-0 overflow-hidden w-100">
+                        <div class="scrollbar-overlay" style="max-height: 30rem;">
+                            <div class="list pb-3">
+                                <h6 class="dropdown-header text-body-highlight fs-10 py-2">24 <span class="text-body-quaternary">results</span></h6>
+                                <hr class="my-0" />
+                                <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Recently Searched </h6>
+                                <div class="py-2">
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"><span class="fa-solid fa-clock-rotate-left" data-fa-transform="shrink-2"></span> Store Macbook</div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-clock-rotate-left" data-fa-transform="shrink-2"></span> MacBook Air - 13″</div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <hr class="my-0" />
+                                <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Products</h6>
+                                <div class="py-2">
+                                    <a class="dropdown-item py-2 d-flex align-items-center" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="file-thumbnail me-2"><img class="h-100 w-100 object-fit-cover rounded-3" src="../assets/img/products/60x60/3.png" alt="" /></div>
+                                        <div class="flex-1">
+                                            <h6 class="mb-0 text-body-highlight title">XYZ - 13″</h6>
+                                            <p class="fs-10 mb-0 d-flex text-body-tertiary"><span class="fw-medium text-body-tertiary text-opactity-85">8GB Memory - 1.6GHz - 128GB Storage</span></p>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item py-2 d-flex align-items-center" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="file-thumbnail me-2"><img class="img-fluid" src="../assets/img/products/60x60/3.png" alt="" /></div>
+                                        <div class="flex-1">
+                                            <h6 class="mb-0 text-body-highlight title">ABC - 13″</h6>
+                                            <p class="fs-10 mb-0 d-flex text-body-tertiary"><span class="fw-medium text-body-tertiary text-opactity-85">30 Sep at 12:30 PM</span></p>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <hr class="my-0" />
+                                <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Quick Links</h6>
+                                <div class="py-2">
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"><span class="fa-solid fa-link text-body" data-fa-transform="shrink-2"></span> Support MacBook House</div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-link text-body" data-fa-transform="shrink-2"></span> Store MacBook″</div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <hr class="my-0" />
+                                <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Files</h6>
+                                <div class="py-2">
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"><span class="fa-solid fa-file-zipper text-body" data-fa-transform="shrink-2"></span> Library MacBook folder.rar</div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-file-lines text-body" data-fa-transform="shrink-2"></span> Feature MacBook extensions.txt</div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-image text-body" data-fa-transform="shrink-2"></span> MacBook Pro_13.jpg</div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <hr class="my-0" />
+                                <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Members</h6>
+                                <div class="py-2">
+                                    <a class="dropdown-item py-2 d-flex align-items-center" href="../pages/members.html">
+                                        <div class="avatar avatar-l status-online  me-2 text-body">
+                                            <img class="rounded-circle " src="../assets/img/team/40x40/10.webp" alt="" />
+
+                                        </div>
+                                        <div class="flex-1">
+                                            <h6 class="mb-0 text-body-highlight title">Carry Anna</h6>
+                                            <p class="fs-10 mb-0 d-flex text-body-tertiary">anna@technext.it</p>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item py-2 d-flex align-items-center" href="../pages/members.html">
+                                        <div class="avatar avatar-l  me-2 text-body">
+                                            <img class="rounded-circle " src="../assets/img/team/40x40/12.webp" alt="" />
+
+                                        </div>
+                                        <div class="flex-1">
+                                            <h6 class="mb-0 text-body-highlight title">John Smith</h6>
+                                            <p class="fs-10 mb-0 d-flex text-body-tertiary">smith@technext.it</p>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <hr class="my-0" />
+                                <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Related Searches</h6>
+                                <div class="py-2">
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"><span class="fa-brands fa-firefox-browser text-body" data-fa-transform="shrink-2"></span> Search in the Web MacBook</div>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="fw-normal text-body-highlight title"> <span class="fa-brands fa-chrome text-body" data-fa-transform="shrink-2"></span> Store MacBook″</div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p class="fallback fw-bold fs-7 d-none">No Result Found.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="navbar-nav navbar-nav-icons flex-row">
+                    <li class="nav-item">
+                        <div class="theme-control-toggle fa-icon-wait px-2">
+                            <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
+                            <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style="height:32px;width:32px;"><span class="icon" data-feather="moon"></span></label>
+                            <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style="height:32px;width:32px;"><span class="icon" data-feather="sun"></span></label>
+                        </div>
+                    </li>
+                    <li class="nav-item d-lg-none"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchBoxModal"><span data-feather="search" style="height:19px;width:19px;margin-bottom: 2px;"></span></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span class="d-block" style="height:20px;width:20px;"><span data-feather="bell" style="height:20px;width:20px;"></span></span></a>
+
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
+                            <div class="card position-relative border-0">
+                                <div class="card-header p-2">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="text-body-emphasis mb-0">Notifications</h5>
+                                        <button class="btn btn-link p-0 fs-9 fw-normal" type="button">Mark all as read</button>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="scrollbar-overlay" style="height: 27rem;">
+                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
+                                            <div class="d-flex align-items-center justify-content-between position-relative">
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-m status-online me-3">
+                                                        <img class="rounded-circle" src="../assets/img/team/40x40/30.webp" alt="" />
+                                                    </div>
+                                                    <div class="flex-1 me-sm-3">
+                                                        <h4 class="fs-9 text-body-emphasis">Jessie Samson</h4>
+                                                        <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>💬</span>Mentioned you in a comment.<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">10m</span></p>
+                                                        <p class="text-body-secondary fs-9 mb-0"><span class="me-1 fas fa-clock"></span><span class="fw-bold">10:41 AM </span>August 7,2021</p>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown notification-dropdown">
+                                                    <button class="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10 text-body"></span></button>
+                                                    <div class="dropdown-menu py-2"><a class="dropdown-item" href="#!">Mark as unread</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative unread border-bottom">
+                                            <div class="d-flex align-items-center justify-content-between position-relative">
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-m status-online me-3">
+                                                        <div class="avatar-name rounded-circle"><span>J</span></div>
+                                                    </div>
+                                                    <div class="flex-1 me-sm-3">
+                                                        <h4 class="fs-9 text-body-emphasis">Jane Foster</h4>
+                                                        <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>📅</span>Created an event.<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">20m</span></p>
+                                                        <p class="text-body-secondary fs-9 mb-0"><span class="me-1 fas fa-clock"></span><span class="fw-bold">10:20 AM </span>August 7,2021</p>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown notification-dropdown">
+                                                    <button class="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10 text-body"></span></button>
+                                                    <div class="dropdown-menu py-2"><a class="dropdown-item" href="#!">Mark as unread</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative unread border-bottom">
+                                            <div class="d-flex align-items-center justify-content-between position-relative">
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-m status-online me-3">
+                                                        <img class="rounded-circle avatar-placeholder" src="../assets/img/team/40x40/avatar.webp" alt="" />
+                                                    </div>
+                                                    <div class="flex-1 me-sm-3">
+                                                        <h4 class="fs-9 text-body-emphasis">Jessie Samson</h4>
+                                                        <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>👍</span>Liked your comment.<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">1h</span></p>
+                                                        <p class="text-body-secondary fs-9 mb-0"><span class="me-1 fas fa-clock"></span><span class="fw-bold">9:30 AM </span>August 7,2021</p>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown notification-dropdown">
+                                                    <button class="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10 text-body"></span></button>
+                                                    <div class="dropdown-menu py-2"><a class="dropdown-item" href="#!">Mark as unread</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative unread border-bottom">
+                                            <div class="d-flex align-items-center justify-content-between position-relative">
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-m status-online me-3">
+                                                        <img class="rounded-circle" src="~/Images/user-avatar.png" alt="" />
+                                                    </div>
+                                                    <div class="flex-1 me-sm-3">
+                                                        <h4 class="fs-9 text-body-emphasis">Kiera Anderson</h4>
+                                                        <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>💬</span>Mentioned you in a comment.<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10"></span></p>
+                                                        <p class="text-body-secondary fs-9 mb-0"><span class="me-1 fas fa-clock"></span><span class="fw-bold">9:11 AM </span>August 7,2021</p>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown notification-dropdown">
+                                                    <button class="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10 text-body"></span></button>
+                                                    <div class="dropdown-menu py-2"><a class="dropdown-item" href="#!">Mark as unread</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative unread border-bottom">
+                                            <div class="d-flex align-items-center justify-content-between position-relative">
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-m status-online me-3">
+                                                        <img class="rounded-circle" src="../assets/img/team/40x40/59.webp" alt="" />
+                                                    </div>
+                                                    <div class="flex-1 me-sm-3">
+                                                        <h4 class="fs-9 text-body-emphasis">Herman Carter</h4>
+                                                        <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>👤</span>Tagged you in a comment.<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10"></span></p>
+                                                        <p class="text-body-secondary fs-9 mb-0"><span class="me-1 fas fa-clock"></span><span class="fw-bold">10:58 PM </span>August 7,2021</p>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown notification-dropdown">
+                                                    <button class="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10 text-body"></span></button>
+                                                    <div class="dropdown-menu py-2"><a class="dropdown-item" href="#!">Mark as unread</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative read ">
+                                            <div class="d-flex align-items-center justify-content-between position-relative">
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-m status-online me-3">
+                                                        <img class="rounded-circle" src="../assets/img/team/40x40/58.webp" alt="" />
+                                                    </div>
+                                                    <div class="flex-1 me-sm-3">
+                                                        <h4 class="fs-9 text-body-emphasis">Benjamin Button</h4>
+                                                        <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span class='me-1 fs-10'>👍</span>Liked your comment.<span class="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10"></span></p>
+                                                        <p class="text-body-secondary fs-9 mb-0"><span class="me-1 fas fa-clock"></span><span class="fw-bold">10:18 AM </span>August 7,2021</p>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown notification-dropdown">
+                                                    <button class="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fas fa-ellipsis-h fs-10 text-body"></span></button>
+                                                    <div class="dropdown-menu py-2"><a class="dropdown-item" href="#!">Mark as unread</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-0 border-top border-translucent border-0">
+                                    <div class="my-2 text-center fw-bold fs-10 text-body-tertiary text-opactity-85"><a class="fw-bolder" href="../pages/notifications.html">Notification history</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-l ">
+                                <img class="rounded-circle " src="~/Images/user-avatar.png" alt="user image" />
+
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
+                            <div class="card position-relative border-0">
+                                <div class="card-body p-0">
+                                    <div class="text-center pt-4 pb-3">
+                                        <div class="avatar avatar-xl ">
+                                            <img class="rounded-circle " src="~/Images/user-avatar.png" alt="user image" />
+
+                                        </div>
+                                        <h6 class="mt-2 text-body-emphasis">Jerry Seinfield</h6>
+                                    </div>
+                                    <div class="mb-3 mx-3">
+                                        <input class="form-control form-control-sm" id="statusUpdateInput" type="text" placeholder="Update your status" />
+                                    </div>
+                                </div>
+                                <div class="overflow-auto scrollbar" style="height: 10rem;">
+                                    <ul class="nav d-flex flex-column mb-2 pb-1">
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="user"></span><span>Profile</span></a></li>
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"><span class="me-2 text-body align-bottom" data-feather="pie-chart"></span>Dashboard</a></li>
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="lock"></span>Posts &amp; Activity</a></li>
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="settings"></span>Settings &amp; Privacy </a></li>
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="help-circle"></span>Help Center</a></li>
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="globe"></span>Language</a></li>
+                                    </ul>
+                                </div>
+                                <div class="card-footer p-0 border-top border-translucent">
+                                    <ul class="nav d-flex flex-column my-3">
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="user-plus"></span>Add another account</a></li>
+                                    </ul>
+                                    <hr />
+                                    <div class="px-3"> <a class="btn btn-phoenix-secondary d-flex flex-center w-100" href="#!"> <span class="me-2" data-feather="log-out"> </span>Sign out</a></div>
+                                    <div class="my-2 text-center fw-bold fs-10 text-body-quaternary"><a class="text-body-quaternary me-1" href="#!">Privacy policy</a>&bull;<a class="text-body-quaternary mx-1" href="#!">Terms</a>&bull;<a class="text-body-quaternary ms-1" href="#!">Cookies</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="content">
+            <div class="main-resizable-container">
+                <div class="main-resizable-left">
+                    <div class="d-flex p-2">
+                        <input type="text" id="LO_txtSearch" class="form-control" placeholder="Search">
+                        <div id="LO_btnAdd" class="btn btn-sm btn-primary btn-center px-3 ms-2">+</div>
+                    </div>
+                    <div class="d-flex overflow-auto h-100">
+                        <table class="table mb-0 layout-listing-table" id="LO_listing">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="main-resizer"></div>
+                <div class="main-resizer-ghostline"></div>
+                <div class="main-resizable-right">
+                    <!-- Main Content Area -->
+                    <main class="detail-frame">
+                        @RenderBody()
+
+                    </main>
+                </div>
+            </div>
+            @* <footer class="footer position-absolute">
+                <div class="row g-0 justify-content-between align-items-center h-100">
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 mt-2 mt-sm-0 text-body">Thank you for creating with Phoenix<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" />2025 &copy;<a class="mx-1" href="https://themewagon.com">Themewagon</a></p>
+                    </div>
+                    <div class="col-12 col-sm-auto text-center">
+                        <p class="mb-0 text-body-tertiary text-opacity-85">v1.22.0</p>
+                    </div>
+                </div>
+            </footer> *@
+        </div>
+
+         <!-- Loading Spinner -->
+        <div class="spanner">
+            <img src="~/Images/loading12.gif" alt="Loading" style="width: 85px; height: auto" />
+        </div>
+
+        <!--TOAST-->
+        <div class="ms-toast-container"></div>
+
+        <div class="modal fade" id="searchBoxModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="true" data-phoenix-modal="data-phoenix-modal" style="--phoenix-backdrop-opacity: 1;">
+            <div class="modal-dialog">
+                <div class="modal-content mt-15 rounded-pill">
+                    <div class="modal-body p-0">
+                        <div class="search-box navbar-top-search-box" data-list='{"valueNames":["title"]}' style="width: auto;">
+                            <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+                                <input class="form-control search-input fuzzy-search rounded-pill form-control-lg" type="search" placeholder="Search..." aria-label="Search" />
+                                <span class="fas fa-search search-box-icon"></span>
+
+                            </form>
+                            <div class="btn-close position-absolute end-0 top-50 translate-middle cursor-pointer shadow-none" data-bs-dismiss="search">
+                                <button class="btn btn-link p-0" aria-label="Close"></button>
+                            </div>
+                            <div class="dropdown-menu border start-0 py-0 overflow-hidden w-100">
+                                <div class="scrollbar-overlay" style="max-height: 30rem;">
+                                    <div class="list pb-3">
+                                        <h6 class="dropdown-header text-body-highlight fs-10 py-2">24 <span class="text-body-quaternary">results</span></h6>
+                                        <hr class="my-0" />
+                                        <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Recently Searched </h6>
+                                        <div class="py-2">
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"><span class="fa-solid fa-clock-rotate-left" data-fa-transform="shrink-2"></span> Store Macbook</div>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-clock-rotate-left" data-fa-transform="shrink-2"></span> MacBook Air - 13″</div>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                        <hr class="my-0" />
+                                        <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Products</h6>
+                                        <div class="py-2">
+                                            <a class="dropdown-item py-2 d-flex align-items-center" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="file-thumbnail me-2"><img class="h-100 w-100 object-fit-cover rounded-3" src="../assets/img/products/60x60/3.png" alt="" /></div>
+                                                <div class="flex-1">
+                                                    <h6 class="mb-0 text-body-highlight title">MacBook Air - 13″</h6>
+                                                    <p class="fs-10 mb-0 d-flex text-body-tertiary"><span class="fw-medium text-body-tertiary text-opactity-85">8GB Memory - 1.6GHz - 128GB Storage</span></p>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item py-2 d-flex align-items-center" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="file-thumbnail me-2"><img class="img-fluid" src="../assets/img/products/60x60/3.png" alt="" /></div>
+                                                <div class="flex-1">
+                                                    <h6 class="mb-0 text-body-highlight title">MacBook Pro - 13″</h6>
+                                                    <p class="fs-10 mb-0 d-flex text-body-tertiary"><span class="fw-medium text-body-tertiary text-opactity-85">30 Sep at 12:30 PM</span></p>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                        <hr class="my-0" />
+                                        <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Quick Links</h6>
+                                        <div class="py-2">
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"><span class="fa-solid fa-link text-body" data-fa-transform="shrink-2"></span> Support MacBook House</div>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-link text-body" data-fa-transform="shrink-2"></span> Store MacBook″</div>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                        <hr class="my-0" />
+                                        <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Files</h6>
+                                        <div class="py-2">
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"><span class="fa-solid fa-file-zipper text-body" data-fa-transform="shrink-2"></span> Library MacBook folder.rar</div>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-file-lines text-body" data-fa-transform="shrink-2"></span> Feature MacBook extensions.txt</div>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"> <span class="fa-solid fa-image text-body" data-fa-transform="shrink-2"></span> MacBook Pro_13.jpg</div>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                        <hr class="my-0" />
+                                        <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Members</h6>
+                                        <div class="py-2">
+                                            <a class="dropdown-item py-2 d-flex align-items-center" href="../pages/members.html">
+                                                <div class="avatar avatar-l status-online  me-2 text-body">
+                                                    <img class="rounded-circle " src="../assets/img/team/40x40/10.webp" alt="" />
+
+                                                </div>
+                                                <div class="flex-1">
+                                                    <h6 class="mb-0 text-body-highlight title">Carry Anna</h6>
+                                                    <p class="fs-10 mb-0 d-flex text-body-tertiary">anna@technext.it</p>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item py-2 d-flex align-items-center" href="../pages/members.html">
+                                                <div class="avatar avatar-l  me-2 text-body">
+                                                    <img class="rounded-circle " src="../assets/img/team/40x40/12.webp" alt="" />
+
+                                                </div>
+                                                <div class="flex-1">
+                                                    <h6 class="mb-0 text-body-highlight title">John Smith</h6>
+                                                    <p class="fs-10 mb-0 d-flex text-body-tertiary">smith@technext.it</p>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                        <hr class="my-0" />
+                                        <h6 class="dropdown-header text-body-highlight fs-9 border-bottom border-translucent py-2 lh-sm">Related Searches</h6>
+                                        <div class="py-2">
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"><span class="fa-brands fa-firefox-browser text-body" data-fa-transform="shrink-2"></span> Search in the Web MacBook</div>
+                                                </div>
+                                            </a>
+                                            <a class="dropdown-item" href="../apps/e-commerce/landing/product-details.html">
+                                                <div class="d-flex align-items-center">
+
+                                                    <div class="fw-normal text-body-highlight title"> <span class="fa-brands fa-chrome text-body" data-fa-transform="shrink-2"></span> Store MacBook″</div>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="fallback fw-bold fs-7 d-none">No Result Found.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
+            var navbarTop = document.querySelector('.navbar-top');
+            if (navbarTopStyle === 'darker') {
+              navbarTop.setAttribute('data-navbar-appearance', 'darker');
+            }
+
+            var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
+            var navbarVertical = document.querySelector('.navbar-vertical');
+            if (navbarVertical && navbarVerticalStyle === 'darker') {
+              navbarVertical.setAttribute('data-navbar-appearance', 'darker');
+            }
+        </script>
+
+        <script>
+            var layout_cookie_name;
+            let sb_timeoutId;
+
+            $(function () {
+                layout_cookie_name = "MAXSYS_LAYOUT_SETTING";
+                if (getCookie(layout_cookie_name) != null) {
+                   try {
+                        var layout = getCookie(layout_cookie_name);
+                        layout = JSON.parse(layout);
+                        //console.log(layout);
+                        $('.main-resizable-left').css('width', layout.main_rs);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+
+                bsContainerAdjust('.main-resizable-left');
+                bsContainerAdjust('.main-resizable-right');
+
+                $(window).on('resize', function(){
+                    bsContainerAdjust('.main-resizable-left');
+                    bsContainerAdjust('.main-resizable-right');
+                });
+
+                const $m_resizer = $('.main-resizer');
+                const $m_ghostLine = $('.main-resizer-ghostline');
+                const $m_left = $('.main-resizable-left');
+                const $m_right = $('.main-resizable-right');
+                const $m_container = $('.main-resizable-container');
+
+                let m_isDragging = false;
+                let m_containerOffsetLeft = 0;
+                let m_containerWidth = 0;
+
+                $m_resizer.on('mousedown', function (e) {
+                    m_isDragging = true;
+                    m_containerOffsetLeft = $m_container.offset().left;
+                    m_containerWidth = $m_container.outerWidth();
+
+                    const relativeX = ghostClamp(e.pageX - m_containerOffsetLeft, 0, m_containerWidth);
+                    $m_ghostLine.css({
+                        left: relativeX + 'px',
+                        display: 'block'
+                    });
+
+                    $(window).on('mousemove.resizeDrag', function (e) {
+                        if (!m_isDragging) return;
+                        const relativeX = ghostClamp(e.pageX - m_containerOffsetLeft, 0, m_containerWidth);
+                        $m_ghostLine.css('left', relativeX + 'px');
+                    });
+
+                    $(window).on('mouseup.resizeDrag', function (e) {
+                        if (!m_isDragging) return;
+
+                        m_isDragging = false;
+                        $m_ghostLine.hide();
+
+                        const relativeX = ghostClamp(e.pageX - m_containerOffsetLeft, 0, m_containerWidth);
+                        $m_left.css('width', relativeX + 'px');
+
+                        // Clean up
+                        $(window).off('.resizeDrag');
+
+                        bsContainerAdjust('.main-resizable-left');
+                        bsContainerAdjust('.main-resizable-right'); // optional helper if you use it
+                        saveLayoutConfig();
+                    });
+                });
+
+                function ghostClamp(val, min, max) {
+                    return Math.max(min, Math.min(max, val));
+                }
+
+                //Sidebar
+                $('.navbar-vertical-toggle').click(function(){
+                    clearTimeout(sb_timeoutId);
+                    sb_timeoutId = setTimeout(() => {
+                        bsContainerAdjust('.main-resizable-right');
+                        bsContainerAdjust('.resizable-listing');
+                    }, 200);
+                });
+
+            });
+
+            function bsContainerAdjust(container){
+                var cwidth = $(container).innerWidth();
+                var bsClass = "boostrap-none";
+                if (cwidth > 1200) {
+                    bsClass = "boostrap-xl";
+                } else if (cwidth > 992) {
+                    bsClass = "boostrap-lg";
+                } else if (cwidth > 768) {
+                    bsClass = "boostrap-md";
+                } else if (cwidth > 576) {
+                    bsClass = "boostrap-sm";
+                }
+
+                $(container).removeClass("boostrap-none").removeClass("boostrap-sm").removeClass("boostrap-md").removeClass("boostrap-lg").removeClass("boostrap-xl");
+                $(container).addClass(bsClass);
+            }
+
+            function saveLayoutConfig() {
+                var main_rs = $('.main-resizable-left').css('width');
+                createCookie(layout_cookie_name, JSON.stringify({ main_rs: main_rs }), 1);
+            }
+        </script>
+
+    </main>
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="~/vendor/popper/popper.min.js"></script>
+    <script src="~/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="~/vendor/anchorjs/anchor.min.js"></script>
+    <script src="~/vendor/is/is.min.js"></script>
+    <script src="~/vendor/fontawesome/all.min.js"></script>
+    <script src="~/vendor/lodash/lodash.min.js"></script>
+    <script src="~/vendor/list.js/list.min.js"></script>
+    <script src="~/vendor/feather-icons/feather.min.js"></script>
+    <script src="~/vendor/dayjs/dayjs.min.js"></script>
+    <script src="~/js/phoenix.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

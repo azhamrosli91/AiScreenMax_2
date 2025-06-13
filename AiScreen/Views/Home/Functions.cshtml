@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Functions</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+  <script>
+    function openSummarizerDialog(event) {
+      Office.context.ui.displayDialogAsync(
+        "https://azhamrosli.com/Home/EmailSummarize",
+        {
+          height: 70,
+          width: 60,
+          displayInIframe: true
+        },
+        function (asyncResult) {
+          if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+            const dialog = asyncResult.value;
+          }
+        }
+      );
+    }
+  </script>
+</body>
+</html>

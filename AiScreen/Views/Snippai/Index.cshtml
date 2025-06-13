@@ -1,0 +1,709 @@
+﻿<!-- Highlight.js for syntax highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<style>
+    .content {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding-top: var(--phoenix-navbar-top-height);
+        padding-bottom: 0;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .chat-message-header {
+        padding: 10px 15px;
+        background: var(--phoenix-navbar-top-bg-color);
+        border-bottom: 1px solid var(--phoenix-navbar-vertical-border-color);
+    }
+
+    .chat-message-container {
+        height: 100%;
+        min-height: 0;
+        overflow: auto;
+        padding: 0 50px;
+    }
+    .chat-input-container {
+        background: var(--phoenix-navbar-top-bg-color);
+        margin: 0 15px 15px 15px;
+        padding: 15px;
+        border-radius: 28px;
+        box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0px 4px 4px 0px #0000000a, 0px 0px 1px 0px #0000009e;
+    }
+
+    .chatInputExtraAction .btn {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+    }
+    .chatAddDDL{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 25px;
+        padding: 5px;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+
+    .chatAddDDL.show {
+        background: #ccc;
+    }
+    .chatAddDDL.dropdown-toggle::after {
+        display: none;
+    }
+
+    .chatAddDDL + .dropdown-menu {
+        padding: 0;
+    }
+
+        .chatAddDDL + .dropdown-menu .dropdown-item {
+            cursor: pointer;
+        }
+
+    .cns-tag {
+        display: inline-block;
+        color: #004dff;
+        margin-right: 5px;
+    }
+
+</style>
+
+<style>
+    #tableMenu {
+        min-width: 120px;
+    }
+
+    .footer{
+        border-top:unset;
+    }
+
+    .card-footer{
+        background-color:var(--phoenix-navbar-top-bg-color);
+        padding:5px;
+    }
+
+    .chat-textarea:empty:before {
+        content: attr(data-placeholder);
+        color: #999;
+        pointer-events: none;
+        display: block;
+    }
+</style>
+<style>
+    #tableGrid div {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+        #tableGrid div.active {
+            background-color: #0d6efd; /* Bootstrap primary */
+        }
+    .table > :not(caption) > * > *
+    {
+        color:unset;
+    }
+</style>
+<style>
+    hr {
+        border: 0;
+        height: 1px;
+        background-color: #ccc;
+    }
+</style>
+
+<style>
+    .chat-message {
+        margin-bottom: 0.5rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+
+        .chat-message.user {
+            background-color: var(--phoenix-navbar-top-bg-color);
+            border-radius: 0.75rem;
+            padding: 0.25rem 1rem;
+            margin-left: auto;
+            width: 70%;
+            text-align: left;
+        }
+
+        .chat-message.bot {
+            padding: 0;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        .chat-message pre {
+            background-color: #1e1e1e;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+</style>
+<style>
+    .ai-response {
+        margin: 2rem 0;
+        width: 100%;
+    }
+
+    .code-box {
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        overflow: hidden;
+        font-family: Consolas, monospace;
+        color: #f8f8f2;
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        max-height: 400px; /* set a max height if needed */
+    }
+
+
+    .code-box-header {
+        background-color: #2d2d2d;
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #ccc;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .code-box pre {
+        margin: 0;
+        padding: 1rem;
+        overflow-x: auto;
+        overflow-y: auto;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        white-space: pre;
+        flex: 1;
+    }
+
+        .code-box-header .title {
+            text-transform: lowercase;
+            font-weight: bold;
+        }
+
+        .code-box-header .buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+            .code-box-header .buttons button {
+                background: none;
+                border: none;
+                color: #ccc;
+                font-size: 0.75rem;
+                cursor: pointer;
+                padding: 2px 4px;
+            }
+
+                .code-box-header .buttons button:hover {
+                    color: #fff;
+                }
+
+    .code-box pre {
+        margin: 0;
+        padding: 1rem;
+        overflow-x: auto;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        white-space: pre;
+    }
+</style>
+<style>
+    .scroll-to-bottom {
+        position: fixed;
+        bottom: 130px; /* above footer */
+        right: 30px;
+        z-index: 1000;
+        background-color: #0d6efd;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        display: none; /* hidden by default */
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+        .scroll-to-bottom:hover {
+            background-color: #0b5ed7;
+        }
+</style>
+
+
+
+
+<button id="scrollToBottomBtn" class="scroll-to-bottom">
+    <i class="fa-solid fa-arrow-down"></i>
+</button>
+
+
+<div class="chat-message-header">
+    <div class="d-flex justify-content-end">
+        <div class="btn btn-sm btn-primary" id="btnStartNew">Start New Conversation</div>
+    </div>
+</div>
+
+<div class="chat-message-container">
+    <div class="bodydata">
+        <div class="bodydata">
+            <div class="p-3">
+                <!-- Bot/User messages go here -->
+                <!-- 👇 Loading Spinner -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="chat-input-container">
+    <div class="row g-0 justify-content-between align-items-center h-100">
+        <div class="card-footer">
+            <div class="chat-textarea outline-none scrollbar mb-1" contenteditable="true" data-placeholder="Asking something here..."></div>
+
+            <div class="chatInputExtraAction d-flex justify-content-between align-items-end">
+                <div class="d-flex align-item-center">
+                    <div class="btn-group dropup px-2">
+                        <button class="btn dropdown-toggle chatAddDDL" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-plus"></i></button>
+                        <div class="dropdown-menu py-0" id="ddlAddOption">
+                            <div class="dropdown-item" data-val="TEST1">Test Value 1</div>
+                            <div class="dropdown-item" data-val="TEST2">Test Value 2</div>
+                            <div class="dropdown-item" data-val="TEST3">Test Value 3</div>
+                        </div>
+                    </div>
+                    <label class="btn btn-link py-0 px-2 text-body fs-9" for="chatPhotos-0"><span class="fa-solid fa-image"></span></label>
+                    <input class="d-none" type="file" accept="image/*" id="chatPhotos-0" />
+                    <label class="btn btn-link py-0 px-2 text-body fs-9" for="chatAttachment-0"> <span class="fa-solid fa-paperclip"></span></label>
+                    <input class="d-none" type="file" id="chatAttachment-0" />
+                    <div class="btn-group position-relative">
+                        <!-- Table icon -->
+                        <label class="btn btn-link py-0 px-2 text-body fs-9" id="tableIcon">
+                            <span class="fa-solid fa-table"></span>
+                        </label>
+
+                        <!-- Context menu positioned above the icon -->
+                        <div id="tableMenu" class="position-absolute bg-white border rounded shadow p-2"
+                             style="display:none; bottom: 35px; left: 0; z-index:9999; width: max-content;">
+                            <div id="tableGrid" style="display: grid; grid-template-columns: repeat(7, 20px); gap: 2px;"></div>
+                            <div id="tableSizeLabel" class="mt-2 text-center small text-muted">0 x 0</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary fs-10" type="button" id="btnSend">Send<span class="fa-solid fa-paper-plane ms-1"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        const $scrollBtn = $('#scrollToBottomBtn');
+
+        $('.chat-message-container').on('scroll', function () {
+            const $container = $(this);
+            const scrollTop = $container.scrollTop();
+            const containerHeight = $container.height();
+            const contentHeight = $container.prop('scrollHeight');
+
+            // Show button if not near the bottom (100px threshold)
+            if (scrollTop + containerHeight < contentHeight - 100) {
+                $scrollBtn.fadeIn();
+            } else {
+                $scrollBtn.fadeOut();
+            }
+        });
+
+        // Scroll to bottom when button is clicked
+        $scrollBtn.on('click', function () {
+            $('.chat-message-container').animate({ scrollTop: $('.chat-message-container')[0].scrollHeight }, 400);
+        });
+
+        $('#ddlAddOption .dropdown-item').click(function () {
+            var value = $(this).data("val");
+            var textarea = $('.chat-textarea')[0]; // raw DOM element
+
+            // Create span element
+            var span = document.createElement("div");
+            span.className = "cns-tag";
+            span.textContent = "@@" + value;
+            span.setAttribute("data-val", value);
+
+            // Append span to the contenteditable div
+            textarea.appendChild(span);
+
+            // Add a zero-width space (or a regular space) after the span to place the cursor
+            const spacer = document.createTextNode('\u200B'); // zero-width space
+            textarea.appendChild(spacer);
+
+            // Move cursor after the span
+            const range = document.createRange();
+            range.setStartAfter(spacer); // AFTER the spacer (which is after the span)
+            range.collapse(true);
+
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        });
+
+        //Fix some default behavior of contenteditable div
+        $('.chat-textarea').on('input', function () {
+            const editable = this;
+            const sel = window.getSelection();
+
+            if (!sel.rangeCount) return;
+
+            const range = sel.getRangeAt(0);
+            const caretOffset = getCaretCharacterOffsetWithin(editable);
+
+            // Do cleanup
+            if (editable.innerHTML.trim() === '<br>') {
+                editable.innerHTML = '';
+            }
+
+            $(editable).find('font').contents().unwrap();
+
+            // Restore caret
+            setCaretPosition(editable, caretOffset);
+        });
+
+        // Helper to get caret position
+        function getCaretCharacterOffsetWithin(element) {
+            let caretOffset = 0;
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(element);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                caretOffset = preCaretRange.toString().length;
+            }
+            return caretOffset;
+        }
+
+        // Restore caret position by character offset
+        function setCaretPosition(element, offset) {
+            const range = document.createRange();
+            const sel = window.getSelection();
+
+            let currentNode = null;
+            let currentOffset = 0;
+
+            function traverse(node) {
+                if (node.nodeType === 3) { // text node
+                    if (offset <= node.length) {
+                        currentNode = node;
+                        currentOffset = offset;
+                        return true;
+                    }
+                    offset -= node.length;
+                } else {
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        if (traverse(node.childNodes[i])) return true;
+                    }
+                }
+                return false;
+            }
+
+            traverse(element);
+
+            if (currentNode) {
+                range.setStart(currentNode, currentOffset);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+
+    });
+</script>
+
+<script>
+    $(document).on('click', '.btn-copy', function () {
+        const code = $(this).closest('.code-box').find('code').text();
+        navigator.clipboard.writeText(code).then(() => {
+            $(this).text('Copied!');
+            setTimeout(() => $(this).text('Copy'), 1500);
+        });
+    });
+</script>
+
+<script>
+    $('#chatPhotos-0').on('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const imgTag = `<img src="${e.target.result}" alt="image" style="max-width: 100px; max-height: 100px; margin: 4px;">`;
+            $('.chat-textarea').append(imgTag);
+        };
+        reader.readAsDataURL(file);
+
+        // reset input to allow re-uploading same file
+        $(this).val('');
+    });
+
+    $('#chatAttachment-0').on('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const fileName = file.name;
+        const url = URL.createObjectURL(file);
+
+        const fileLink = `<a href="${url}" download="${fileName}" style="display:inline-block; margin: 4px;">📎 ${fileName}</a>`;
+        $('.chat-textarea').append(fileLink);
+
+        $(this).val('');
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // === IMAGE & ATTACHMENT ===
+        $('#chatPhotos-0').on('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imgTag = `<img src="${e.target.result}" alt="image" style="max-width: 100px; max-height: 100px; margin: 4px;">`;
+                $('.chat-textarea').append(imgTag);
+            };
+            reader.readAsDataURL(file);
+            $(this).val('');
+        });
+
+        $('#chatAttachment-0').on('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const fileName = file.name;
+            const url = URL.createObjectURL(file);
+            const fileLink = `<a href="${url}" download="${fileName}" style="display:inline-block; margin: 4px;">📎 ${fileName}</a>`;
+            $('.chat-textarea').append(fileLink);
+            $(this).val('');
+        });
+
+        // === TABLE GRID SETUP ===
+        for (let i = 1; i <= 49; i++) {
+            $('#tableGrid').append('<div data-index="' + i + '"></div>');
+        }
+
+        const gridCells = $('#tableGrid div');
+
+        gridCells.on('mouseover', function () {
+            const index = $(this).index();
+            const row = Math.floor(index / 7) + 1;
+            const col = (index % 7) + 1;
+            $('#tableSizeLabel').text(`${row} x ${col}`);
+
+            gridCells.removeClass('active');
+            gridCells.each(function (i) {
+                const r = Math.floor(i / 7) + 1;
+                const c = (i % 7) + 1;
+                if (r <= row && c <= col) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+
+        gridCells.on('click', function () {
+            const index = $(this).index();
+            const row = Math.floor(index / 7) + 1;
+            const col = (index % 7) + 1;
+
+            let tableHtml = '<table style="border-collapse: collapse; margin:4px;">';
+            for (let i = 0; i < row; i++) {
+                tableHtml += '<tr>';
+                for (let j = 0; j < col; j++) {
+                    tableHtml += '<td style="min-width:40px; height:30px; border:1px solid #ccc;"></td>';
+                }
+                tableHtml += '</tr>';
+            }
+            tableHtml += '</table>';
+
+
+                $('.chat-textarea').append(tableHtml);
+            $('#tableMenu').hide();
+        });
+
+        // === MENU TOGGLE + OUTSIDE CLICK ===
+        $('#tableIcon').on('click', function (e) {
+            $('#tableMenu').toggle();
+            e.stopPropagation();
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#tableMenu').length && !$(e.target).closest('#tableIcon').length) {
+                $('#tableMenu').hide();
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        //press enter
+        $('.chat-textarea').on('keydown', function (e) {
+            const isAltEnter = e.key === 'Enter' && e.altKey;
+            const isJustEnter = e.key === 'Enter' && !e.altKey;
+
+            if (isAltEnter) {
+                e.preventDefault();
+
+                const sel = window.getSelection();
+                if (!sel.rangeCount) return;
+
+                const range = sel.getRangeAt(0);
+                const br = document.createElement("br");
+                range.deleteContents();
+                range.insertNode(br);
+
+                // Firefox needs this <br> to prevent cursor issues
+                const fix = document.createTextNode("\u200B");
+                br.after(fix);
+
+                // Move caret after the <br>
+                range.setStartAfter(fix);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+
+                return;
+            }
+
+            if (isJustEnter) {
+                // Prevent default newline
+                e.preventDefault();
+
+                // Check if only one line exists (no <br>, <div>, or line breaks)
+                const htmlContent = $(this).html().replace(/<br\s*\/?>|<div.*?>.*?<\/div>/g, '').trim();
+                if (htmlContent.length > 0) {
+                    // Trigger send button click
+                    $('#btnSend').click();
+                }
+            }
+        });
+       //SENT button
+        $('#btnSend').on('click', function () {
+            const messageContent = $('.chat-textarea').html().trim();
+            const username = $("#txtuseremail").val(); // Replace dynamically if needed
+
+            if (!messageContent) {
+                alert("Please enter a message.");
+                return;
+            }
+
+            const $btn = $(this);
+            $btn.prop('disabled', true).html('Sending...');
+
+            // Append user message (blue bubble)
+            const userMsg = `
+            <div class="chat-message user d-flex justify-content-start align-items-center" style="flex-wrap: nowrap;">
+              <div id="chat-loading" class="chatloading me-2 flex-shrink-0">
+                <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+              </div>
+              <div class="text-start" style="word-break: break-word; white-space: normal;">
+                ${messageContent}
+              </div>
+            </div>`;
+
+
+            $('.bodydata .p-3').append(userMsg);
+
+            // Prepare bot message container (append early)
+            const botMsgContainer = `<div class="chat-message bot"><div class="bot-stream"></div></div>`;
+            $('.bodydata .p-3').append(botMsgContainer);
+            const $botStream = $('.bot-stream').last();
+            $('#chat-loading').show(); // ⏳ Show spinner
+            $('.chat-textarea').html(''); // Clear input
+            $('.chat-message-container').animate({ scrollTop: $('.chat-message-container')[0].scrollHeight }, 300); // Optional scroll
+
+            const requestData = {
+                theadID: null,
+                userName: username,
+                dateTime: new Date().toISOString(),
+                messages: [
+                    { role: "user", content: messageContent }
+                ]
+            };
+
+            fetch('/Snippai/Chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            }).then(response => {
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+
+                function read() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            $btn.prop('disabled', false).html('Send <span class="fa-solid fa-paper-plane ms-1"></span>');
+                            $('.chatloading').remove(); // ✅ Remove loading spinner inside user bubble
+                            $('.bodydata .p-3').append('<hr class="my-3 border-secondary" />');
+
+                            return;
+                        }
+
+                        const chunk = decoder.decode(value, { stream: true });
+                        $botStream.append(chunk); // Stream tokens to DOM
+                        $('.chat-message-container').animate({ scrollTop: $('.chat-message-container')[0].scrollHeight }, 50); // Auto-scroll
+                        read(); // Continue reading
+                    });
+                }
+
+                read();
+            }).catch(err => {
+                console.error("Stream error:", err);
+                alert("Failed to send message.");
+                $('.chatloading').remove(); // ❌ Remove spinner if error
+                $btn.prop('disabled', false).html('Send <span class="fa-solid fa-paper-plane ms-1"></span>');
+            });
+        });
+
+        function getOrCreateThreadId() {
+            const storageKey = 'chat_thread_id';
+            let threadId = localStorage.getItem(storageKey);
+            if (!threadId) {
+                threadId = generateGuid();
+                localStorage.setItem(storageKey, threadId);
+            }
+            return threadId;
+        }
+
+        function generateGuid() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                let r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+    });
+</script>

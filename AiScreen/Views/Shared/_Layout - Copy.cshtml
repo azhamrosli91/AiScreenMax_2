@@ -1,0 +1,290 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Configuration["ProjectName"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true"/>
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/sidebar.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/spinthatshit.css" rel="stylesheet" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/solid.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/regular.min.css" />
+    <link href="~/lib/select2-4.1.0/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <link href="~/lib/select2-4.1.0/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.bootstrap5.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.checkboxes.css" rel="stylesheet" />
+    <link href="~/css/mobilecss.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+
+    @* This code is ASP.NET Core CSS Isolation*@
+   @*  <link href="~/MaxSys.styles.css" rel="stylesheet" asp-append-version="true" /> *@
+
+    @* This is script *@
+    @* Comment1 *@
+    @* Comment JY *@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    
+@*     <script src="~/js/jquery-ui-1.12.1.min.js"></script> *@
+    <script src="~/js/jquery-ui-1.12.1.js"></script>
+    <script src="~/js/bootstrap.bundle.js"></script>
+    <script src="~/js/jquery.validate-vsdoc.js"></script>
+    <script src="~/js/jquery.validate.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>   
+    <script src="~/js/jquery.cookie.min.js"></script>
+    <script src="~/js/attrchange.js"></script>  
+    <script src="~/js/modernizr-2.8.3.js"></script>
+    <script src="~/js/mainJS.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/views/shared/_Layout.js"></script>
+    <script src="~/lib/select2-4.1.0/js/select2.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap.js"></script>
+    <script src="~/lib/datatables/js/datatables.select.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap5.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.checkboxes.min.js"></script>
+
+</head>
+@{
+    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"];
+    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+    var employeeID = HttpContextAccessor.HttpContext.Request.Cookies["ID_MM_COMPANY"];
+    var companyName = HttpContextAccessor.HttpContext.Request.Cookies["MM_COMPANY_NAME"];
+    var workNO = HttpContextAccessor.HttpContext.Request.Cookies["WORK_NO"];
+    var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
+}
+<body>
+    <div class="sticky-top">
+        <header class="sticky-top navbar navbar-dark flex-md-nowrap p-0 shadow tr-navbar">
+            <div class="row w-100">
+                <div class="col-12">
+                    <div class="d-none d-md-block">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <a href="@Url.Action("Index", "Dashboard")" class="col">
+                                    <img class="p-0 tr-navbar-logo d-md-block" src="~/Images/Max_logo.png" />
+                                </a>
+                                <div id="accountMenu" class="d-md-none collapse">
+                                    <div class="row mb-2">
+                                        <p class="h6 text-secondary m-0 px-4 azham1">@Configuration["ProjectName"].ToString().ToUpper()</p>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <p class="h6 text-secondary m-0 px-4"><i class="fa-solid fa-user px-2"></i>@username.ToUpper()</p>
+                                    </div>
+
+                                    <form method="post" asp-controller="Home" asp-action="Logout" class="d-flex align-items-center">
+                                        <div class="row mb-2">
+                                            <div>
+                                                <input type="hidden" name="authenticationType" id="txtauthenticationType" value="@authenticationType" />
+                                                <button type="submit" class="btn btn-link nav-link text-white">
+                                                    <i class="fa fa-sign-out"></i>
+                                                    LOG KELUAR
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accountMenu" aria-controls="accountMenu" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span><i class="fa-solid fa-user"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-none d-sm-block">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <a href="@Url.Action("Index", "Dashboard")" class="col">
+                                    <img class="p-0 tr-navbar-logo d-sm-block" src="~/Images/Max_logo.png" />
+                                </a>
+                                <div class="me-auto">
+                                    <p class="m-0 px-4 tr-navbar-title azham2">@Configuration["ProjectName"].ToString().ToUpper() - @companyName</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="navbar-nav">
+                                    <div class="nav-item text-nowrap">
+                                        <form method="post" asp-controller="Home" asp-action="Logout" class="d-flex align-items-center">
+
+                                            <div class="mx-2">
+                                                @if (1 == 1)
+                                                {
+                                                    <div class="dropdown overlay-dropdown">
+                                                        <input type="hidden" value="@useremail" id="txtUserEmail" />
+                                                        <input type="hidden" value="@userID" id="txtUserID" />
+                                                        <input type="hidden" value="@employeeID" id="txtUserEmployeeID" />
+                                                        <input type="hidden" value="@workNO" id="txtUserWorkNO" />
+                                                        <input type="hidden" value="@username" id="txtUserName" />
+                                                        <a href="#" class="m-0 px-1 text-reset tr-navbar-logout dropdown-toggle" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            @* <img src="~/Images/user-avatar.png"  id="userprofile" style="width:34px;border-radius:50%" /> *@
+                                                            @username.ToUpper()
+                                                        </a>
+                                                        @* <div class="tr-ddm dropdown-menu" aria-labelledby="profileDropdown">
+                                                    <a class="dropdown-item" href="@Url.Action("ChangePassword", "Home")">Change Password</a>
+                                                    </div> *@
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <a id="btnProfile" href="#" class="m-0 px-1 text-reset tr-navbar-logout">
+                                                        <i class="fa-solid fa-user px-2"></i>&nbsp; username.ToUpper()
+                                                    </a>
+                                                    <ul id="dropdownList" class="hidden">
+                                                        <li><a href="#">Option 1</a></li>
+                                                        <li><a href="#">Option 2</a></li>
+                                                        <li><a href="#">Option 3</a></li>
+                                                    </ul>
+                                                }
+                                            </div>
+                                            <div class="tr-nav-divider"></div>
+                                            <div>
+                                                <input type="hidden" name="authenticationType" id="txtauthenticationType" value="@authenticationType" />
+                                                <button type="submit" class="btn btn-link nav-link">
+                                                    <i class="fa fa-sign-out"></i>
+                                                    LOG KELUAR
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </header>
+    </div>
+    <div class="container-fluid d-flex flex-column">
+        <div class="row flex-nowrap">
+            <div class="col-auto px-0">
+                <div id="sidebar" class="border-end sidebar h-100">
+                    <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start h-100">
+                        <div class="w-100 tr-sidebar-menu">
+                            <p class="h-100 tr-navbar-menu-item">
+                                <a href="#" class="sidebarToggle border-0 w-100 p-1 text-decoration-none text-black" parent-sidebar="1">
+                                    <i class="fa-solid fa-bars"></i>
+                                </a>
+                                <b>Menu</b>
+                            </p>
+                        </div>
+
+                        <div>
+                            <ul class="nav flex-column mb-2" id="sidebarcontent">
+                            </ul>
+                        </div>
+
+                        <div class="tr-help" style="padding-bottom:0.4%;">
+                            <div class="center">
+                               @*  <span class="tr-help-txt">
+                                    Help
+                                    <button id="btnHelp" class="btn btn-link p-0 m-0 text-muted" style="margin-left: 5px !important; min-width: 15px; vertical-align: top">
+                                        <i class="fa-solid fa-question text-center" style="font-size:10px; border: 1.5px solid #6C757D; border-radius:30px; padding: 3px; width: 20px; vertical-align: top;"></i>
+                                    </button>
+                                </span> *@
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="sidebar2" class=" border-end sidebar h-100">
+                    <div id="sidebar-nav2" class="list-group border-0 rounded-0 text-sm-start">
+                        <div class="w-100 tr-sidebar-menu">
+                            <p class="h-100 tr-navbar-menu-item">
+                                <a href="#" class="sidebarToggle border-0 w-100 p-1 text-decoration-none text-black" parent-sidebar="2">
+                                    <i class="fa-solid fa-bars"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div>
+                            <ul class="nav flex-column mb-2" id="sidebarcontent2">
+                                <li id="sidebar-list-mini"></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <main class="col ps-md-2 mx-2 detail-frame">
+               
+                @RenderBody()
+                <!-- Loading -->
+                <div class="spanner align-self-center">
+                    <img src="~/Images/loading12.gif" alt="Loading" style="width: 85px; height: auto" />
+                </div>
+            </main>
+        </div>
+    </div>
+    <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+        <div id="errorToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #B1003C">
+            <div class="toast-header" style="background-color: #FFF0EE">
+                <strong class="me-auto text-danger title">Warning!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-muted message" style="background-color: #FFF0EE; border-top: 1px solid #FFF0EE; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                This is an error message.
+            </div>
+        </div>
+    </div>
+    <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+        <div id="successToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #00A251">
+            <div class="toast-header" style="background-color: #E9FFF8">
+                <strong class="me-auto title" style="color: #00A251">Successful!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-muted message" style="background-color: #E9FFF8; border-top: 1px solid #E9FFF8; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                This is a successful message.
+            </div>
+        </div>
+    </div>
+    <div class="tr-footer d-flex flex-row" id="footer" style="z-index:999;">
+        <div class="flex-column px-1 text-black-50 tr-footer-text" style="margin:auto">
+            <span>@Configuration["VersionText"]</span>
+        </div>
+        <div class="flex-column flex-grow-1 text-center text-black-50 tr-footer-text" style="margin:auto; margin-left: -80px">
+            <span>@Configuration["CopyRightText"].Replace("[YEAR]", DateTime.Now.Year.ToString())</span>
+        </div>
+    </div>
+    <!--GENERAL MODAL-->
+    <!--Confirmation Modal-->
+    <div class="modal fade" id="submit-confirmation-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <h5 class="modal-title">Confirmation</h5>
+            </div>
+            <hr />
+            <div class="modal-body">
+                <h6 class="modal-text">Are you sure to submit this record?</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <button type="button" class="btn btn-sm btn-primary modal-submit-btn" data-bs-dismiss="modal">YA</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="modelIframe" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content h-100">
+                <div class="modal-body h-100" id="modelIframe-body">
+                    <iframe src="" id="modelIframe-body-iframe" class="h-100"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

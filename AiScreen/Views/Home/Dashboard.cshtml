@@ -1,0 +1,678 @@
+﻿@using MaxSys.Models
+@{
+    //Top Panel ===============================================================================================
+    ComponentTopPanelModel componentTopPanelModel = new ComponentTopPanelModel();
+    componentTopPanelModel.Title_LabelVisible = true;
+    componentTopPanelModel.Title_LabelText = "Dashboard";
+    componentTopPanelModel.Edit_ButtonEditVisible = false;
+    componentTopPanelModel.Edit_ButtonEditText = "Edit";
+    componentTopPanelModel.CreateForm_ButtonVisible = false;
+}
+<link href="~/css/dashboard.css" rel="stylesheet" />
+@await Component.InvokeAsync("ComponentTopPanel", componentTopPanelModel)
+<div class="page-container card-height-without-btn">
+    <div class="h-100" id="project_list" style="min-height:500px;">
+        <div class="row">
+           <div class="col-sm-12">
+               <div id="carouselExampleSlidesOnly" class="carousel slide pb-2" data-bs-ride="carousel">
+                 <div class="carousel-inner">
+                   <div class="carousel-item active">
+                            <img src="~/Images/banner2.jpg" class="d-block w-100 m-calosurel" alt="...">
+                   </div>
+                 </div>
+               </div>
+           </div>
+        </div>
+        @if (ViewBag.ACCESS_LEVEL <= 1)
+        {
+            <div class="row">
+                 <div class="col-sm-12 col-md-6 col-lg-6">
+                    <a href="/Population/Index" class="card w-dash dash-success" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-users"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Jumlah Penduduk</h4>
+                                <p id="TOTAL_POPULATION">0</p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+               <div class="col-sm-12 col-md-6 col-lg-6">
+                    <a href="/Population/Index?filter=ASNAF_FULL&ASNAF_FULL=YA" class="card w-dash dash-danger" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-balance-scale"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Jumlah Asnaf</h4>
+                                <p id="TOTAL_ASNAF">0</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+             <div class="d-block d-lg-none">
+                <div class="row">
+                    <div class="col-12 p-2">
+                        <div class="card p-2 bg-success text-white bg-opacity-75">
+                            <h4 id="dashWelcome">Selamat Datang</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-3 row-cols-lg-6 g-2 g-lg-3 pb-2">
+                    @* d-block d-lg-none gx-0 gy-1 pb-2 *@
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/Population/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-users"></i>
+                            <br />
+                            <span>Penduduk</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Payment/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-credit-card"></i>
+                            <br />
+                            <span>Pembayaran</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Event/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-calendar"></i>
+                            <br />
+                            <span>Program</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Corpse/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-bed"></i>
+                            <br />
+                            <span>Pengurusan Jenazah</span>
+                        </a>
+                    </div>
+
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/De_Complaint/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-comment"></i>
+                            <br />
+                            <span>Aduan</span>
+                        </a>
+                    </div>
+
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/MM_User/User_Account" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-gear"></i>
+                            <br />
+                            <span>Profil</span>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row" id="sortable">
+               
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="card w-dash" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <h3>Berita Hari Ini</h3>
+                        </div>
+                        <div class="row p-3">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Info Semasa
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DashBodyNews">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6" id="dvSolat">
+                    <div class="card w-dash" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <h3>Waktu Solat</h3>
+                        </div>
+                        <div class="row" style="overflow-x:scroll;padding-top:10px; padding-left:10px;">
+                            <table class="table table-sm">
+                                <tbody id="tbody-solat">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="d-block d-lg-none">
+                <div class="row">
+                    <div class="col-12 p-2">
+                        <div class="card p-2 bg-info text-white bg-opacity-75">
+                            <h4 id="dashWelcome">Selamat Datang</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-3 row-cols-lg-6 g-2 g-lg-3 pb-2">
+                    @* d-block d-lg-none gx-0 gy-1 pb-2 *@
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/Population/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-users"></i>
+                            <br />
+                            <span>Penduduk</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Ledger/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-dollar"></i>
+                            <br />
+                            <span>Kewangan</span>
+                        </a>
+
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Event/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-calendar"></i>
+                            <br />
+                            <span>Program</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Corpse/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-bed"></i>
+                            <br />
+                            <span>Pengurusan Jenazah</span>
+                        </a>
+                    </div>
+
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_RequestJoin/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-tasks"></i>
+                            <br />
+                            <span>Permohonan Ahli</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Payment_Report/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-flag"></i>
+                            <br />
+                            <span>Laporan Pembayaran</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Payment_Report/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-comment"></i>
+                            <br />
+                            <span>Aduan Ahli</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/MM_User/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-user"></i>
+                            <br />
+                            <span>Ahli Pengguna</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/DE_Qorban/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-cow"></i>
+                            <br />
+                            <span>Peserta Korban</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/MM_Qorban/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-cutlery"></i>
+                            <br />
+                            <span>Konfigurasi Korban</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/MM_AJK/Index" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-users"></i>
+                            <br />
+                            <span>AJK Masjid</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-2">
+                        <a href="/MM_User/User_Account" class="btnDash btn btn-outline-secondary d-flex flex-column align-items-center justify-content-center p-3">
+                            <i class="fa fa-gear"></i>
+                            <br />
+                            <span>Profil</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="sortable">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/Population/Index" class="card w-dash dash-success" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-users"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Jumlah Penduduk</h4>
+                                <p id="TOTAL_POPULATION">0</p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/Population/Index?filter=ASNAF_FULL&ASNAF_FULL=YA" class="card w-dash dash-danger" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-balance-scale"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Jumlah Asnaf</h4>
+                                <p id="TOTAL_ASNAF">0</p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/Population/Index?filter=IS_KHAIRAT_DESC&IS_KHAIRAT_DESC=YA" class="card w-dash dash-primary" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-bed"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Ahli Khairat</h4>
+                                <p id="TOTAL_KAIRAT">0</p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/MM_User/Index" class="card w-dash  dash-warning" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-user"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Jumlah Pengguna</h4>
+                                <p id="TOTAL_USERS">0</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/DE_Ledger/Index" class="card w-dash dash-purple" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-calendar-week"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Kutipan Mingguan</h4>
+                                <p id="TOTAL_INCOME_WEEK">0</p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/DE_Ledger/Index" class="card w-dash dash-cyan" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-moon"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Kutipan Bulanan</h4>
+                                <p id="TOTAL_INCOME_MONTH">0</p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/DE_Ledger/Index" class="card w-dash dash-black" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-hourglass-half"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Kutipan Penggal</h4>
+                                <p id="TOTAL_INCOME_QUATER">0</p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                    <a href="/DE_Ledger/Index" class="card w-dash  dash-magenta" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <h3 class="fa fa-calendar"></h3>
+                            </div>
+                            <div class="col-9 text-truncated">
+                                <h4>Kutipan Tahunan</h4>
+                                <p id="TOTAL_INCOME_YEAR">0</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="card w-dash" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <h3>Berita Hari Ini</h3>
+                        </div>
+                        <div class="row p-3">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Info Semasa
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DashBodyNews">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6" id="dvSolat">
+                    <div class="card w-dash" style="overflow:hidden !important">
+                        <div class="row p-3">
+                            <h3>Waktu Solat</h3>
+                        </div>
+                        <div class="row" style="overflow-x:scroll;padding-top:10px; padding-left:10px;">
+                            <table class="table table-sm">
+                                <tbody id="tbody-solat">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        }
+       
+    </div>
+
+</div>
+<!-- Modal Structure -->
+<div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="announcementModalLabel">Announcement Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="announcementModalBody">
+                <!-- Full announcement content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Sortable
+        var sortable = new Sortable(document.getElementById('sortable'), {
+            animation: 150, // Smooth animation
+            ghostClass: 'sortable-ghost', // Class for the ghost item
+            handle: '.card-header', // Dragging only allowed from the header
+        });
+    });
+</script>
+
+<script>
+    var Solat_Zone = '@ViewBag.SOLAT_ZONE_NAME';
+    $(document).ready(function () {
+
+       
+    
+        $("#dashWelcome").html("Selamat Datang " + $("#txtUserName").val())
+        // Function to format numbers with thousand separators
+        function formatNumberWithSeparator(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        //Fetch data Dashboard Banner
+        $.ajax({
+            url: '/Dashboard/GetDashboardBanner', // API endpoint
+            method: 'GET',
+            success: function (response) {
+                response = JSON.parse(response);
+                if (response.success) {
+                    
+                     $("#carousel-inner").html("");
+                     var banners = response.data;
+                     if (banners.length > 0) {
+                          var html = ""
+                         banners.forEach(function (item, index) {
+                             
+                             html = `
+                                 <div class="carousel-item">
+                                     <img class="d-block w-100 d-calosurel" src="${item.URL}" alt="${item.NAME}">
+                                 </div>`;
+                             $("#carouselExampleSlidesOnly .carousel-inner").append(html);
+                         });
+                        
+                         // $(html).insertAfter('#carouselExampleSlidesOnly .carousel-item:last')
+                      // $("#carouselExampleSlidesOnly").Carousel();
+
+                     } else {
+                         $("#carousel-inner").html("<p>No banners available</p>");
+                     }
+                    
+                     // <div class="carousel-inner">
+                     //        <div class="carousel-item active">
+                     //            <img class="d-block w-100" src="..." alt="First slide">
+                     //        </div>
+                     //        <div class="carousel-item">
+                     //            <img class="d-block w-100" src="..." alt="Second slide">
+                     //        </div>
+                     //        <div class="carousel-item">
+                     //            <img class="d-block w-100" src="..." alt="Third slide">
+                     //        </div>
+                     //    </div>
+                } else {
+                    //console.warning('The request was successful but the response indicates failure:', response.message || 'No message provided');
+                }
+            },
+            error: function (xhr, status, error) {
+              // console.warning('AJAX request failed. Status:', status, 'Error:', error);
+            }
+        });
+
+        //Fetch data Dashboard Tab
+        $.ajax({
+            url: '/Dashboard/GetDashboardTab', // API endpoint
+            method: 'GET',
+            success: function (response) {
+                response = JSON.parse(response);
+                if (response.success) {
+                    //console.log(response.data.TOTAL_POPULATION)
+                    // Handle success case
+                    $("#TOTAL_POPULATION").html(formatNumberWithSeparator(response.data.TOTAL_POPULATION));
+                    $("#TOTAL_ASNAF").html(formatNumberWithSeparator(response.data.TOTAL_ASNAF));
+                    $("#TOTAL_KAIRAT").html(formatNumberWithSeparator(response.data.TOTAL_KAIRAT));
+                    $("#TOTAL_USERS").html(formatNumberWithSeparator(response.data.TOTAL_USERS));
+                    $("#TOTAL_INCOME_WEEK").html("MYR " + formatNumberWithSeparator(response.data.TOTAL_INCOME_WEEK));
+                    $("#TOTAL_INCOME_MONTH").html("MYR " + formatNumberWithSeparator(response.data.TOTAL_INCOME_MONTH));
+                    $("#TOTAL_INCOME_QUATER").html("MYR " + formatNumberWithSeparator(response.data.TOTAL_INCOME_QUATER));
+                    $("#TOTAL_INCOME_YEAR").html("MYR " + formatNumberWithSeparator(response.data.TOTAL_INCOME_YEAR));
+             
+
+                } else {
+                    //console.warning('The request was successful but the response indicates failure:', response.message || 'No message provided');
+                }
+            },
+            error: function (xhr, status, error) {
+              // console.warning('AJAX request failed. Status:', status, 'Error:', error);
+            }
+        });
+
+
+        // Fetch data Dashboard News
+        $.ajax({
+            url: '/Dashboard/GetDashboardNews', // API endpoint
+            method: 'GET',
+            success: function (response) {
+                response = JSON.parse(response);
+                if (response.success) {
+                    const newsContainer = $('#DashBodyNews');
+                    newsContainer.empty(); // Clear existing content
+                    response.data.forEach(item => {
+                        const row = `
+                        <tr>
+                            <td>
+                                <div>${item.DATES_DESC}</div>
+                                <div>${item.NEWS}</div>
+                            </td>
+                        </tr>`;
+                        newsContainer.append(row);
+                    });
+                } else {
+                    //console.warning('The request was successful but the response indicates failure:', response.message || 'No message provided');
+                }
+            },
+            error: function (xhr, status, error) {
+               // console.warning('AJAX request failed. Status:', status, 'Error:', error);
+            }
+        });
+
+
+
+        // Fetch data using jQuery AJAX
+        var SolatZone = 'PNG01';
+
+        if ($("#txtsolatZone").val() != "") { 
+            SolatZone = $("#txtsolatZone").val();
+        }
+        
+        function getCurrentDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+
+        $.ajax({
+            //https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat&period=duration&zone=JHR01
+            //https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat&period=month&zone=
+            url: 'https://www.e-solat.gov.my/index.php?r=esolatApi/takwimsolat&period=duration&zone=' + SolatZone, // API endpoint
+
+            method: 'POST',
+            data: {
+                datestart: getCurrentDate(),
+                dateend: getCurrentDate()
+            },
+            beforeSend: function () {
+                // Show loading indicator before making the request
+                loadings("dvSolat");
+            },
+            success: function (response) {
+                loadings(false);
+                // Function to convert time to local AM/PM format
+                function convertToAMPM(time) {
+                    const [hours, minutes] = time.split(":");
+                    let ampm = "AM";
+                    let hour = parseInt(hours, 10);
+                    if (hour >= 12) {
+                        ampm = "PM";
+                        if (hour > 12) hour -= 12;
+                    } else if (hour === 0) {
+                        hour = 12;
+                    }
+                    return `${hour}:${minutes} ${ampm}`;
+                }
+
+                // Function to format today's date to match "dd-MMM-yyyy"
+                function formatDateToPrayerFormat(date) {
+                    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+                    return new Date(date).toLocaleDateString('en-GB', options).replace(/ /g, '-');
+                }
+
+                const dayTranslations = {
+                    'Monday': 'Isnin',
+                    'Tuesday': 'Selasa',
+                    'Wednesday': 'Rabu',
+                    'Thursday': 'Khamis',
+                    'Friday': 'Jumaat',
+                    'Saturday': 'Sabtu',
+                    'Sunday': 'Ahad'
+                };
+
+                // Get today's date in "dd-MMM-yyyy" format
+                const today = formatDateToPrayerFormat(new Date());
+
+                // Check if response status is OK
+                if (response.status === "OK!" && response.prayerTime.length > 0) {
+                     response.prayerTime.forEach(function (prayer) {
+                    //     // Check if the prayer date matches today's date
+                    //     const isToday = prayer.date === today ? 'style="background-color: #52698e;color:#ffff"' : '';
+                       
+                    //     // Append each row of prayer time data to the table with local AM/PM format
+                    //     $("#tbody-solat").append(`
+                    //     <tr ${isToday}>
+                    //         <td>${prayer.date} <br /> ${dayTranslations[prayer.day]} </td>
+                    //         <td>${convertToAMPM(prayer.imsak)}</td>
+                    //         <td>${convertToAMPM(prayer.fajr)}</td>
+                    //         <td>${convertToAMPM(prayer.dhuhr)}</td>
+                    //         <td>${convertToAMPM(prayer.asr)}</td>
+                    //         <td>${convertToAMPM(prayer.maghrib)}</td>
+                    //         <td>${convertToAMPM(prayer.isha)}</td>
+                    //     </tr>
+                    // `);
+                         $("#tbody-solat").append(`
+                            <tr>
+                                            <td colspan='2' style='text-align:center'>${prayer.date} ${dayTranslations[prayer.day]} <br /> ${Solat_Zone}</td>
+                            </tr>
+                            <tr>
+                                <td style='text-align:center'>Imsak</td>
+                                    <td style='text-align:center'>${convertToAMPM(prayer.imsak)}</td>
+                            </tr>
+                                <tr>
+                                        <td style='text-align:center'>Subuh</td>
+                                            <td style='text-align:center'>${convertToAMPM(prayer.fajr)}</td>
+                                </tr>
+                                     <tr>
+                                            <td style='text-align:center'>Zohor</td>
+                                                    <td style='text-align:center'>${convertToAMPM(prayer.dhuhr)}</td>
+                                    </tr>
+                                         <tr>
+                                                <td style='text-align:center'>Asar</td>
+                                                            <td style='text-align:center'>${convertToAMPM(prayer.asr)}</td>
+                                        </tr>
+                                            <tr>
+                                                    <td style='text-align:center'>Maghrib</td>
+                                                                    <td style='text-align:center'>${convertToAMPM(prayer.maghrib)}</td>
+                                            </tr>
+                                                         <td style='text-align:center'>Isyak</td>
+                                                                            <td style='text-align:center'>${convertToAMPM(prayer.isha)}</td>
+                                                </tr>
+                        `);
+                    });
+
+
+                } else {
+                   
+                    // If no data found, display a message
+                    $("#tbody-solat").append('<tr><td colspan="9">Data not found</td></tr>');
+                }
+            },
+            error: function () {
+                loadings(false);
+                // Display error message if API call fails
+                $("#tbody-solat").append('<tr><td colspan="9">Failed to fetch data. Please try again later.</td></tr>');
+            }
+        });
+    });
+</script>

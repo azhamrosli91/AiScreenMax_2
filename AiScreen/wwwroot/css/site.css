@@ -1,0 +1,617 @@
+/** -------------------------------------------------
+    MAXSYSTEM SDN BHD © ARR
+    MAIN OVERALL UI LAOUT CSS - site.css
+----------------------------------------------------- **/
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/Roboto/Roboto-Regular.ttf) format('truetype');
+}
+
+scrollbar-width: none; /* Firefox */
+-ms-overflow-style: none; /* IE 10+ */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar {
+    width: 3px !important;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #acacac;
+}
+
+.theme-cyan:before, .theme-cyan:after {
+    background: #fff
+}
+
+a[aria-expanded=true] .fa-chevron-right {
+    display: none;
+}
+
+a[aria-expanded=false] .fa-chevron-down {
+    display: none;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+    font-size: 14px;
+    color: #54575A;
+
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-toggle-icon {
+    float: right;
+    padding-right: 5px;
+}
+
+
+/** -------------------------------------------------
+    OVERWRITE ORIGINAL BOOSTRAP CLASS
+----------------------------------------------------- **/
+.card-title {
+    font-weight: bold;
+}
+
+.btn-primary, .bg-primary {
+    background-color: #05285E;
+}
+
+.text-primary {
+    color: #05285E !important;
+}
+.btn-danger {
+    background-color: #B1003C;
+}
+.btn-secondary {
+    background-color: #54575A;
+    color: #FFF;
+}
+
+
+/** -------------------------------------------------
+    ANCHOR - <a href="">  </a>
+----------------------------------------------------- **/
+.slider label {
+    font-size: 24px;
+    font-weight: 400;
+    font-family: Open Sans;
+    padding-left: 10px;
+    color: black;
+}
+
+.slider input[type="range"] {
+    width: 100%;
+    height: 10px;
+}
+
+a[data-bs-toggle="collapse"] {
+    position: relative;
+}
+
+a.download {
+    background: #fff;
+    color: #7386D5;
+}
+
+a.article, a.article:hover {
+    background: #6d7fcc !important;
+    color: #fff !important;
+}
+a[disabled],button[disabled] {
+    pointer-events: none; /* Prevent interaction */
+    opacity: 0.5; /* Make it visually appear disabled */
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+    a[disabled]:hover::after, button[disabled]:hover::after {
+        content: attr(title); /* Show the tooltip manually if needed */
+        position: absolute;
+        background-color: #333;
+        color: #fff;
+        padding: 5px;
+        border-radius: 5px;
+        white-space: nowrap;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: block;
+    }
+
+
+/** -------------------------------------------------
+    TOAST MESSAGE
+----------------------------------------------------- **/
+.toasts {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 999;
+}
+.tr-toast-alert {
+    z-index: 1100;
+    top: 10%;
+    left: 60%;
+}
+
+
+/** -------------------------------------------------
+    PAGE LOADER
+----------------------------------------------------- **/
+.spanner {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #2a2a2a55;
+    width: 100%;
+    text-align: center;
+    height: 100vh;
+    color: #FFF;
+    z-index: 1050;
+}
+
+    .spanner img {
+        margin: auto;
+    }
+
+    .spanner.show, .overlay.show {
+        display: flex;
+        opacity: 1
+    }
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #808080;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+
+/** -------------------------------------------------
+    PAGE LAYOUT CONTROL
+----------------------------------------------------- **/
+.page-container {
+    overflow: auto;
+    padding: 1rem;
+    padding-bottom: 0.5rem;
+    height: 100%;
+    background: unset !important;
+}
+
+.detail-frame {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    min-width: 0;
+    width: 100%;
+}
+
+    .detail-frame > form {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+.tr-listing-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid #ccc;
+}
+.tr-listing-header-title {
+    font-size: 18px !important;
+}
+
+.tr-footer {
+    width: 100%;
+    background-color: #FFF;
+    color: white;
+    text-align: center;
+    border-top: 1px solid #D6D4D4;
+}
+
+.tr-footer-text {
+    font-size: 14px;
+}
+
+/** -------------------------------------------------
+    PAGE LAYOUT CONTROL --SIDEBAR
+----------------------------------------------------- **/
+.sidebar-toggle-btn {
+    padding: 15px;
+}
+.sidebar-toggle-btn label {
+    display: flex;
+    flex-direction: column;
+    width: 20px;
+    cursor: pointer;
+}
+
+    .sidebar-toggle-btn span {
+        background: #212529;
+        border-radius: 10px;
+        height: 3px;
+        margin: 1px 0;
+        transition: .4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    }
+
+
+.sidebar-toggle-btn span:nth-of-type(1) {
+    width: 50%;
+}
+.sidebar-toggle-btn span:nth-of-type(2) {
+    width: 100%;
+}
+.sidebar-toggle-btn span:nth-of-type(3) {
+    width: 75%;
+}
+
+.sidebar-toggle-btn input[type="checkbox"] {
+    display: none;
+}
+
+.sidebar-toggle-btn input[type="checkbox"]:checked ~ span:nth-of-type(1) {
+    transform-origin: bottom;
+    transform: rotatez(45deg) translate(2px,-1px)
+}
+
+.sidebar-toggle-btn input[type="checkbox"]:checked ~ span:nth-of-type(2) {
+    transform-origin: top;
+    transform: rotatez(-45deg)
+}
+
+.sidebar-toggle-btn input[type="checkbox"]:checked ~ span:nth-of-type(3) {
+    transform-origin: bottom;
+    width: 50%;
+    transform: translate(9px,-2px) rotatez(45deg);
+}
+
+
+.resizable-menu.inactive {
+    transition: unset !important;
+    min-width: 0;
+    width: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
+}
+.resizable-menu.hiding {
+    transition: 0.3s;
+    min-width: 0;
+    width: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
+}
+
+.resizable-menu-group {
+}
+
+.resizable-menu-parent {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .65);
+    background-color: transparent;
+    border: 0;
+    width: 100%;
+}
+
+    .resizable-menu-parent > span {
+        margin-left: 5px;
+    }
+
+    .resizable-menu-parent:hover,
+    .resizable-menu-parent {
+        color: rgba(0, 0, 0, .85);
+        background-color: #d2f4ea;
+    }
+
+        .resizable-menu-parent::before {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 15px;
+            height: 15px;
+
+            line-height: 0;
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+            transition: transform .35s ease;
+            transform-origin: .5em 50%;
+        }
+
+        .resizable-menu-parent[aria-expanded="true"] {
+            color: rgba(0, 0, 0, .85);
+        }
+
+        .resizable-menu-parent[aria-expanded="true"]::before {
+            transform: rotate(90deg);
+        }
+
+.resizable-menu-list-wrapper {
+}
+
+.resizable-menu-list {
+}
+.resizable-menu-list a {
+    display: inline-flex;
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    /*margin-left: 1.25rem;*/
+    text-decoration: none;
+    width: 100%;
+    border-radius: 5px;
+}
+
+    .resizable-menu-list a:hover,
+    .resizable-menu-list a:focus,
+    .resizable-menu-list a.active {
+        background-color: #d2f4ea;
+    }
+
+.resizable-menu-item {
+    padding-left: 15px;
+}
+
+
+/** -------------------------------------------------
+    PAGE LAYOUT CONTROL --TOP NAV BAR
+----------------------------------------------------- **/
+.tr-navbar-user {
+    text-decoration: none;
+  /*  font-weight: bold;*/
+}
+
+.tr-navbar-logout {
+    text-decoration: none;
+}
+
+
+
+/** -------------------------------------------------
+    COMMON INPUT CONTROL
+----------------------------------------------------- **/
+input[readonly],
+textarea[readonly],
+select[readonly],
+button[readonly] {
+    background-color: #F0F0F0 !important;
+}
+
+input::placeholder {
+    color: #A9A9AC !important;
+}
+
+input[type=radio],
+input[type=checkbox] {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.3); /* IE */
+    -moz-transform: scale(1.3); /* FF */
+    -webkit-transform: scale(1.3); /* Safari and Chrome */
+    -o-transform: scale(1.3); /* Opera */
+    transform: scale(1.3);
+}
+
+input[type="range" i]:disabled {
+    color: #54575A !important;
+    opacity: 1;
+}
+
+select.form-control {
+    -webkit-appearance: menulist !important;
+    -moz-appearance: menulist !important;
+}
+
+input[type=radio]:checked:disabled,
+input[type=checkbox]:checked:disabled {
+    border-color: #54575A !important;
+    background-color: #54575A !important;
+}
+
+input[type=radio]:disabled,
+input[type=checkbox]:disabled {
+    border-color: #54575A !important;
+}
+
+.form-switch .form-check-input:not(:checked):disabled {
+    background-image: url('../Images/dot.svg') !important;
+}
+
+.form-check-input:checked {
+    background-color: #057FE5;
+    border-color: #057FE5;
+}
+
+.form-check-label {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem rgba(52, 89, 230, 0.25);
+}
+
+.form-check-input:disabled {
+    opacity: 1;
+}
+
+
+/** -------------------------------------------------
+    COMMON INPUT CONTROL--MULTISELECT
+----------------------------------------------------- **/
+.multiselect-container {
+    --bs-dropdown-min-width: 84px;
+    margin-top: -3px !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.multiselect-container.dropdown-menu {
+    max-height: 400px;
+    overflow: auto;
+}
+.multiselect.disabled > .multiselect-selected-text {
+    color: #54575A;
+}
+.multiselect-container .multiselect-all.active:not(.multiselect-active-item-fallback), 
+.multiselect-container .multiselect-all:not(.multiselect-active-item-fallback):active, 
+.multiselect-container .multiselect-group.active:not(.multiselect-active-item-fallback), 
+.multiselect-container .multiselect-group:not(.multiselect-active-item-fallback):active, 
+.multiselect-container .multiselect-option.active:not(.multiselect-active-item-fallback), 
+.multiselect-container .multiselect-option:not(.multiselect-active-item-fallback):active {
+    background-color: #EBF3FF;
+}
+.multiselect-option.dropdown-item:hover {
+    background-color: #ECECEC !important; /* Set your desired hover background color */
+    color: #54575A !important;
+    /* Additional styling properties for hover */
+}
+
+
+
+/** -------------------------------------------------
+    TOGGLE BUTTON
+----------------------------------------------------- **/
+.dropdown-toggle {
+    outline: 0;
+}
+
+.lh-tight {
+    line-height: 1.25;
+}
+
+
+/** -------------------------------------------------
+    DATATABLE - UI
+----------------------------------------------------- **/
+table.detailTable th {
+    text-transform: none !important;
+}
+
+table.dataTable > tbody > tr.selected > * {
+    box-shadow: inset 0 0 0 9999px #EBF3FF !important;
+    color: #54575A;
+}
+
+div.dataTables_scrollBody {
+    border-left: 0px !important;
+}
+
+.dataTables_length label {
+    font-size: 16px;
+    color: #54575A !important;
+}
+
+table.border-secondary {
+    border-color: #D6D4D4 !important;
+}
+
+table.dataTable th,
+table.dataTable td {
+    padding: 10px 10px;
+    vertical-align: middle;
+}
+
+.dataTables_wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dataTables_length .multiselect.dropdown-toggle {
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.dataTables_paginate .pagination * {
+    font-size: 16px;
+}
+
+.dataTables_info {
+    font-size: 16px;
+}
+
+.go-to * {
+    font-size: 16px;
+    color: #54575A !important;
+}
+
+table.dataTable th {
+    text-transform: none !important;
+}
+
+table.detailTable th,
+table.detailTable td {
+    padding: 10px 10px;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.pagination {
+    --bs-pagination-color: #54575A !important;
+    --bs-pagination-hover-color: #54575A !important;
+    --bs-pagination-focus-color: #54575A !important;
+}
+
+.page-link.disabled, .disabled > .page-link {
+    color: #54575A !important;
+}
+
+
+/** -------------------------------------------------
+    CUSTOM LAYOUT LISTING TABLE
+----------------------------------------------------- **/
+.layout-listing-table {
+    height: fit-content;
+}
+.layout-listing-table thead tr {
+    color: #fff;
+    font-weight: bold;
+    background: #3c4142;
+    border: 1px solid #3c4142;
+}
+    .layout-listing-table thead tr th {
+        color: #fff;
+        padding: 5px 10px !important;
+    }
+.layout-listing-table tbody tr {
+    border: 1px solid #ccc;
+}
+    .layout-listing-table tbody tr:nth-child(even) {
+        background-color: #f0f0f0; /* Light grey */
+    }
+
+    .layout-listing-table tbody tr:hover {
+        background: #D1F6ff;
+        cursor: pointer;
+    }
+    .layout-listing-table tbody tr.active {
+        background: lightblue;
+        cursor: pointer;
+    }
+
+    .layout-listing-table tbody tr td {
+        padding: 5px 10px !important;
+    }

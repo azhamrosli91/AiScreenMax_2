@@ -1,0 +1,735 @@
+﻿@using Component_TableListing.Models
+@model Component_TableListing.Models.ComponentTableModel
+@using Newtonsoft.Json
+@using System.Dynamic
+@using System.Reflection
+@{
+    var pv_inclist_columns = JsonConvert.SerializeObject(Model.listComponentTable_ColumnModels);
+}
+
+<style>
+    .justify-content-end-sm {
+        justify-content: flex-end !important;
+    }
+
+    table.dataTable tbody td {
+        vertical-align: top;
+    }
+
+    tr:hover .fa-eye {
+        color: #3459e6;
+    }
+    tr:hover{
+        font-weight: bold;
+    }
+
+    .powered-by-ai{
+        padding: 5px 25px 0px 5px;
+    }
+
+    a.no-redirect {
+        cursor: default;
+        --bs-dropdown-link-hover-bg: white;
+    }
+    .dropdown-item-word-detect {
+        height: 23px;
+    }
+
+    .dropdown-menu-list-word-detect {
+        --bs-dropdown-border-radius: 0rem !important;
+        font-size: 12px !important;
+    }
+
+    .text-end {
+        text-align: right !important;
+    }
+
+    .matched-text {
+        font-weight: bold;
+        color: #057FE5;
+    }
+
+    .group-header {
+        background-color: #f1f1f1;
+        font-weight: bold;
+        text-align: left;
+    }
+</style>
+@if (Model != null && Model.TableVisible)
+{
+    @if (Model.PanelStatusVisible == true || Model.AuditTrailVisible == true || Model.DeleteRecordVisible == true)
+    {
+        <div class="row pb-2 tbllistingpv">
+            <div class="col-9 col-sm-9 col-md-10">
+                @{
+                    if (Model.PanelStatusVisible == true)
+                    {
+                                                <div class="accordion mb-2" id="accordionExample">
+                                                    <div class="accordion-item" style="border-radius: 0px !important">
+                                                        <div class="row align-items-center">
+                                                            <select class="tr-select select2-hidden-accessible" id="pv_inclist_ddlStatus" style="color: #FCFCFC; border: 0px">
+                                                            </select>
+                                                        </div>
+                                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="border-top: 1px solid#F0F0F0">
+                                                            <div class="accordion-body text-center">
+                                                                <p class="h6 m-0 p-1 tr-rec">0</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                    }
+                }
+            </div>
+            <div class="col-3 col-sm-3 col-md-2 align-self-end text-end px-2 d-flex justify-content-end" id="pv_inclist_action-bar">
+                <div class="dt-buttons btn-group">
+                    @if (Model.AuditTrailVisible == true)
+                    {
+                        <button class="m-0 p-0 tr-btn tr-audit my-button" tabindex="0" aria-controls="tr-datatable" type="button" id="pv_inclist_btnAuditTrail"><span>Audit Trail</span></button>
+                    }
+                    @if (Model.DeleteRecordVisible == true)
+                    {
+                        <button class="btn btn-danger tr-trash isHide" @Model.Delete_Right tabindex="0" aria-controls="tr-datatable" type="button" id="pv_inclist_btnDelete"><span><i class="fa-solid fa-trash-can tr-icon-size"></i> Buang</span></button>
+                    }
+                </div>
+            </div>
+        </div>
+    
+    }
+    <input id="txtColumnField" type="hidden" value="@JsonConvert.SerializeObject(Model.listComponentTable_ColumnModels)" />
+    <div class="row w-100 g-0 min-height-0">
+        @if (Model.Visible_View == false)
+        {
+            
+        }
+        <table id="@Model.TableID" name="@Model.TableName" class="table table-sm table-hover table-bordered compact tr-responsive-table @((Model.Visible_View == true) ? "default-ml" : "default-checkbox-only")" style="width:100%; margin-top: 0px !important">
+
+            @if (Model.listComponentTable_ColumnModels != null && Model.listComponentTable_ColumnModels.Count > 0)
+            {
+                <thead>
+                    <tr style="background-color:#FCFCFC">
+                        <th></th>
+                        @foreach (ComponentTable_ColumnModel clm in Model.listComponentTable_ColumnModels.Where(cm => cm.ColumnName != "ID#19471" && cm.ColumnName != "View").OrderBy(cm => cm.Index))
+                        {
+                          if (clm != null && clm.Index != 0 )
+                          {
+                            <th clmIndex="@clm.Index.ToString()" width="@clm.Width" columnField="@clm.ColumnField" class="@clm.Class" customComponent="@clm.isCustomComponent" style="@clm.Style">
+                                @clm.ColumnName
+                            </th>
+                          }
+                           
+                        }
+                        @if (Model.Visible_View)
+                        {
+                            <th width="40">View</th>
+                        }
+                    </tr>
+                </thead>
+            }
+
+        </table>
+    </div>
+}
+<script>
+    var pv_inclist_jsonData = [];
+    var tableListing;
+    var pv_inclist_audit_url = "/Home/AuditTrail";
+    var TableName = '@Model.TableName';
+    var loadType = '@Model.LoadType'; // Determine load type dynamically LoadType
+    var modelCount = '@Model.DataModelCount'; // Determine load type dynamicall
+    var panelstatusVisible = '@Model.PanelStatusVisible'
+    var panelstatusField = '@Model.PanelStatusField'
+    var panelstatusTitle = '@Model.PanelStatusTitle'
+    var Delete_Right = '@Model.Delete_Right'
+    var Visible_View = '@Model.Visible_View'
+    var ExportPdf = '@Model.Export_pdf_rotation'
+    var ExportPaper = '@Model.Export_pdf_Paper_Size'
+    var ExportTitle = '@Model.Export_pdf_Title'
+
+    function exportTableTo(format) {
+        var exportColumns = [];
+
+        // Identify the columns with isExport = true
+        var columnFieldsCustom = JSON.parse('@Html.Raw(pv_inclist_columns)');
+        columnFieldsCustom.forEach(function (column, index) {
+            if (column.isExport) {
+                exportColumns.push(index);
+            }
+        });
+
+        // Trigger export for the specified format (PDF or Excel)
+        if (format === 'pdf') {
+            tableListing.button('.buttons-pdf').trigger();
+        } else if (format === 'excel') {
+            tableListing.button('.buttons-excel').trigger();
+        } else {
+            console.error('Unsupported format: ' + format);
+        }
+    }
+    function FetchDataTableListing(search = null) {
+        // Get the current URL parameters
+        var urlParams = new URLSearchParams(window.location.search);
+
+        // Check if the 'filter' parameter exists
+        var filterField = urlParams.has('filter') ? urlParams.get('filter') : null;
+
+
+        var Ajax_URL = '@Model.AjaxInfo_FetchData.URL_Ajax';
+        if (search != null && search != "") {
+            Ajax_URL += "?search=" + search
+        }
+
+        $.ajax({
+            url: Ajax_URL,
+            type: '@Model.AjaxInfo_FetchData.Type_Ajax.ToString()',
+            beforeSend: function () {
+                loadings(true);
+            },
+            success: function (response) {
+                loadings(false);
+                if (!response.success) {
+                    var tmp = JSON.parse(response);
+                    pv_inclist_jsonData = tmp.data;
+                    LoadPanelStatusDropdown(pv_inclist_jsonData);
+                    tableListing.clear().rows.add(pv_inclist_jsonData).draw();
+
+                    // If 'filter' exists, set the input value for the corresponding column
+                    if (filterField && urlParams.has(filterField)) {
+                        // Get the value of the parameter that matches the filter field
+                        var filterValue = urlParams.get(filterField);
+
+                        // Apply the filter using DataTables API
+                        var columnIndex = tableListing.column(`[columnfield="${filterField}"]`).index();
+                        if (columnIndex !== undefined) {
+                            tableListing.column(columnIndex).search(filterValue).draw();
+                        }
+                    }
+                } else {
+                    toastError(response.message);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 400) {
+                    location.href = system_logout_url;
+                } else {
+                    toastError("Error occurred");
+                }
+            }
+        });
+    }
+    // Function to load data from dynamic model
+    function LoadDataFromDynamicModel() {
+        pv_inclist_jsonData = @Html.Raw(JsonConvert.SerializeObject(Model.DataModel));
+
+        LoadPanelStatusDropdown(pv_inclist_jsonData);
+        tableListing.clear().rows.add(pv_inclist_jsonData).draw();
+    }
+
+    function LoadPanelStatusDropdown(dataPDDL) {
+        const select = $("#pv_inclist_ddlStatus");
+        select.append('<option value="">All</option>');
+        if (dataPDDL.length > 0) {
+            var uniqueData = [...new Set(dataPDDL.map(item => item[panelstatusField]))].sort();
+
+
+            uniqueData.forEach(function (d) {
+                if (d !== null && d !== undefined) { // Ensure the data is not null or undefined
+                    select.append('<option value="' + d + '">' + d + '</option>');
+                }
+            });
+        } else {
+            console.log("No data available in LoadPanelStatusDropdown for column:", panelstatusField);
+        }
+    }
+
+    function executeDelete(list) {
+        var deleteURL = '@Model.AjaxInfo_DeleteData.URL_Ajax';
+
+        if (deleteURL == "") {
+            toastError("Delete url not found");
+            return;
+        }
+
+        $.ajax({
+            url: deleteURL,
+            type: '@Model.AjaxInfo_DeleteData.Type_Ajax',
+            data: {
+                ListData: list,
+            },
+            beforeSend: function () {
+                loadings();
+            },
+            success: function (response) {
+                loadings(false);
+                if (!response.success) {
+                    $(".tr-trash").addClass('isHide');
+
+                    toastSuccess("Success", "Successfully deleted data", function () {
+                        // Check load type and fetch data accordingly
+                        if (loadType === "0") {
+                            FetchDataTableListing(); // Use AJAX for data fetch
+                        } else if (loadType === "1") {
+                            location.reload(); // Load data from dynamic model
+                        }
+                        //window.location.href = '@Model.AjaxInfo_DeleteData.Success_URL';
+                    });
+
+                } else {
+                    toastError(response.message);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 400) {
+                    location.href = system_logout_url;
+                } else {
+                    toastError("Error occured");
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        var tbl = "#" + '@Model.TableID';
+        var lastIndex = parseInt('@Model.listComponentTable_ColumnModels.Count') - 1;
+        var ViewPath = '@Model.ViewPath';
+
+         var exportColumns = [];
+
+        // Identify the columns with isExport = true
+        var columnFieldsCustom = JSON.parse('@Html.Raw(pv_inclist_columns)');
+        columnFieldsCustom.forEach(function (column, index) {
+            if (column.isExport) {
+                exportColumns.push(index);
+            }
+        });
+
+        var columnFields = JSON.parse('@Html.Raw(pv_inclist_columns)').map(function (column) {
+            return { data: column.ColumnField };
+        });
+
+        var columnFieldsCustom = JSON.parse('@Html.Raw(pv_inclist_columns)').map(function (column) {
+            return { iscustom: column.isCustomComponent, CustomComponent: column.CustomComponent, isVisible: column.isVisible, allowFilter: column.isAllowFilter, dataFieldType: column.DataFieldType };
+        });
+
+        var columnDefs = [{
+            targets: 0,
+            render: function (data, type, row, meta) {
+                if (type === 'display') {
+                    data = `<div class="checkbox"><input type="checkbox" class="dt-checkboxes form-check-input" value="${data}"><label></label></div>`;
+                }
+                return data;
+            },
+            checkboxes: {
+                selectRow: true,
+                selectAllRender: '<div class="checkbox"><input type="checkbox" class="dt-checkboxes form-check-input"><label></label></div>'
+            }
+        },
+        {
+            targets: lastIndex,
+            render: function (data, type, row, meta) {
+                if (type === 'display') {
+                    var did = data;
+                    
+                    if (Visible_View === "True") {
+                       
+                        data = `<a href="${ViewPath}/${did}" class="name tr-icon-size inc-tooltips" data-did="${did}"><i class="fa-solid fa-eye my-button"></i></a>`;
+                    } 
+                }
+                return data;
+            },
+            orderable: false
+        }];
+
+        // Add custom component columns and manage visibility
+        columnFieldsCustom.forEach(function (column, index) {
+            if (column.iscustom) {
+                columnDefs.push({
+                    targets: index,
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        var tempElement = $("<div></div>");
+                        tempElement.html(column.CustomComponent);
+                        var decodedHtml = tempElement.text();
+                        $(td).html(decodedHtml);
+                    },
+                    visible: column.isVisible // Set visibility based on the isVisible flag
+                });
+            } else {
+                // Add visibility handling for standard columns
+                columnDefs.push({
+                    targets: index,
+                    visible: column.isVisible
+                });
+            }
+        });
+
+        columnDefs.push({
+            targets: "_all", // Apply to all columns
+            createdCell: function (td, cellData, rowData, row, col) {
+               // $(td).attr('data-title', $(this).find('thead th').eq(col).text());
+                var api = this.api();
+                // Add the data-title attribute with the column header text
+                if ($(api.column(col).header()).hasClass('mv-d-none')) {
+                    $(td).addClass('mv-d-none');
+                }
+
+                var headerText = api.column(col).header().textContent;
+                $(td).attr('data-title', headerText);
+            }
+        });
+        //console.log(columnFields, columnFieldsCustom)
+        $(tbl + ' thead tr').clone(true).addClass('filters').appendTo(tbl + ' thead');
+        tableListing = $(tbl).DataTable({
+            pagingType: 'simple_numbers',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: exportColumns // Only export columns with isExport = true
+                    },
+                    title: ExportTitle,
+                    filename: ExportTitle,
+                    text: 'Export to Excel',
+                    className: 'btn btn-primary btn-sm'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: exportColumns
+                    },
+                    orientation: ExportPdf,      // Set orientation to portrait
+                    pageSize: ExportPaper,               // Set page size to A4
+                    filename: ExportTitle,  // Dynamically set the filename
+                    customize: function (doc) {   // Customize PDF content
+                        //doc.content[1].table.widths = '*'.repeat(doc.content[1].table.body[0].length).split(''); // Auto-fit columns
+                        doc.content[0].text = ExportTitle;
+                        doc.styles.tableHeader = {
+                            bold: true,
+                            fontSize: 8,
+                            color: 'black',
+                            fillColor: '#f2f2f2',
+                            alignment: 'center'
+                        };
+                        doc.defaultStyle.fontSize = 8; // Set default font size
+                    },
+                    className: 'buttons-pdf btn btn-danger btn-sm',
+                    text: 'Export to PDF'
+                }
+            ],
+            orderCellsTop: true,
+            columns: columnFields,
+            autoWidth: false,
+            columnDefs: columnDefs,
+            select: {
+                style: 'multi',
+                info: false,
+                selector: 'td:nth-child(1)'
+            },
+            order: [],
+            createdRow: function (row, data, dataIndex) {
+                $(row).attr('data-id', data.De_Incident_ID);
+            },
+            dom: "<'row toolbar-row g-0'<'col-sm-6 col-md-6 align-self-center'l><'col-sm-6 col-md-6'<'d-flex justify-content-center justify-content-end-sm'<'toolbar'>>>>" +
+                "<'row g-0 min-height-0 mb-2'<'col-sm-12 h-100'tr>>" +
+                "<'row g-0'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'d-flex justify-content-center justify-content-end-sm'p<'go-to align-self-center mx-2'>>>>",
+            initComplete: function () {
+                var api = this.api();
+
+                $(`${tbl}_wrapper div.toolbar`).html(
+                    '<div class="input-group input-group-sm">' +
+                    '<input type="text" id="pv_inclist_txtSearch" class="form-control remove-right-border" placeholder="Search" aria-label="Search" aria-describedby="btnAdvanceSearch">' +
+                    '<div class="input-group-text listing-search-icon bg-primary">' +
+                    '    <a href="" class="text-reset" id="pv_inclist_btnSearch"><i class="fa-solid text-white fa-magnifying-glass"></i></a>' +
+                    '</div>' +
+                    '</div>'
+                );
+
+                api.columns().eq(0).each(function (colIdx) {
+                    var cell = $(`${tbl} .filters th`).eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+
+                    var allowFilter = columnFieldsCustom[colIdx] && columnFieldsCustom[colIdx].allowFilter; // Get allowFilter for the column
+                    var dataFieldType = columnFieldsCustom[colIdx] && columnFieldsCustom[colIdx].dataFieldType; // Get allowFilter for the column
+
+                    if (colIdx != 0 && colIdx != lastIndex && allowFilter) {
+                        $(cell).html(`<input type="${dataFieldType}" class="form-control" placeholder="" />`);
+                    } else {
+                        $(cell).html("");
+                    }
+
+                    $('input', $(`${tbl} .filters th`).eq($(api.column(colIdx).header()).index())).off('keyup change')
+                        .on('change', function (e) {
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})';
+
+                            cursorPosition = this.selectionStart;
+                            api.column(colIdx).search(
+                                this.value != '' ? regexr.replace('{search}', '(((' + this.value + ')))') : '',
+                                this.value != '',
+                                this.value == ''
+                            ).draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+                            $(this).trigger('change');
+                            $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+                        });
+
+                });
+
+               
+
+                loadings(false);
+                $(tbl).wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+            },
+            drawCallback: function (settings) {
+                var api = this.api();
+                $("#pv_inclist_txtGoTo").val(api.page() + 1);
+                var total_page = api.page.info().pages == 0 ? 1 : api.page.info().pages;
+                $(`${tbl} div.page-info`).html('of ' + total_page);
+
+                var rowCount = api.rows({ filter: 'applied' }).nodes().length;
+                if (rowCount <= 1) {
+                    $(`.tr-rec`).html(`<span class="me-1" style="color:#00A251;font-size:20px;">${rowCount}</span>entry`);
+                } else {
+                    $(`.tr-rec`).html(`<span class="me-1" style="color:#00A251;font-size:20px;">${rowCount}</span>entries`);
+                }
+
+                $('[data-bs-toggle="tooltip"]').tooltip();
+
+                setTimeout(function () { api.columns.adjust(); }, 100);
+            }
+        });
+
+
+        //trick check box to show delete button
+        tableListing.on('select deselect', function (e, dt, type, indexes) {
+
+            var rowCnt = tableListing.rows({ selected: true }).count();
+       
+            if (rowCnt > 0) {
+                $(".tr-trash").removeClass('isHide');
+                //$(".tr-audit").removeClass('isHide');
+                $("#btnExport").prop('disabled', false);
+            } else {
+                $(".tr-trash").addClass('isHide');
+                //$(".tr-audit").addClass('isHide');
+                $("#btnExport").prop('disabled', true);
+            }
+        });
+
+        // Check load type and fetch data accordingly
+        if (loadType === "0") {
+            FetchDataTableListing(); // Use AJAX for data fetch
+        } else if (loadType === "1") {
+            LoadDataFromDynamicModel(); // Load data from dynamic model
+        }
+
+        
+
+       
+
+
+
+        $('#pv_inclist_btnDelete').on('click', function () {
+            var cont = true;
+            var message = "";
+
+            var draftRecord = true;
+            var selectedValues = [];
+            var selectedRows = tableListing.rows({ selected: true }).data().toArray();
+            selectedRows.forEach(function (rowData) {
+                var checkboxValue = rowData['@Model.Field_ID'];
+                selectedValues.push(checkboxValue);
+            });
+
+            if (selectedValues.length == 0) {
+                cont = false;
+                message = "Please select at least one record!";
+            }
+
+            if (cont) {
+                confirmSubmit(function () { executeDelete(selectedValues); }, 'Pengesahan', 'Anada pasti mahu membuang rekod ini?');
+            } else {
+                if (message != "") {
+                    toastError(message);
+                }
+            }
+        });
+
+        $('#pv_inclist_btnAuditTrail').on('click', function () {
+            cont = true;
+            message = "";
+
+            var selectedValues = [];
+            var selectedRows = tableListing.rows({ selected: true }).data().toArray();
+            selectedRows.forEach(function (rowData) {
+                var checkboxValue = rowData['@Model.Field_ID'];
+                selectedValues.push(checkboxValue);
+            });
+
+            var first_checked = selectedValues[0];
+            if (first_checked == undefined || first_checked == null) {
+                cont = false;
+                message = "Please select at least one record!";
+            }
+
+            if (cont && selectedValues.length > 1) {
+                cont = false;
+                message = "Multiple selection for audit trail is not applicable.";
+            }
+
+            if (cont) {
+                var currentUrl = window.location.href;
+                window.location.href = pv_inclist_audit_url + '?ID=' + first_checked + '&TableName=' + TableName + "&ReturnUrl=" + encodeURIComponent(currentUrl);
+            } else {
+                if (message != "") {
+                    toastError(message);
+                }
+            }
+        });
+
+
+        $(document).on('click', '#pv_inclist_btnSearch', function (e) {
+            e.preventDefault();
+            tableListing.search($('#pv_inclist_txtSearch').val()).draw();
+        });
+
+        $(document).on('keyup', '#pv_inclist_txtSearch', function (e) {
+            tableListing.search($(this).val()).draw();
+        });
+
+        $(document).on('change', '#pv_inclist_ddlStatus', function (e) {
+
+            var selectedValue = $(this).val(); // Get the selected value
+           
+            if (selectedValue == "All" || selectedValue == "") 
+            {
+                tableListing.search("").draw();
+            } else { 
+                tableListing.search(selectedValue).draw();
+            }
+        });
+
+        // Add click event to tbody rows
+        $(document).on('click', 'table#@Model.TableID tbody tr', function (e) {
+            var $clickedCell = $(e.target).closest('td'); // Get the clicked cell
+            var clickedColumnIndex = $clickedCell.index(); // Get the column index
+
+            // Prevent click for the first column (index 0)
+            if (clickedColumnIndex === 0) {
+                return; // Stop further processing
+            }
+            if (Visible_View === "True") {
+                var data = tableListing.row(this).data(); // Get data for the clicked row
+                if (data) {
+                    var did = data['@Model.Field_ID']; // Replace with the actual key used for the "View" button
+                    var viewUrl = '@Model.ViewPath/' + did; // Construct the URL
+                    window.location.href = viewUrl; // Redirect to the URL
+                }
+            }
+           
+        });
+
+        // Prevent event propagation for the "eye" button
+        $(document).on('click', 'table#@Model.TableID tbody tr a, table#@Model.TableID tbody tr input[type="checkbox"], table#@Model.TableID tbody tr button, table#@Model.TableID tbody tr .dropdown-menu', function (e) {
+            e.stopPropagation();
+        });
+
+        // Mengambil data dari semua kolom
+        var allDataSet = new Set();
+
+        tableListing.columns().every(function () {
+            this.data().each(function (value) {
+                if (value) {
+                    allDataSet.add(value.toString()); // Menambahkan nilai unik ke Set
+                }
+            });
+        });
+
+        // Mengonversi Set kembali ke array
+        var allData = Array.from(allDataSet);
+
+        $('#pv_inclist_txtSearch').autocomplete({
+            source: function (request, response) {
+                // Split the user's input into individual characters
+                var chars = request.term.split('');
+
+                // Create a regex to match all input characters in any order
+                var regexString = chars.map(char => `(?=.*${char})`).join('') + '.*';
+                var regex = new RegExp(regexString, 'i');
+
+                // Filter the data based on the regex
+                var results = $.grep(allData, function (item) {
+                    return regex.test(item);
+                });
+
+                // Limit the displayed results to 5
+                response(results.slice(0, 5).map(function (item) {
+                    // Highlight matching characters using the "matched-text" CSS class
+                    var highlightedItem = item.replace(new RegExp('[' + chars.join('') + ']', 'gi'), function (match) {
+                        return '<span class="matched-text">' + match + '</span>';
+                    });
+                    return {
+                        label: highlightedItem, // Display the highlighted item in the autocomplete
+                        value: item // The value that will be used when selected
+                    };
+                }));
+            },
+            minLength: 2, // Autocomplete starts after 2 characters
+            select: function (event, ui) {
+                // When an item is selected, filter the DataTable based on the selected value
+                tableListing.search(ui.item.value).draw();
+            },
+            open: function () {
+                // Add a "Powered by AI" frame at the bottom of the suggestion list
+                var $autocompleteMenu = $(this).autocomplete("widget");
+                if ($autocompleteMenu.find('.powered-by-ai').length === 0) {
+                    $autocompleteMenu.append('<li class="ui-menu-item powered-by-ai"><a class="dropdown-item text-end dropdown-menu-list-word-detect dropdown-item-word-detect no-redirect" href="#" role="button"><span style="font-weight: bold; font-style: italic; font-size: 9px;">AI Powered By TMS </span></a></li>');
+                }
+            }
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            // Render each item in the suggestion list with highlighted matches
+            return $("<li></li>")
+                .data("item.autocomplete", item)
+                .append("<div>" + item.label + "</div>") // Display the label with highlighted characters
+                .appendTo(ul);
+        };
+
+       
+
+    });
+
+    function groupRowsByColumn(tableInstance, columnIdx) {
+        let lastGroupValue = null;
+
+        // Attach a draw event to handle row grouping dynamically
+        tableInstance.on('draw.dt', function () {
+            let rows = tableInstance.rows({ page: 'current' }).nodes();
+            lastGroupValue = null; // Reset for each draw
+
+            tableInstance.rows({ page: 'current' }).data().each(function (rowData, rowIdx) {
+                let groupValue = rowData[columnIdx]; // Get the value of the grouping column
+                if (lastGroupValue !== groupValue) {
+                    $(rows[rowIdx]).before(
+                        `<tr class="group-header"><td colspan="${tableInstance.columns().count()}"><strong>${groupValue}</strong></td></tr>`
+                    );
+                    lastGroupValue = groupValue;
+                }
+            });
+        });
+    }
+  
+
+</script>
+<script>
+    $('#pv_inclist_ddlStatus').select2({
+        theme: "bootstrap-5",
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        minimumResultsForSearch: Infinity,
+        templateSelection: function formatState(state) {
+            return `${panelstatusTitle} : ${state.element.text}`;
+        },
+        dropdownCssClass: 'tr-select2-container',
+        selectionCssClass: 'tr-no-border'
+    });
+</script>

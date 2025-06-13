@@ -1,0 +1,554 @@
+﻿<style>
+    .content {
+      padding: calc(var(--phoenix-navbar-top-height) + 0.5rem) 1.5rem 6.375rem 1.5rem !important;
+    }
+
+    .chat-container {
+        overflow: visible;
+        max-height: unset;
+    }
+
+    .code-box {
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        overflow: hidden;
+        font-family: 'Consolas', monospace;
+        color: #f1f1f1;
+    }
+
+    .code-box-header {
+        background-color: #2d2d2d !important;
+        font-size: 0.75rem;
+        color: white;
+    }
+
+    pre {
+        margin: 0;
+        padding: 1rem;
+        overflow-x: auto;
+        background-color: #1e1e1e;
+    }
+
+        pre code {
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            font-size: 0.9rem;
+            display: block;
+            white-space: pre-wrap;
+            color: inherit;
+        }
+</style>
+<style>
+    .chat-input-bar {
+        position: fixed;
+        bottom: 0;
+        padding: 1rem;
+        width: 90%;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: var(--phoenix-body-bg);
+    }
+
+    /* On large screens, subtract sidebar width */
+    @@media (min-width: 1024px) {
+        .chat-input-bar
+
+    {
+        width: calc(100% - 253.2px);
+        left: 253.2px; /* align with sidebar */
+    }
+
+    }
+
+
+        .chat-input-bar input[type="text"] {
+            flex-grow: 1;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 20px;
+            outline: none;
+        }
+
+         .chat-input-bar button {
+             border: none;
+            background-color: var(--phoenix-body-bg);
+             border-radius: 999px; /* Fully rounded */
+             padding: 0.6rem 0.75rem;
+             cursor: pointer;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+    #chatInput {
+        line-height: 24px;
+        max-height: calc(24px * 80); /* Now allows up to 80 lines */
+        overflow-y: auto;
+    }
+
+
+</style>
+<style>
+    .table-grid-container {
+        position: relative;
+    }
+
+    .table-grid-menu {
+        position: absolute;
+        bottom: 120%;
+        left: 0;
+        display: none;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        z-index: 10000;
+    }
+
+    .table-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 20px);
+        grid-template-rows: repeat(10, 20px);
+        gap: 2px;
+    }
+
+        .table-grid div {
+            width: 20px;
+            height: 20px;
+            background: #f1f1f1;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+            .table-grid div.highlight {
+                background: #007bff;
+            }
+
+    .grid-dimensions {
+        margin-top: 6px;
+        font-size: 12px;
+        text-align: center;
+    }
+</style>
+<style>
+    .table-row-menu {
+        position: absolute;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 4px 6px;
+        font-size: 13px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        display: none;
+    }
+
+        .table-row-menu button {
+            display: block;
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 4px 8px;
+            cursor: pointer;
+        }
+
+            .table-row-menu button:hover {
+                background: #f1f1f1;
+            }
+
+    #chatInput table td,
+    #chatInput table th {
+        border: 1px solid #ccc;
+        padding: 6px;
+    }
+
+    /* Table grid box */
+    .table-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 20px);
+        grid-template-rows: repeat(7, 20px);
+        gap: 2px;
+        padding: 5px;
+    }
+
+        .table-grid div {
+            width: 20px;
+            height: 20px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+            .table-grid div.highlight {
+                background-color: #007bff;
+            }
+</style>
+
+
+
+
+<div class="mb-3 w-100">
+
+    <div class="row g-2">
+        <div class="col-12 col-xl-10 order-1 order-xl-0 w-100 h-100">
+            <div class="card shadow-sm border-0 w-100 h-100" data-component-card="data-component-card">
+                <div class="card-body p-3" style="overflow-y: auto;">
+                    <div class="chat-container d-flex flex-column gap-3">
+
+                        <!-- User message -->
+                        <div class="d-flex justify-content-end">
+                            <div class="bg-primary text-white p-3 rounded-3" style="max-width: 60%;">
+                                Hello, can you help me with the report?
+                            </div>
+                        </div>
+
+                        <!-- AI/Assistant message (clean and wide) -->
+                        <div class="code-box mb-3">
+                            <div class="code-box-header d-flex justify-content-between align-items-center px-3 py-2">
+                                <span class="text-white text-uppercase small">html</span>
+                                <div>
+                                    <button class="btn btn-sm btn-link text-white text-decoration-none me-2" onclick="copyCode('codeBlock1')">📋 Copy</button>
+                                    <button class="btn btn-sm btn-link text-white text-decoration-none" onclick="makeEditable('codeBlock1')">✏️ Edit</button>
+                                </div>
+                            </div>
+                            <pre><code id="codeBlock1" class="language-html" contenteditable="false">
+&lt;style&gt;
+pre code {
+    font-family: Consolas, Monaco, 'Courier New', monospace;
+    font-size: 0.9rem;
+    display: block;
+    white-space: pre-wrap;
+}
+pre {
+    background-color: #f8f9fa;
+    border-left: 4px solid #6c757d;
+}
+&lt;/style&gt;
+    </code></pre>
+                        </div>
+                        <!-- User message -->
+                        <div class="d-flex justify-content-end">
+                            <div class="bg-primary text-white p-3 rounded-3" style="max-width: 60%;">
+                                Hello, can you help me with the report?
+                            </div>
+                        </div>
+
+                        <!-- AI/Assistant message (clean and wide) -->
+                        <div class="code-box mb-3">
+                            <div class="code-box-header d-flex justify-content-between align-items-center px-3 py-2">
+                                <span class="text-white text-uppercase small">html</span>
+                                <div>
+                                    <button class="btn btn-sm btn-link text-white text-decoration-none me-2" onclick="copyCode('codeBlock1')">📋 Copy</button>
+                                    <button class="btn btn-sm btn-link text-white text-decoration-none" onclick="makeEditable('codeBlock1')">✏️ Edit</button>
+                                </div>
+                            </div>
+                            <pre><code id="codeBlock1" class="language-html" contenteditable="false">
+&lt;style&gt;
+pre code {
+    font-family: Consolas, Monaco, 'Courier New', monospace;
+    font-size: 0.9rem;
+    display: block;
+    white-space: pre-wrap;
+}
+pre {
+    background-color: #f8f9fa;
+    border-left: 4px solid #6c757d;
+}
+&lt;/style&gt;
+    </code></pre>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="chat-input-bar">
+    <button title="Add photo and files"><i class="fas fa-plus" id="btnAddFiles"></i></button>
+    <div class="table-grid-container">
+        <button title="Insert Table" id="btnInsertTable"><i class="fas fa-table"></i></button>
+        <div class="table-grid-menu" id="tableGridMenu">
+            <div class="table-grid" id="tableGrid"></div>
+            <div class="grid-dimensions" id="gridDimensions">0 x 0</div>
+        </div>
+    </div>
+    <input type="file" id="fileUploader" style="display: none;" multiple />
+
+    <div id="chatInput" class="form-control" contenteditable="true"
+         style="overflow-y: auto; resize: none; min-height: 40px; max-height: 192px; line-height: 24px;"></div>
+    <div id="tableRowMenu" class="table-row-menu">
+        <button id="addRow">➕ Add Row Below</button>
+        <button id="removeRow">➖ Remove This Row</button>
+        <hr>
+        <button id="addCol">➕ Add Column Right</button>
+        <button id="removeCol">➖ Remove This Column</button>
+    </div>
+
+
+
+    <button title="Dictate" id="btnDictate"><i class="fas fa-microphone"></i></button>
+    <button title="Send Message" id="btnSend"><i class="far fa-paper-plane"></i></button>
+</div>
+
+<script>
+function copyCode(id) {
+    const code = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(code).then(() => alert("Copied!"));
+}
+
+function makeEditable(id) {
+    const el = document.getElementById(id);
+    el.setAttribute("contenteditable", el.isContentEditable ? "false" : "true");
+}
+</script>
+<script>
+    const maxGrid = 7;
+
+    function insertAtCaret(html) {
+        const chatInput = document.getElementById("chatInput");
+
+        // Focus chatInput to ensure selection is inside
+        chatInput.focus();
+
+        let sel = window.getSelection();
+        let range = sel.rangeCount > 0 ? sel.getRangeAt(0) : null;
+
+        // Ensure range is inside #chatInput
+        if (!range || !chatInput.contains(range.startContainer)) {
+            range = document.createRange();
+            range.selectNodeContents(chatInput);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+
+        // Create HTML fragment
+        const el = document.createElement("div");
+        el.innerHTML = html;
+
+        const frag = document.createDocumentFragment();
+        let node, lastNode;
+        while ((node = el.firstChild)) {
+            lastNode = frag.appendChild(node);
+        }
+
+        // Insert at caret
+        range.insertNode(frag);
+
+        // Move caret after inserted content
+        if (lastNode) {
+            range.setStartAfter(lastNode);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+
+
+
+    $(document).ready(function () {
+        const grid = $('#tableGrid');
+        const menu = $('#tableGridMenu');
+        const dimensions = $('#gridDimensions');
+
+         // Create 7x7 grid cells
+        for (let row = 0; row < maxGrid; row++) {
+            for (let col = 0; col < maxGrid; col++) {
+                grid.append('<div data-row="' + (row + 1) + '" data-col="' + (col + 1) + '"></div>');
+            }
+        }
+
+        // Hover effect
+        grid.on('mouseover', 'div', function () {
+            const index = $(this).index();
+            const col = (index % maxGrid) + 1;
+            const row = Math.floor(index / maxGrid) + 1;
+            dimensions.text(`${row} x ${col}`);
+
+            $('#tableGrid div').removeClass('highlight');
+            $('#tableGrid div').each(function (i) {
+                const c = (i % maxGrid) + 1;
+                const r = Math.floor(i / maxGrid) + 1;
+                if (c <= col && r <= row) {
+                    $(this).addClass('highlight');
+                }
+            });
+        });
+
+        // Insert table on click
+        grid.on('click', 'div', function () {
+            const index = $(this).index();
+            const col = (index % maxGrid) + 1;
+            const row = Math.floor(index / maxGrid) + 1;
+
+               let tableHTML = `<table style="border-collapse: collapse; width: 100%; margin: 5px 0;">`;
+    for (let r = 0; r < row; r++) {
+        tableHTML += "<tr>";
+        for (let c = 0; c < col; c++) {
+            tableHTML += `<td style="padding: 8px; border: 1px solid #ccc;">Row ${r + 1} Col ${c + 1}</td>`;
+        }
+        tableHTML += "</tr>";
+    }
+    tableHTML += "</table>";
+
+
+            insertAtCaret(tableHTML);
+            menu.hide(); // hide menu after insert
+        });
+
+        // Show/hide grid
+        $('#btnInsertTable').on('click', function (e) {
+            e.stopPropagation();
+            menu.toggle();
+        });
+
+        // Hide grid when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#tableGridMenu, #btnInsertTable').length) {
+                menu.hide();
+            }
+        });
+    });
+</script>
+<script>
+    let selectedRow = null;
+
+    $(document).ready(function () {
+        // Detect row click
+        $('#chatInput').on('click', 'table tr', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            selectedRow = this;
+
+            const menu = $('#tableRowMenu');
+                const rowRect = this.getBoundingClientRect();
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+        $('#tableRowMenu').css({
+            position: 'absolute',
+            top: rowRect.bottom + scrollTop + 'px',
+            left: rowRect.left + scrollLeft + 'px',
+            display: 'block'
+        });
+        });
+
+        // Add row
+        $('#addRow').on('click', function () {
+            if (!selectedRow) return;
+            const newRow = selectedRow.cloneNode(true);
+            $(newRow).find('td').each(function () {
+                $(this).text('');
+            });
+            selectedRow.parentNode.insertBefore(newRow, selectedRow.nextSibling);
+            $('#tableRowMenu').hide();
+        });
+
+        // Remove row
+        $('#removeRow').on('click', function () {
+            if (!selectedRow) return;
+            const table = $(selectedRow).closest('table');
+            if (table.find('tr').length > 1) {
+                selectedRow.remove();
+            } else {
+                alert("You can't remove the last row.");
+            }
+            $('#tableRowMenu').hide();
+        });
+
+        // Hide menu when clicking elsewhere
+        $(document).on('click', function () {
+            $('#tableRowMenu').hide();
+        });
+    });
+</script>
+<script>
+
+let selectedRow = null;
+let selectedColIndex = null;
+let selectedTable = null;
+
+$(document).ready(function () {
+    // Detect table cell click (not just the row)
+    $('#chatInput').on('click', 'table td', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const td = this;
+        selectedRow = $(td).closest('tr')[0];
+        selectedTable = $(td).closest('table')[0];
+        selectedColIndex = $(td).index();
+
+        const rowRect = td.getBoundingClientRect();
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+        $('#tableRowMenu').css({
+            position: 'absolute',
+            top: rowRect.bottom + scrollTop + 'px',
+            left: rowRect.left + scrollLeft + 'px',
+            display: 'block'
+        });
+    });
+
+    // ➕ Add Row Below
+    $('#addRow').on('click', function () {
+        if (!selectedRow) return;
+        const newRow = selectedRow.cloneNode(true);
+        $(newRow).find('td').text('');
+        selectedRow.parentNode.insertBefore(newRow, selectedRow.nextSibling);
+        $('#tableRowMenu').hide();
+    });
+
+    // ➖ Remove This Row
+    $('#removeRow').on('click', function () {
+        if (!selectedRow) return;
+        const table = $(selectedRow).closest('table');
+        if (table.find('tr').length > 1) {
+            selectedRow.remove();
+        } else {
+            alert("You can't remove the last row.");
+        }
+        $('#tableRowMenu').hide();
+    });
+
+    // ➕ Add Column Right
+    $('#addCol').on('click', function () {
+        if (selectedTable == null || selectedColIndex == null) return;
+        $(selectedTable).find('tr').each(function () {
+            const newCell = document.createElement('td');
+            newCell.style.padding = '8px';
+            newCell.style.border = '1px solid #ccc';
+            newCell.textContent = '';
+            const cells = $(this).find('td');
+            if (cells.length > selectedColIndex) {
+                cells.eq(selectedColIndex).after(newCell);
+            } else {
+                $(this).append(newCell);
+            }
+        });
+        $('#tableRowMenu').hide();
+    });
+
+    // ➖ Remove This Column
+    $('#removeCol').on('click', function () {
+        if (selectedTable == null || selectedColIndex == null) return;
+        const totalCols = $(selectedTable).find('tr:first td').length;
+        if (totalCols <= 1) {
+            alert("You can't remove the last column.");
+            return;
+        }
+        $(selectedTable).find('tr').each(function () {
+            $(this).find('td').eq(selectedColIndex).remove();
+        });
+        $('#tableRowMenu').hide();
+    });
+
+    // Hide the menu if clicked elsewhere
+    $(document).on('click', function () {
+        $('#tableRowMenu').hide();
+    });
+});
+</script>

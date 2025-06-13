@@ -1,0 +1,159 @@
+﻿/** -------------------------------------------------
+    MAXSYSTEM SDN BHD © ARR
+    EXTRA CUSTOM CSS - common.css
+----------------------------------------------------- **/
+
+
+/** -------------------------------------------------
+    CUSTOM EXTRA GENERAL CLASS 1
+----------------------------------------------------- **/
+.isHide {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
+
+.scrollarea {
+    overflow-y: auto;
+}
+
+.list-group {
+    box-shadow: none !important;
+}
+
+.tr-input-group {
+    background-color: #057EE6;
+    border-color: #057EE6;
+}
+.input-group-text {
+    color: #FFFFFF !important;
+}
+
+.colorpicker {
+    min-height: 40px;
+}
+
+.overlay-dropdown .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000; /* Adjust this value based on your needs */
+    display: none;
+}
+
+.overlay-dropdown.show .dropdown-menu {
+    display: block;
+}
+
+.form-check-input {
+    border-color: #707070;
+}
+
+.file-caption-name {
+    pointer-events: none;
+}
+
+
+.input-phonenumber select {
+    height: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-btnRight button {
+    height: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.disabled {
+    background-color: #F0F0F0 !important;
+}
+
+
+/** -------------------------------------------------
+    GENERAL TABLE WRAPPER
+----------------------------------------------------- **/
+.tr-scrolledDataTable {
+    overflow: auto;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+
+/** -------------------------------------------------
+    CUSTOM EXTRA GENERAL CLASS 2
+----------------------------------------------------- **/
+.min-height-0 {
+    min-height: 0 !important;
+}
+
+.max-d-120 {
+    max-width: 120px;
+}
+
+.minh-0 {
+    min-height: 0% !important;
+}
+
+.minh-100 {
+    min-height: 100% !important;
+}
+
+.minw-0 {
+    min-width: 0% !important;
+}
+
+.minw-100 {
+    min-width: 100% !important;
+}
+
+.h-fit-content {
+    height: fit-content !important;
+}
+
+.btn-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.minw-100px {
+    min-width: 100px;
+}
+
+
+/** -------------------------------------------------
+    CUSTOM ANIMATION
+----------------------------------------------------- **/
+@keyframes shake-anim {
+    0% {
+        transform: rotate(-35deg);
+    }
+
+    25% {
+        transform: rotate(25deg);
+    }
+
+    50% {
+        transform: rotate(-15deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

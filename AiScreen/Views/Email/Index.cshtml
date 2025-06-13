@@ -1,0 +1,271 @@
+﻿<style>
+    .choices .choices__list--dropdown .choices__item--selectable.is-highlighted
+    {
+        color:black;
+    }
+
+    .choices__list.choices__list--dropdown.is-active
+    {
+        z-index:9;
+    }
+</style>
+<div class="mb-9 w-100">
+    <div class="row align-items-center justify-content-between g-3">
+        <div class="col-auto">
+            <h2 class="mb-0">Email</h2>
+        </div>
+        <div class="col-auto">
+            <div class="row g-3">
+                 <div class="col-auto">
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="refreshUserList()">Refresh List</button>
+                </div>
+                @* <div class="col-auto">
+                    <a class="btn btn-success" href="../AiResume/Shortlisted"><span class="fas fa-check me-2"></span>Shortlisted</a>
+                </div> *@
+            </div>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col-12 col-xl-10 order-1 order-xl-0 w-100 h-100">
+            <div class="card shadow-none border my-4 w-100 h-100" data-component-card="data-component-card">
+                <div class="card email-content h-100">
+                    <div class="card-body h-100">
+                        <form class="d-flex flex-column h-100">
+                            <div class="row g-3 mb-2">
+                                <div class="col-12">
+                                    <div class="form-floating form-floating-advance-select">
+                                        <label for="slcTO">TO</label>
+                                        <select class="form-select" id="slcTO" multiple data-options='{"removeItemButton":true,"placeholder":true}'>
+                                        </select>
+                                     </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating form-floating-advance-select">
+                                        <label for="slcCC">CC</label>
+                                        <select class="form-select" id="slcCC" multiple data-options='{"removeItemButton":true,"placeholder":true}'>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating form-floating-advance-select">
+                                        <label for="slcBCC">BCC</label>
+                                        <select class="form-select" id="slcBCC" multiple data-options='{"removeItemButton":true,"placeholder":true}'>
+   
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating form-floating-advance-select">
+                                        <label for="slcBCC">Subject</label>
+                                        <input class="form-control" type="text" id="txtEmailSubject" placeholder="Subject" />
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="mb-3 flex-1">
+                                <textarea class="tinymce email-textarea" id="txtEmailBody" name="content" data-tinymce='{"height": 500}'></textarea>
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex">
+                                    <label class="btn btn-link py-0 px-2 text-body fs-9" for="emailAttachment"> <span class="fa-solid fa-paperclip"></span></label>
+                                    <input class="d-none" id="emailAttachment" type="file" />
+                                    <label class="btn btn-link py-0 px-2 text-body fs-9" for="emailPhotos"><span class="fa-solid fa-image"></span></label>
+                                    <input class="d-none" id="emailPhotos" type="file" accept="image/*" />
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-link text-body fs-10 text-decoration-none">Discard</button>
+                                    <button class="btn btn-primary fs-10" type="submit">Send<span class="fa-solid fa-paper-plane ms-1"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    tinymce.init({
+        selector: '#txtEmailBody',
+        height: 500,
+        plugins: 'lists code table textcolor colorpicker link image',
+        toolbar: 'undo redo | styleselect | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | code',
+        menubar: 'file edit view insert format tools table help',
+        branding: false
+    });
+</script>
+<script>
+    function refreshUserList() {
+        localStorage.removeItem("user_profile_list");
+        location.reload();
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Custom init function to destroy & safely reinit Choices
+        function initChoices(selectId, items) {
+            const selectEl = document.getElementById(selectId);
+            if (!selectEl) return;
+
+            // Destroy previous Choices instance if any
+            if (selectEl.choicesInstance) {
+                selectEl.choicesInstance.destroy();
+            }
+
+            const instance = new Choices(selectEl, { removeItemButton: true });
+            selectEl.choicesInstance = instance;
+
+            const formattedItems = items.map(u => ({
+                value: u.Email,
+                label: `${u.Display_Name} (${u.Email})`
+            }));
+
+            instance.setChoices(formattedItems, 'value', 'label', false);
+        }
+
+        // Main populate logic
+        function populateChoices(data) {
+            console.log("Loaded eq5q:", data);
+            initChoices('slcTO', data);
+            initChoices('slcCC', data);
+            initChoices('slcBCC', data);
+        }
+
+        // Step 1: Try from localStorage
+        const cached = localStorage.getItem("user_profile_list");
+        if (cached) {
+            try {
+                const parsed = JSON.parse(cached);
+                if (Array.isArray(parsed)) {
+                    
+                    populateChoices(parsed);
+                    return;
+                }
+            } catch {
+                console.warn("Corrupted cache");
+                localStorage.removeItem("user_profile_list");
+            }
+        }
+
+        // Step 2: Fallback to AJAX
+        $.ajax({
+            type: "POST",
+            url: "/MM_UserProfile/GetUserList",
+            success: function (res) {
+                if (res.success && Array.isArray(res.data)) {
+                    localStorage.setItem("user_profile_list", JSON.stringify(res.data));
+                    console.log("Loaded from server:", res.data);
+                    populateChoices(res.data);
+                } else {
+                    alert("Failed to get user list: " + res.msg);
+                }
+            },
+            error: function (err) {
+                console.error("AJAX error:", err);
+                alert("Failed to load user list.");
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', async function (e) {
+            e.preventDefault();
+
+            const subject = $('#txtEmailSubject').val().trim();
+            const body = tinymce.get("txtEmailBody").getContent().trim();
+
+            const to = document.getElementById('slcTO').choicesInstance.getValue(true);
+            const cc = document.getElementById('slcCC').choicesInstance.getValue(true);
+            const bcc = document.getElementById('slcBCC').choicesInstance.getValue(true);
+
+            if (!to || to.length === 0) {
+                alert("Please enter at least one recipient in 'To'.");
+                return;
+            }
+
+            if (!body || body.length === 0) {
+                alert("Email body cannot be empty.");
+                return;
+            }
+
+            const toRecipients = to.map(email => ({ emailAddress: { address: email } }));
+            const ccRecipients = cc.map(email => ({ emailAddress: { address: email } }));
+            const bccRecipients = bcc.map(email => ({ emailAddress: { address: email } }));
+
+            // 👤 Get sender email from hidden input
+            const senderEmail = $('#txtuseremail').val();
+
+            // 🧠 Optionally map known emails to display names
+            const senderName = getSenderName(senderEmail); // helper function below
+
+            const from = {
+                emailAddress: {
+                    address: senderEmail,
+                    name: senderName
+                }
+            };
+
+            // 📎 Get attachments
+            const files = document.getElementById('emailAttachment')?.files || [];
+            const attachments = await Promise.all(
+                Array.from(files).map(file => {
+                    return new Promise(resolve => {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            resolve({
+                                Name: file.name,
+                                ContentType: file.type,
+                                ContentBytes: e.target.result // full data URI
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                })
+            );
+
+            const payload = {
+                Subject: subject,
+                Content: body,
+                ContentType: 1, // HTML
+                ToRecipients: toRecipients,
+                CcRecipients: ccRecipients,
+                BccRecipients: bccRecipients,
+                AttachmentDto: attachments,
+                From: from // ✅ added From field
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/Email/SendComposeEmail",
+                contentType: "application/json",
+                data: JSON.stringify(payload),
+                success: function (res) {
+                    if (res.success) {
+                        alert("Email sent successfully!");
+                    } else {
+                        alert("Failed to send: " + res.message);
+                    }
+                },
+                error: function (err) {
+                    console.error("Send failed:", err);
+                    alert("Error sending email.");
+                }
+            });
+        });
+
+        // Helper function to resolve display name
+        function getSenderName(email) {
+            const lookup = {
+                "hr@maxsys.com.my": "Max System HR",
+                "azham@maxsys.com.my": "Azham Rosli",
+                // Add more if needed
+            };
+            return lookup[email?.toLowerCase()] || email;
+        }
+    });
+</script>
+

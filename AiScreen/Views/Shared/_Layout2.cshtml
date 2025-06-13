@@ -1,0 +1,561 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@Configuration["ProjectName"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/sidebar.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/spinthatshit.css" rel="stylesheet" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/solid.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/regular.min.css" />
+    <link href="~/lib/select2-4.1.0/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <link href="~/lib/select2-4.1.0/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.bootstrap5.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.checkboxes.css" rel="stylesheet" />
+    <link href="~/css/mobilecss.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+    @* This code is ASP.NET Core CSS Isolation*@
+    @* <link href="~/MaxSys.styles.css" rel="stylesheet" asp-append-version="true" /> *@
+
+    @* This is script *@
+    @* Comment1 *@
+    @* Comment JY *@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    @* <script src="~/js/jquery-ui-1.12.1.min.js"></script> *@
+    <script src="~/js/jquery-ui-1.12.1.js"></script>
+    @* <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/js/jquery.validate-vsdoc.js"></script>
+    <script src="~/js/jquery.validate.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery.cookie.min.js"></script>
+    <script src="~/js/attrchange.js"></script>
+    <script src="~/js/modernizr-2.8.3.js"></script>
+    <script src="~/js/mainJS.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/views/shared/_Layout.js"></script>
+    <script src="~/lib/select2-4.1.0/js/select2.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap.js"></script>
+    <script src="~/lib/datatables/js/datatables.select.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap5.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.checkboxes.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+</head>
+@{
+    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"] ?? "";
+    var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
+    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+}
+
+<body>
+    <style>
+        :root {
+            --resizable-container-width: 450px;
+            --sidebar-width: 4.5rem;
+        }
+
+        .sidebar-icons {
+            background-color: #f8f9fa;
+        }
+
+        .main-container {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main-resizable-container {
+            display: flex;
+            min-width: 0;
+            flex: 1;
+            position: relative;
+        }
+
+        .main-resizable-left {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            flex-shrink: 0;
+            min-width: 400px;
+            max-width: 50%;
+        }
+
+        .main-resizable-right {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .main-resizer {
+            width: 5px;
+            background: transparent;
+            cursor: col-resize;
+            user-select: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-resizer:hover {
+            background-color:blue;
+        }
+
+        .main-resizer-ghostline {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: blue;
+            pointer-events: none;
+            display: none;
+            z-index: 9999;
+        }
+
+
+        .sub-resizable-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            border-right: 1px solid #dee2e6;
+            position: relative;
+        }
+
+        .resizable-menu {
+            width: 180px;
+            overflow-y: auto;
+            background-color: #fff;
+            padding: 1rem;
+            border-right: 1px solid #dee2e6;
+            min-width: 200px;
+            max-width: 300px;
+        }
+
+        .resizable-listing {
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            flex: 1 1 auto;
+            padding: 0;
+        }
+
+        .resizer {
+            width: 5px;
+            background: transparent;
+            cursor: col-resize;
+            user-select: none;
+            position: relative;
+            z-index: 2;
+        }
+        .resizer:hover {
+            background-color:blue;
+        }
+
+        .resizer-ghostline {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: blue;
+            pointer-events: none;
+            display: none;
+            z-index: 9999;
+        }
+        
+    </style>
+
+    <header class="navbar navbar-dark navbar-expand-lg shadow-sm tr-navbar mb-1">
+        <div class="container-fluid ">
+            <a href="" class="col" style="color:unset;text-decoration:none;">
+                <img class="p-0 text-decoration-none me-2" src="~/Images/Max_logo_2.png" style="width:35px; object-fit: contain;" /> <span class="text-decoration-none">@Configuration["ProjectName"].ToString().ToUpper()</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-lg-none" id="sidebar-list-mobile"></ul>
+
+                <div class="d-flex ms-auto align-items-center">
+                    <!-- Profile Dropdown -->
+                    <a href="#" class="m-0 px-1 text-reset tr-navbar-user dropdown-toggle d-flex align-items-center" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if (profileImage == null || string.IsNullOrEmpty(profileImage))
+                        {
+                            <img src="~/Images/user-avatar.png" id="img-userprofile" alt="user profile" class="rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
+                            <span class="ms-2">@username.ToUpper()</span>
+                        }
+                        else
+                        {
+                            <img src="@profileImage" id="img-userprofile" alt="user profile" class="rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
+                            <span class="ms-2">@username.ToUpper()</span>
+                        }
+                    </a>
+
+                    <!-- Logout Form -->
+                    <form method="post" asp-controller="Home" asp-action="Logout" class="d-flex align-items-center ms-3">
+                        <button type="submit" class="btn btn-link nav-link tr-navbar-logout">
+                            <i class="fa fa-sign-out"></i> LOG OUT
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <div class="main-container container-fluid d-flex flex-column p-0">
+        <div class="d-flex flex-nowrap h-100">
+            <!-- Vertical Icon Sidebar -->
+            <div class="d-flex flex-column sidebar-icons align-items-center border-end">
+                <div class="sidebar-toggle-btn" title="Menu">
+                    <label for="sidebar-toggle-btn">
+                        <input type="checkbox" id="sidebar-toggle-btn" checked />
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </label>
+                </div>
+                
+                <a href="#" class="p-3 link-dark text-decoration-none" title="Home">
+                    <i class="fa fa-home"></i>
+                </a>
+                <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active py-3 border-bottom" title="User Profile"><i class="fa fa-user"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="Leave Application"><i class="fa fa-calendar"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Resizable Panel: Menu + Table (Side-by-side inside a fixed-width box) -->
+            <div class="main-resizable-container">
+                <div class="main-resizable-left">
+                    <div class="sub-resizable-container">
+                        <!-- Left: Sidebar Menu -->
+                        <div class="resizable-menu">
+                            <ul class="list-unstyled ps-0">
+                                <li class="resizable-menu-group mb-1">
+                                    <button class="resizable-menu-parent btn btn-toggle align-items-center collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                                        <span>Home</span>
+                                    </button>
+                                    <div class="resizable-menu-list-wrapper collapse show" id="home-collapse">
+                                        <ul class="resizable-menu-list btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                            <li class="resizable-menu-item"><a href="#" class="link-dark">Overview Overview Overview</a></li>
+                                            <li class="resizable-menu-item"><a href="#" class="link-dark">Updates</a></li>
+                                            <li class="resizable-menu-item"><a href="#" class="link-dark">Reports</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Drag Resizer -->
+                        <div class="resizer"></div>
+                        <div class="resizer-ghostline"></div>
+                        <!-- Right: Listing Table -->
+                        <div class="resizable-listing">
+                            <div class="d-flex p-2">
+                                <input type="text" id="LO_txtSearch" class="form-control" placeholder="Search">
+                                <div id="LO_btnAdd" class="btn btn-sm btn-primary btn-center px-3 ms-2">+</div>
+                            </div>
+                            <div class="d-flex overflow-auto h-100">
+                                <table class="table mb-0 layout-listing-table" id="LO_listing">
+                                    <thead>
+                                        @* <tr>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                        </tr> *@
+                                    </thead>
+                                    <tbody>
+                                        @* <tr>
+                                            <td>TJH</td>
+                                            <td>23/04/25</td>
+                                        </tr> *@
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-resizer"></div>
+                <div class="main-resizer-ghostline"></div>
+                <div class="main-resizable-right">
+                    <!-- Main Content Area -->
+                    <main class="detail-frame">
+                        @RenderBody()
+
+                    </main>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="spanner">
+        <img src="~/Images/loading12.gif" alt="Loading" style="width: 85px; height: auto" />
+    </div>
+
+    <!--TOAST-->
+    <div class="ms-toast-container"></div>
+
+    <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+        <div id="errorToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #B1003C">
+            <div class="toast-header" style="background-color: #FFF0EE">
+                <strong class="me-auto text-danger title">Warning!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-muted message" style="background-color: #FFF0EE; border-top: 1px solid #FFF0EE; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                This is an error message.
+            </div>
+        </div>
+    </div>
+    <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+        <div id="successToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #00A251">
+            <div class="toast-header" style="background-color: #E9FFF8">
+                <strong class="me-auto title" style="color: #00A251">Successful!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-muted message" style="background-color: #E9FFF8; border-top: 1px solid #E9FFF8; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                This is a successful message.
+            </div>
+        </div>
+    </div>
+    <div class="tr-footer d-flex flex-row  d-none d-sm-block" id="footer" style="z-index:999;">
+        <div class="flex-column flex-grow-1 text-center text-black-50 tr-footer-text">
+            <span>@Configuration["VersionText"] | @Configuration["CopyRightText"].Replace("[YEAR]", DateTime.Now.Year.ToString())</span>
+        </div>
+    </div>
+
+    <!--GENERAL MODAL-->
+    <!--Confirmation Modal-->
+    <div class="modal fade" id="submit-confirmation-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <h5 class="modal-title">Confirmation</h5>
+                </div>
+                <hr />
+                <div class="modal-body">
+                    <h6 class="modal-text">Are you sure to submit this record?</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                    <button type="button" class="btn btn-sm btn-primary modal-submit-btn" data-bs-dismiss="modal">Ya</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modelIframe" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content h-100">
+                <div class="modal-body h-100" id="modelIframe-body">
+                    <iframe src="" id="modelIframe-body-iframe" class="h-100"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+    <script>
+        var layout_cookie_name;
+
+        $(function () {
+            layout_cookie_name = "MAXSYS_LAYOUT_SETTING";
+            if (getCookie(layout_cookie_name) != null) {
+               try {
+                    var layout = getCookie(layout_cookie_name);
+                    layout = JSON.parse(layout);
+                    //console.log(layout);
+                    $('#sidebar-toggle-btn').prop("checked", layout.show_menu);
+                    $('.main-resizable-left').css('width', layout.main_rs);
+                    $('.resizable-menu').css('width', layout.sub_rs);
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            sideBarControl(true);
+            bsContainerAdjust('.main-resizable-right');
+            bsContainerAdjust('.resizable-listing');
+
+            $(window).on('resize', function(){
+                bsContainerAdjust('.main-resizable-right');
+                bsContainerAdjust('.resizable-listing');
+            });
+
+            const $m_resizer = $('.main-resizer');
+            const $m_ghostLine = $('.main-resizer-ghostline');
+            const $m_left = $('.main-resizable-left');
+            const $m_right = $('.main-resizable-right');
+            const $m_container = $('.main-resizable-container');
+
+            let m_isDragging = false;
+            let m_containerOffsetLeft = 0;
+            let m_containerWidth = 0;
+
+            $m_resizer.on('mousedown', function (e) {
+                m_isDragging = true;
+                m_containerOffsetLeft = $m_container.offset().left;
+                m_containerWidth = $m_container.outerWidth();
+
+                const relativeX = ghostClamp(e.pageX - m_containerOffsetLeft, 0, m_containerWidth);
+                $m_ghostLine.css({
+                    left: relativeX + 'px',
+                    display: 'block'
+                });
+
+                $(window).on('mousemove.resizeDrag', function (e) {
+                    if (!m_isDragging) return;
+                    const relativeX = ghostClamp(e.pageX - m_containerOffsetLeft, 0, m_containerWidth);
+                    $m_ghostLine.css('left', relativeX + 'px');
+                });
+
+                $(window).on('mouseup.resizeDrag', function (e) {
+                    if (!m_isDragging) return;
+
+                    m_isDragging = false;
+                    $m_ghostLine.hide();
+
+                    const relativeX = ghostClamp(e.pageX - m_containerOffsetLeft, 0, m_containerWidth);
+                    $m_left.css('width', relativeX + 'px');
+
+                    // Clean up
+                    $(window).off('.resizeDrag');
+
+                    bsContainerAdjust('.resizable-listing');
+                    bsContainerAdjust('.main-resizable-right'); // optional helper if you use it
+                    saveLayoutConfig();
+                });
+            });
+
+            //SUB
+            const $resizer = $('.resizer');
+            const $ghostLine = $('.resizer-ghostline');
+            const $left = $('.resizable-menu');
+            const $right = $('.resizable-listing');
+            const $container = $('.sub-resizable-container');
+
+            let isDragging = false;
+            let containerOffsetLeft = 0;
+            let containerWidth = 0;
+
+            $resizer.on('mousedown', function (e) {
+                isDragging = true;
+                containerOffsetLeft = $container.offset().left;
+                containerWidth = $container.outerWidth();
+
+                const relativeX = ghostClamp(e.pageX - containerOffsetLeft, 0, containerWidth);
+                $ghostLine.css({
+                    left: relativeX + 'px',
+                    display: 'block'
+                });
+
+                $(window).on('mousemove.resizeDrag', function (e) {
+                    if (!isDragging) return;
+                    const relativeX = ghostClamp(e.pageX - containerOffsetLeft, 0, containerWidth);
+                    $ghostLine.css('left', relativeX + 'px');
+                });
+
+                $(window).on('mouseup.resizeDrag', function (e) {
+                    if (!isDragging) return;
+
+                    isDragging = false;
+                    $ghostLine.hide();
+
+                    const relativeX = ghostClamp(e.pageX - containerOffsetLeft, 0, containerWidth);
+                    $left.css('width', relativeX + 'px');
+
+                    // Clean up
+                    $(window).off('.resizeDrag');
+
+                    bsContainerAdjust('.resizable-listing'); // optional helper if you use it
+                    saveLayoutConfig();
+                });
+            });
+
+            function ghostClamp(val, min, max) {
+                return Math.max(min, Math.min(max, val));
+            }
+
+            //Sidebar
+            $('#sidebar-toggle-btn').change(function(){
+                sideBarControl();
+                saveLayoutConfig();
+            });
+
+        });
+
+        function bsContainerAdjust(container){
+            var cwidth = $(container).innerWidth();
+            var bsClass = "boostrap-none";
+            if (cwidth > 1200) {
+                bsClass = "boostrap-xl";
+            } else if (cwidth > 992) {
+                bsClass = "boostrap-lg";
+            } else if (cwidth > 768) {
+                bsClass = "boostrap-md";
+            } else if (cwidth > 576) {
+                bsClass = "boostrap-sm";
+            }
+
+            $(container).removeClass("boostrap-none").removeClass("boostrap-sm").removeClass("boostrap-md").removeClass("boostrap-lg").removeClass("boostrap-xl");
+            $(container).addClass(bsClass);
+        }
+
+        let sb_timeoutId;
+        function sideBarControl(pageload = false){
+            if($('#sidebar-toggle-btn').prop("checked")){
+                $('.sub-resizable-container .resizable-menu').removeClass("inactive").removeClass("hiding");
+                $('.sub-resizable-container .resizer').show();
+
+                clearTimeout(sb_timeoutId);
+                bsContainerAdjust('.main-resizable-right');
+                bsContainerAdjust('.resizable-listing');
+            }else{
+                if(pageload){
+                    $('.sub-resizable-container .resizable-menu').addClass("inactive");
+                }
+                $('.sub-resizable-container .resizable-menu').addClass("hiding");
+                $('.sub-resizable-container .resizer').hide();
+
+                clearTimeout(sb_timeoutId);
+                sb_timeoutId = setTimeout(() => {
+                    bsContainerAdjust('.main-resizable-right');
+                    bsContainerAdjust('.resizable-listing');
+                }, 300);
+            }
+        }
+
+        function saveLayoutConfig() {
+            var show_menu = $('#sidebar-toggle-btn').prop("checked") ? true : false;
+            var main_rs = $('.main-resizable-left').css('width');
+            var sub_rs = $('.resizable-menu').css('width');
+            createCookie(layout_cookie_name, JSON.stringify({ show_menu: show_menu, main_rs: main_rs, sub_rs: sub_rs }), 1);
+        }
+    </script>
+</body>
+</html>

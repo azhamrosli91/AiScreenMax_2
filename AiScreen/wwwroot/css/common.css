@@ -1,0 +1,450 @@
+﻿/** -------------------------------------------------
+    MAXSYSTEM SDN BHD © ARR
+    EXTRA CUSTOM CSS - common.css
+----------------------------------------------------- **/
+
+/** -------------------------------------------------
+    GENERAL LOADING SPINNER
+----------------------------------------------------- **/
+.spanner {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #2a2a2a55;
+    width: 100%;
+    text-align: center;
+    height: 100vh;
+    color: #FFF;
+    z-index: 1050;
+}
+
+    .spanner img {
+        margin: auto;
+    }
+
+    .spanner.show, .overlay.show {
+        display: flex;
+        opacity: 1
+    }
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #808080;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+
+/** -------------------------------------------------
+    CUSTOM EXTRA GENERAL CLASS 1
+----------------------------------------------------- **/
+.isHide {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
+
+.scrollarea {
+    overflow-y: auto;
+}
+
+.list-group {
+    box-shadow: none !important;
+}
+
+.tr-input-group {
+    background-color: #057EE6;
+    border-color: #057EE6;
+}
+.input-group-text {
+    color: #FFFFFF !important;
+}
+
+.colorpicker {
+    min-height: 40px;
+}
+
+.overlay-dropdown .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000; /* Adjust this value based on your needs */
+    display: none;
+}
+
+.overlay-dropdown.show .dropdown-menu {
+    display: block;
+}
+
+.form-check-input {
+    border-color: #707070;
+}
+
+.file-caption-name {
+    pointer-events: none;
+}
+
+
+.input-phonenumber select {
+    height: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-btnRight button {
+    height: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+
+/** -------------------------------------------------
+    GENERAL TABLE WRAPPER
+----------------------------------------------------- **/
+.tr-scrolledDataTable {
+    overflow: auto;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+
+/** -------------------------------------------------
+    CUSTOM EXTRA GENERAL CLASS 2
+----------------------------------------------------- **/
+.min-height-0 {
+    min-height: 0 !important;
+}
+
+.max-d-120 {
+    max-width: 120px;
+}
+
+.minh-0 {
+    min-height: 0% !important;
+}
+
+.minh-100 {
+    min-height: 100% !important;
+}
+
+.minw-0 {
+    min-width: 0% !important;
+}
+
+.minw-100 {
+    min-width: 100% !important;
+}
+
+.h-fit-content {
+    height: fit-content !important;
+}
+
+.btn-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.minw-100px {
+    min-width: 100px;
+}
+
+
+/** -------------------------------------------------
+    CUSTOM ANIMATION
+----------------------------------------------------- **/
+@keyframes shake-anim {
+    0% {
+        transform: rotate(-35deg);
+    }
+
+    25% {
+        transform: rotate(25deg);
+    }
+
+    50% {
+        transform: rotate(-15deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+
+/** -------------------------------------------------
+    TOAST MESSAGE V2
+----------------------------------------------------- **/
+.ms-toast-container {
+    position: fixed;
+    top: 75px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1056;
+}
+
+.ms-toast {
+    position: relative;
+    width: 320px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 20px 35px 20px 25px;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow-x: hidden;
+    align-items: center;
+    transform: translateX(calc(100% + 30px));
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+    word-break: break-word;
+}
+
+    .ms-toast.active {
+        transform: translateX(0%);
+    }
+
+    .ms-toast .toast-content {
+        display: flex;
+    }
+
+        .ms-toast .toast-content .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            min-width: 35px;
+            font-size: 35px;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .ms-toast .toast-content .message {
+            display: flex;
+            flex-direction: column;
+            margin-left: 15px;
+        }
+
+    .ms-toast .message .text {
+    }
+
+        .ms-toast .message .text.text-1 {
+            font-weight: 600;
+            color: #333;
+        }
+
+    .ms-toast .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        padding: 5px;
+        cursor: pointer;
+        opacity: 0.7;
+    }
+
+        .ms-toast .close:hover {
+            opacity: 1;
+        }
+
+    .ms-toast .progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        width: 100%;
+    }
+
+        .ms-toast .progress:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #4070f4;
+        }
+
+        /* If you edit the timeout variable in the JS, be sure to edit this too */
+        .ms-toast .progress.active:before {
+            animation: progress 5s linear forwards;
+        }
+
+@keyframes progress {
+    100% {
+        right: 100%;
+    }
+}
+
+/* Toast Type Colors */
+.ms-toast.success .icon {
+    color: rgb(25 135 84);
+}
+
+.ms-toast.error .icon {
+    color: rgb(220 53 69);
+}
+
+.ms-toast.warning .icon {
+    color: rgb(255 193 7);
+}
+
+.ms-toast.info .icon {
+    color: rgb(13 202 240);
+}
+
+.ms-toast.success .progress:before {
+    background: rgb(25 135 84);
+}
+
+.ms-toast.error .progress:before {
+    background: rgb(220 53 69);
+}
+
+.ms-toast.warning .progress:before {
+    background: rgb(255 193 7);
+}
+
+.ms-toast.info .progress:before {
+    background: rgb(13 202 240);
+}
+
+
+
+/** -------------------------------------------------
+    CUSTOM BOOTSTRAP CLASS
+----------------------------------------------------- **/
+.btn-xs {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+
+/** -------------------------------------------------
+    CUSTOM FULLCALENDAR JS - SMALLER
+----------------------------------------------------- **/
+.fc-custom-sm.fc table {
+    font-size: 12px;
+}
+.fc-custom-sm.fc .fc-col-header-cell-cushion {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.fc-custom-sm.fc .fc-daygrid-day-number {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+.fc-custom-sm.fc .fc-daygrid-event {
+    padding: 0.25rem 0.25rem !important;
+    margin-bottom: 0.125rem !important;
+}
+@media (min-width: 768px) {
+    .fc-custom-sm.fc .fc-daygrid-day-frame {
+        padding: 0.1rem !important;
+    }
+    .fc-custom-sm.fc .fc-daygrid-event {
+        font-size: 10px;
+    }
+    .fc-custom-sm.fc .fc-daygrid-more-link {
+        font-size: 10px;
+    }
+}
+
+
+/** -------------------------------------------------
+    CUSTOM TINYMCE EDITOR BOX
+----------------------------------------------------- **/
+.tinymce-custom-inputarea {
+    border-radius: 7px;
+    border-color: transparent;
+}
+    .tinymce-custom-inputarea .tox .tox-editor-header {
+        border: 1px solid var(--phoenix-border-color);
+        margin-bottom: 0;
+        border-bottom: none;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .tinymce-custom-inputarea .tox .tox-toolbar__group:first-child {
+        padding: 0 11px 0 12px !important;
+    }
+    .tinymce-custom-inputarea .tox .tox-tbtn.tox-tbtn--select {
+        width: unset !important;
+    }
+
+
+
+/** -------------------------------------------------
+    CUSTOM DATATABLE - UI
+----------------------------------------------------- **/
+.dt-custom-ms table.dataTable > tbody > tr.selected > * {
+    box-shadow: inset 0 0 0 9999px #EBF3FF !important;
+    color: #54575A;
+}
+
+.dt-custom-ms div.dataTables_scrollBody {
+    border-left: 0px !important;
+}
+
+.dt-custom-ms table.border-secondary {
+    border-color: #D6D4D4 !important;
+}
+
+.dt-custom-ms table.dataTable th,
+.dt-custom-ms table.dataTable td {
+    padding: 10px 10px;
+    vertical-align: middle;
+}
+
+.dt-custom-ms .dataTables_wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dt-custom-ms .dataTables_length .multiselect.dropdown-toggle {
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.dt-custom-ms table.dataTable th {
+    text-transform: none !important;
+}
+
+.dt-custom-ms table.detailTable th,
+.dt-custom-ms table.detailTable td {
+    padding: 10px 10px;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.dt-custom-ms .pagination {
+    --bs-pagination-color: #54575A !important;
+    --bs-pagination-hover-color: #54575A !important;
+    --bs-pagination-focus-color: #54575A !important;
+}
+
+.dt-custom-ms .page-link.disabled, .dt-custom-ms .disabled > .page-link {
+    color: #54575A !important;
+}

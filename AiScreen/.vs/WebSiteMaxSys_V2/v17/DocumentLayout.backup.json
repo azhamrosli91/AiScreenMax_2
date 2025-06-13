@@ -1,0 +1,69 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Project\\WebSiteMaxSys_V2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2CD25E2-5A1B-4793-A444-C7FBCD15AFB2}|WebSiteMaxSys_V2\\WebSiteMaxSys_V2.csproj|c:\\project\\websitemaxsys_v2\\websitemaxsys_v2\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2CD25E2-5A1B-4793-A444-C7FBCD15AFB2}|WebSiteMaxSys_V2\\WebSiteMaxSys_V2.csproj|solutionrelative:websitemaxsys_v2\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2CD25E2-5A1B-4793-A444-C7FBCD15AFB2}|WebSiteMaxSys_V2\\WebSiteMaxSys_V2.csproj|c:\\project\\websitemaxsys_v2\\websitemaxsys_v2\\views\\shared\\_layout_empty.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2CD25E2-5A1B-4793-A444-C7FBCD15AFB2}|WebSiteMaxSys_V2\\WebSiteMaxSys_V2.csproj|solutionrelative:websitemaxsys_v2\\views\\shared\\_layout_empty.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2CD25E2-5A1B-4793-A444-C7FBCD15AFB2}|WebSiteMaxSys_V2\\WebSiteMaxSys_V2.csproj|c:\\project\\websitemaxsys_v2\\websitemaxsys_v2\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2CD25E2-5A1B-4793-A444-C7FBCD15AFB2}|WebSiteMaxSys_V2\\WebSiteMaxSys_V2.csproj|solutionrelative:websitemaxsys_v2\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout_Empty.cshtml",
+              "DocumentMoniker": "C:\\Project\\WebSiteMaxSys_V2\\WebSiteMaxSys_V2\\Views\\Shared\\_Layout_Empty.cshtml",
+              "RelativeDocumentMoniker": "WebSiteMaxSys_V2\\Views\\Shared\\_Layout_Empty.cshtml",
+              "ToolTip": "C:\\Project\\WebSiteMaxSys_V2\\WebSiteMaxSys_V2\\Views\\Shared\\_Layout_Empty.cshtml",
+              "RelativeToolTip": "WebSiteMaxSys_V2\\Views\\Shared\\_Layout_Empty.cshtml",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAAAGEAAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-17T00:14:55.603Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Project\\WebSiteMaxSys_V2\\WebSiteMaxSys_V2\\appsettings.json",
+              "RelativeDocumentMoniker": "WebSiteMaxSys_V2\\appsettings.json",
+              "ToolTip": "C:\\Project\\WebSiteMaxSys_V2\\WebSiteMaxSys_V2\\appsettings.json",
+              "RelativeToolTip": "WebSiteMaxSys_V2\\appsettings.json",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAA4AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-03-14T09:32:41.879Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Project\\WebSiteMaxSys_V2\\WebSiteMaxSys_V2\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebSiteMaxSys_V2\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Project\\WebSiteMaxSys_V2\\WebSiteMaxSys_V2\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "WebSiteMaxSys_V2\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAPQAAAAAAAAAAAAwwBYBAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-14T09:21:08.133Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

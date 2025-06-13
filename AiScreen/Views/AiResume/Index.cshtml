@@ -1,0 +1,447 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_new.cshtml";
+}
+<style>
+    /* Make the preview container scrollable */
+    .dropzone .dz-preview.dz-preview-multiple {
+        max-height: 200px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    /* Make image thumbnails 15x15 */
+    .dropzone .dz-preview .dz-image {
+        width: 15px !important;
+        height: 15px !important;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Adjust text and spacing */
+    .dropzone .dz-preview .media {
+        padding: 5px;
+        font-size: 12px;
+        align-items: center;
+    }
+
+    .dropzone .dz-preview h6,
+    .dropzone .dz-preview p,
+    .dropzone .dz-preview span {
+        font-size: 11px !important;
+        margin-bottom: 2px;
+    }
+
+    .dropzone .dz-message{
+        margin : 0px !important;
+    }
+</style>
+<div class="mb-9 w-100">
+    <div class="row align-items-center justify-content-between g-3">
+        <div class="col-auto">
+            <h2 class="mb-0">Ai Resume Screening</h2>
+        </div>
+        <div class="col-auto">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <a class="btn btn-phoenix-secondary" href="../AiResume/History"><span class="fas fa-history me-2"></span>History</a>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-success" href="../AiResume/Shortlisted"><span class="fas fa-check me-2"></span>Shortlisted</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col-12 col-xl-10 order-1 order-xl-0 w-100">
+            <div class="card shadow-none border my-4 w-100" data-component-card="data-component-card">
+                <div class="card-body p-3">
+                    <div class="mb-3">
+                        <div class="input-group mb-3">
+                            <input class="form-control" id="txtTitle" type="text" placeholder="Job Title" aria-label="Job Title" aria-describedby="button-addon2" />
+                            <button class="btn btn-primary" type="submit" id="button-addon2">
+                                <i class="fa fa-paper-plane"></i>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-xxl-5 col-sm-12">
+                                <label class="form-label" for="exampleFormControlInput">Job Description </label>
+                                <textarea id="txtJobDescription" class="tinymce" name="content" data-tinymce="{}"></textarea>
+                                @* <textarea id="txtJobDescription"></textarea> *@
+                            </div>
+                            <div class="col-12 col-md-6 col-xxl-7 col-sm-12">
+                                <label class="form-label" for="exampleFormControlInput">Upload Resume </label>
+                                <div class="p-4 code-to-copy">
+                                    <div class="dropzone dropzone-multiple p-0" id="dropzone-multiple" data-dropzone="data-dropzone">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple accept="image/*,.doc,.docx,application/pdf" />
+                                        </div>
+                                        <div class="dz-message" data-dz-message="data-dz-message"><img class="me-2" src="~/images/icons/cloud-upload.svg" width="25" alt="" />Drop your files here</div>
+                                        <div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
+                                            <div class="d-flex mb-3 pb-3 border-bottom border-translucent media">
+                                                <div class="border p-2 rounded-2 me-2"><img class="rounded-2 dz-image" src="~/images/icons/file.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" /></div>
+                                                <div class="flex-1 d-flex flex-between-center">
+                                                    <div>
+                                                        <h6 data-dz-name="data-dz-name"></h6>
+                                                        <div class="d-flex align-items-center">
+                                                            <p class="mb-0 fs-9 text-body-quaternary lh-1" data-dz-size="data-dz-size"></p>
+                                                            
+                                                        </div><span class="fs-10 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-link text-body-tertiary btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
+                                                        <div class="dropdown-menu dropdown-menu-end border border-translucent py-2"><a class="dropdown-item" href="#!" data-dz-remove="data-dz-remove">Remove File</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <div class="mb-3">
+                        <!-- Your table -->
+                        <table id="example" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 250px;">Contact</th>
+                                    <th style="text-align: center;">Match %</th>
+                                    <th style="min-width: 300px;">Short Description</th>
+                                    <th style="min-width: 120px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<!-- Disable autoDiscover BEFORE Dropzone loads -->
+<script>
+    window.Dropzone = window.Dropzone || {};
+    Dropzone.autoDiscover = false;
+</script>
+
+<!-- Load Dropzone -->
+<script src="~/vendor/dropzone/dropzone-min.js"></script>
+
+<!-- Disable Dropzone auto-discover -->
+<script>
+    window.Dropzone = window.Dropzone || {};
+    Dropzone.autoDiscover = false;
+</script>
+
+<!-- Load Dropzone -->
+<script src="~/vendor/dropzone/dropzone-min.js"></script>
+
+<script>
+    let myDropzone;
+
+    $(document).ready(function () {
+        // Prefill Job Title & Description from localStorage
+        const storedTitle = localStorage.getItem("ai_job_title");
+        const storedDescription = localStorage.getItem("ai_job_description");
+
+        if (storedTitle) {
+            $('#txtTitle').val(storedTitle);
+        }
+
+       if (storedDescription) {
+            $('#txtJobDescription').val(storedDescription);
+        }
+
+
+        // TinyMCE Init with optional set content
+        // tinymce.init({
+        //     selector: '#txtJobDescription',
+        //     plugins: 'lists code table',
+        //     toolbar: 'undo redo | bold italic underline | bullist numlist | code table',
+        //     menubar: false,
+        //     branding: false,
+        //     license_key: 'gpl',
+        //     setup: function (editor) {
+        //         editor.on('init', function () {
+        //             if (storedDescription) {
+        //                 editor.setContent(storedDescription); // ✅ Correct way
+        //             }
+        //         });
+        //     }
+        // });
+
+        // Dropzone Initialization
+        if ($('#dropzone-multiple').length) {
+            if (Dropzone.instances.length > 0) {
+                myDropzone = Dropzone.instances.find(dz => dz.element.id === "dropzone-multiple");
+                console.log("Dropzone reused");
+            } else {
+                myDropzone = new Dropzone("#dropzone-multiple", {
+                    url: "/dummy", // dummy; real upload is manual
+                    autoProcessQueue: false,
+                    addRemoveLinks: true,
+                    acceptedFiles: ".pdf,.doc,.docx,image/*"
+                });
+                console.log("Dropzone initialized");
+            }
+        }
+
+        // Initialize DataTable
+        const table = $('#example').DataTable({
+            initComplete: function () {
+                 $("#example").wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+            }
+        });
+
+        // Submit handler
+        $('#button-addon2').on('click', async function (e) {
+     e.preventDefault();
+
+  
+    const isLoggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+    if (!isLoggedIn) {
+        $('#loginModal').modal('show'); // Show login modal
+        return; // Stop execution
+    }
+
+            const $btn = $(this);
+            if ($btn.prop('disabled')) return;
+
+            // Lock button
+            $btn.prop('disabled', true).html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Submitting...`);
+
+            const title = $('#txtTitle').val().trim();
+            const jobDesc = tinymce.get('txtJobDescription').getContent({ format: 'text' }).trim();
+            const files = myDropzone?.getAcceptedFiles() || [];
+
+            if (!title) {
+                alert("❗ Please enter Job Title.");
+                $('#txtTitle').focus();
+                resetButton();
+                return;
+            }
+
+            if (!jobDesc) {
+                alert("❗ Please enter Job Description.");
+                tinymce.get('txtJobDescription').focus();
+                resetButton();
+                return;
+            }
+
+            if (!files.length) {
+                alert("❗ Please upload at least one resume file.");
+                resetButton();
+                return;
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const formData = new FormData();
+                formData.append("jobDesc", jobDesc);
+                formData.append("file", file);
+
+                // Optional: show progress bar
+                // $('#upload-progress').show();
+                // $('#upload-bar').css("width", "30%");
+
+                const tempRow = table.row.add([
+                    'Uploading...',
+                    '',
+                    '',
+                    '<div class="text-center">Uploading...</div>',
+                    '',
+                    '<div class="text-center"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></div>'
+                ]).draw(false).node();
+
+                try {
+                    const response = await uploadResumeAsync(formData);
+                    table.row(tempRow).remove().draw(false);
+
+                    // Save Job Title & Description
+                    localStorage.setItem("ai_job_title", title);
+                    localStorage.setItem("ai_job_description", jobDesc);
+
+                    // Save Resume Results
+                    const existing = localStorage.getItem("ai_resume_results");
+                    let resumeResults = [];
+
+                    if (existing) {
+                        try {
+                            resumeResults = JSON.parse(existing);
+                            if (!Array.isArray(resumeResults)) {
+                                resumeResults = [];
+                            }
+                        } catch (e) {
+                            resumeResults = [];
+                        }
+                    }
+
+                    const newResume = {
+                        jobtitle: title,
+                        name: response.name,
+                        email: response.email,
+                        phone_number: response.phone_number,
+                        percentage_match: response.percentage_match,
+                        short_description: response.short_description,
+                        timestamp: new Date().toISOString(),
+                        short_listed: false
+                    };
+
+                    // Check if resume with same email exists
+                    const existingIndex = resumeResults.findIndex(r => r.email === newResume.email);
+
+                    if (existingIndex !== -1) {
+                        resumeResults[existingIndex] = newResume; // Replace existing
+                    } else {
+                        resumeResults.push(newResume); // Add new
+                    }
+
+                    localStorage.setItem("ai_resume_results", JSON.stringify(resumeResults));
+
+                    const isShortlisted = resumeResults.some(x => x.email === response.email && x.short_listed === true);
+
+                    const newRow = table.row.add([
+                        `<div><strong>${response.name}</strong><br><span>${response.email}</span><br><span>${response.phone_number}</span></div>`,
+                        `<div style="text-align:center;">${response.percentage_match}%</div>`,
+                        response.short_description,
+                        isShortlisted
+                            ? ''
+                            : `<div class="text-center">
+                                    <button class="btn btn-success btn-sm shortlisted" title="Shortlisted">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                               </div>`
+                    ]).draw(false).node();
+
+                     // 💡 Store full data for later use
+                     $(newRow).data("resume", {
+                         jobtitle: title,
+                         name: response.name,
+                         email: response.email,
+                         phone_number: response.phone_number,
+                         percentage_match: response.percentage_match,
+                         short_description: response.short_description,
+                         timestamp: new Date().toISOString(),
+                         short_listed: false
+                     });
+
+                    // $('#upload-bar').css("width", "100%");
+                } catch (error) {
+                    table.row(tempRow).remove().draw(false);
+                    alert(`❌ Failed to upload ${file.name}: ` + error.message);
+                    // $('#upload-bar').css("width", "100%").addClass("bg-danger");
+                }
+            }
+
+            // Unlock button
+            resetButton();
+
+            function resetButton() {
+                $btn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> Submit');
+            }
+        });
+
+        // Ajax wrapper
+        function uploadResumeAsync(formData) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/AiResume/UploadProxy",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log("Upload success:", response);
+                        resolve(response);
+                    },
+                    error: function (xhr) {
+                        console.error("Upload failed", xhr);
+                        reject(new Error(xhr.responseText || xhr.statusText || "Unknown error"));
+                    }
+                });
+            });
+        }
+        // Handle "Shortlisted" button click
+       $('#example tbody').on('click', '.shortlisted', function () {
+            const $btn = $(this);
+            const $row = $btn.closest('tr');
+        
+            const data = $row.data("resume"); // <-- We previously stored full resume data using .data("resume", item);
+            console.log("shortlisted 1; ",data) //error here
+            if (!data || !data.email) return;
+        
+            // Retrieve existing shortlist from localStorage
+            let shortlisted = [];
+            const stored = localStorage.getItem("ai_resume_shortlisted");
+            console.log("shortlisted",stored) 
+            if (stored) {
+                try {
+                    shortlisted = JSON.parse(stored);
+                    if (!Array.isArray(shortlisted)) shortlisted = [];
+                } catch (e) {
+                    shortlisted = [];
+                }
+            }
+        
+            // Check if already shortlisted by email
+            const alreadyShortlisted = shortlisted.some(item => item.email === data.email);
+        
+            if (!alreadyShortlisted) {
+                // Add to shortlist with short_listed = true
+                data.short_listed = true;
+                shortlisted.push(data);
+                localStorage.setItem("ai_resume_shortlisted", JSON.stringify(shortlisted));
+                console.log("Shortlisted resume saved:", data.email);
+            }
+        
+            // Hide the button after clicking
+            $btn.closest('div.text-center').remove();
+        });
+
+
+
+
+    });
+</script>
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title d-flex align-items-center" id="loginModalLabel">
+                    <i class="fa-solid fa-lock me-2"></i> Sign In Required
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-5 py-4">
+                <p class="mb-4 fs-6 text-body-secondary">Please sign in to your account to submit resumes and access more features.</p>
+
+                <div class="d-grid gap-3">
+                    <a href="/Account/Sign" class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center">
+                        <img src="/Images/Microsoft_logo.svg" alt="Microsoft" style="height: 22px; margin-right: 10px;" />
+                        Sign in with Microsoft
+                    </a>
+                    <a href="/login-google" class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="height: 22px; margin-right: 10px;" />
+                        Sign in with Google
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0 text-muted small justify-content-center">
+                <p class="mb-0">We respect your privacy. No data will be shared without your consent.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    if (window.location.search.includes("refresh=1")) {
+        window.history.replaceState({}, document.title, window.location.pathname); // remove query string
+        location.reload(); // force reload with cookies now available
+    }
+</script>

@@ -1,0 +1,2368 @@
+﻿@model MaxSys.Models.AuthenticatorModel
+@using Microsoft.Extensions.Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IConfiguration Configuration
+@{
+    ViewBag.Title = Configuration["ProjectName"] +  "| Main Page";
+    // Layout = "~/Views/Shared/_Layout_Empty.cshtml";
+    Layout = null;
+    var ProjectName = Configuration["ProjectName"];
+}
+@{
+    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"];
+    var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
+    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+    var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
+}
+<!DOCTYPE html>
+<html lang="en"> 
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title</title>
+     
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Max System Solution provides expert IT & AI solutions in Malaysia, offering web apps, software systems, and business automation to boost productivity.">
+        <meta name="keywords" content="Max System Solution, Malaysia software company, IT solutions, AI solutions, web application development, business automation, custom software Penang">
+        <meta name="author" content="Max System Solution">
+        <meta name="robots" content="index, follow">
+     
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://maxsys.com.my/">
+        <meta property="og:title" content="Max System Solution | Innovative IT and AI Solutions">
+        <meta property="og:description" content="Empowering your business with expert IT services, AI-driven solutions, and tailored web applications for long-term success.">
+        <meta property="og:image" content="https://maxsys.com.my/Images/Max_logo3.ico">
+     
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://maxsys.com.my/">
+        <meta property="twitter:title" content="Max System Solution | Innovative IT and AI Solutions">
+        <meta property="twitter:description" content="Empowering your business with expert IT services, AI-driven solutions, and tailored web applications for long-term success.">
+        <meta property="twitter:image" content="https://maxsys.com.my/Images/Max_logo3.ico">
+    
+        <!-- Vendor CSS Files -->
+        <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="~/vendor/aos/aos.css" rel="stylesheet">
+        <link href="~/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="~/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    
+        <link href="~/css/indexmain.css" rel="stylesheet" />
+        <link href="~/css/chatbot.css" rel="stylesheet" />
+        <!-- Favicon -->
+        <link rel="icon" href="~/Images/Max_logo3.ico" type="image/x-icon">
+     
+        <!-- Canonical Link -->
+        <link rel="canonical" href="https://maxsys.com.my/">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/jquery-ui-1.12.1.min.js"></script>
+        <script src="~/js/jquery-ui-1.12.1.js"></script>
+        <script src="~/js/mainjs.js"></script>
+
+        <!-- Structured Data JSON-LD -->
+        <script type="application/ld+json">
+            {
+              "@@context": "https://schema.org",
+              "@@type": "Organization",
+              "name": "Max System Solution",
+              "url": "https://maxsys.com.my",
+              "logo": "https://maxsys.com.my/Images/Max_logo3.ico",
+              "sameAs": [
+                "https://www.facebook.com/people/Max-System-Solution-Sdn-Bhd/100089288231982/"
+              ],
+              "description": "Max System Solution is one of Malaysia's leading software companies, providing IT services, AI-powered solutions, and digital transformation consulting."
+            }
+        </script>
+    </head>
+    
+    <body class="index-page">
+   
+        <header id="header" class="header d-flex align-items-center fixed-top">
+
+            <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+                <a href="#hero" class="logo d-flex align-items-center me-auto">
+                     <img src="~/Images/Max_logo3.ico" alt="Max System Logo" class="logo-img" style="height: 125px; width: auto;" apple>
+                    <h1 class="sitename fs-4 me-4">Max System Solution</h1>
+                </a>
+
+                <nav id="navmenu" class="navmenu">
+                    <ul>
+                        <li><a href="#hero" class="active">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        @* <li><a href="#team">Team</a></li> *@
+                        @* <li><a href="#pricing">Pricing</a></li> *@
+                        <li><a href="#recent-blog-postst">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#career">Career</a></li>
+                    </ul>
+                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+                </nav>
+
+                @if (string.IsNullOrEmpty(username)){
+                    <a class="btn-getstarted" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login Employee</a>
+                }else{
+                <a class="btn-getstarted" href="/MM_UserProfile/index">Go To Portal - @username</a>
+                }
+
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="chbot-container position-fixed" style="bottom: 10px; right: 15px; z-index: 2000;">
+                <!-- Animated Text -->
+                <div id="chatbot_intro" class="chbot-color text-white rounded-pill px-3 py-2 mb-2 d-none">
+                    <span id="chatbot_intro_text">Hello, I am Melissa</span>
+                </div>
+
+                <!-- Chatbot Icon -->
+                <div class="chbot-button chbot-color d-none" id="chatbot_btn" title="Chat with me for more information">
+                    <i class="bi bi-robot fs-2"></i>
+                </div>
+            </div>
+
+            <!-- Hero Section -->
+            <section id="hero" class="hero section dark-background" style="position:relative; overflow:hidden;">
+                <img src="~/Images/bg10.jpg" alt="background image server"
+                     style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.2; z-index:1;" apple/>
+ 
+                <div class="container" style="position:relative; z-index:10;">
+                    <div class="row gy-4">
+                        <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
+                            <h2>Transform Your Business with Innovative IT and AI Solutions</h2>
+                            <p>We are a team of talented developers who will provide the best solutions for your business needs</p>
+                            <div class="d-flex">
+                                <a href="#about" class="btn-get-started">Get Started</a>
+                                @* <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"> *@
+                                @* <i class="bi bi-play-circle"></i><span>Watch Video</span> *@
+                                @* </a> *@
+                            </div>
+                        </div>
+                        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
+                            <img src="~/Images/img/hero-img.png" class="img-fluid animated" alt="Landing images" apple>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /Hero Section -->
+
+            <!-- Clients Section -->
+            <section id="clients" class="clients section light-background">
+
+                <div class="container" data-aos="zoom-in">
+
+                    <div class="swiper init-swiper">
+                        <script type="application/json" class="swiper-config">
+                            {
+                              "loop": true,
+                              "speed": 600,
+                              "autoplay": {
+                                "delay": 5000
+                              },
+                              "slidesPerView": "auto",
+                              "pagination": {
+                                "el": ".swiper-pagination",
+                                "type": "bullets",
+                                "clickable": true
+                              },
+                              "breakpoints": {
+                                "320": {
+                                  "slidesPerView": 2,
+                                  "spaceBetween": 40
+                                },
+                                "480": {
+                                  "slidesPerView": 3,
+                                  "spaceBetween": 60
+                                },
+                                "640": {
+                                  "slidesPerView": 4,
+                                  "spaceBetween": 80
+                                },
+                                "992": {
+                                  "slidesPerView": 5,
+                                  "spaceBetween": 120
+                                },
+                                "1200": {
+                                  "slidesPerView": 6,
+                                  "spaceBetween": 120
+                                }
+                              }
+                            }
+                        </script>
+                        <div class="swiper-wrapper align-items-center">
+                            <div class="swiper-slide"><img src="~/Images/img/clients/amphenol_logo.png" class="img-fluid" alt="Amphenol Logo" apple></div>
+                            <div class="swiper-slide"><img src="~/Images/img/clients/first_link_logo.png" class="img-fluid" alt="Firstlink Logo" apple></div>
+                            <div class="swiper-slide"><img src="~/Images/img/clients/plexus_logo.png" class="img-fluid" alt="Plexus Logo" apple></div>
+                            <div class="swiper-slide"><img src="~/Images/img/clients/azra_logo.png" class="img-fluid" alt="AZRA GREEN Logo" apple></div>
+                            <div class="swiper-slide"><img src="~/Images/img/clients/ase_logo.png" class="img-fluid" alt="ASE Logo" apple></div>
+                            <div class="swiper-slide"><img src="~/Images/img/clients/tms_logo.png" class="img-fluid" alt="TMS Logo" apple></div>
+                       
+                        </div>
+                    </div>
+
+                </div>
+
+            </section><!-- /Clients Section -->
+
+            <!-- About Section -->
+            <section id="about" class="about section">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>About Us</h2>
+                </div><!-- End Section Title -->
+
+                <div class="container">
+
+                    <div class="row gy-4">
+
+                        <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+                            <ul class="list-unstyled">
+                                <li class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-check2-circle fs-2 me-3"></i>
+                                    <span><b>Vision</b><br />We aim to provide the best software and services by passionate talents that can improve work efficiency, save time, and serve our customers with the best quality.</span>
+                                </li>
+                                <li class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-check2-circle fs-2 me-3"></i>
+                                    <span><b>Mission</b><br /> Provide custom software development designed to overcome common obstacles in web and software systems, enabling businesses to operate more efficiently and move forward without barriers.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                            <p>
+                                Max System Solution is one of Malaysia’s leading software specialist companies that provides customized, high-quality
+                                software solutions, web application, online marketing, and maintenance services for multinational corporations, huge businesses, as well as small and medium enterprises.
+                            </p>
+                            <a href="#services" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Why Us Section -->
+            <section id="why-us" class="section why-us light-background" data-builder="section">
+
+                <div class="container-fluid">
+
+                    <div class="row gy-4">
+
+                        <div class="col-lg-7 d-flex flex-column justify-content-center order-2 order-lg-1">
+
+                            <div class="content px-xl-5" data-aos="fade-up" data-aos-delay="100">
+                                <h3><span>This is how we will </span><strong>improve </strong> <span>your business</span> </h3>
+                                <p>
+                                    Improving business operations through smart planning, expert solutions, and long-term focus.
+                                </p>
+                            </div>
+
+                            <div class="faq-container px-xl-5" data-aos="fade-up" data-aos-delay="200">
+
+                                <div class="faq-item faq-active">
+
+                                    <h3><span>01</span> Streamlining your business with smart strategies and long-term goals.</h3>
+                                    <div class="faq-content">
+                                        <p>We help simplify your operations by applying proven strategies that not only boost productivity today but also set your business up for lasting success.</p>
+                                    </div>
+                                    <i class="faq-toggle bi bi-chevron-right"></i>
+                                </div><!-- End Faq item-->
+
+                                <div class="faq-item">
+                                    <h3><span>02</span> Enhancing business performance with expert planning and a future-focused approach.</h3>
+                                    <div class="faq-content">
+                                        <p>Our team brings deep expertise to guide your business decisions, ensuring stronger performance now while preparing for tomorrow’s challenges.</p>
+                                    </div>
+                                    <i class="faq-toggle bi bi-chevron-right"></i>
+                                </div><!-- End Faq item-->
+
+                                <div class="faq-item">
+                                    <h3><span>03</span> Making your business more efficient with strategic planning and lasting solutions.</h3>
+                                    <div class="faq-content">
+                                        <p>Through thoughtful planning and tailored solutions, we optimize your processes to save time, reduce costs, and deliver sustainable growth.</p>
+                                    </div>
+                                    <i class="faq-toggle bi bi-chevron-right"></i>
+                                </div><!-- End Faq item-->
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-5 order-1 order-lg-2 why-us-img">
+                            <img src="~/Images/img/why-us.png" class="img-fluid" alt="Why us" data-aos="zoom-in" data-aos-delay="100" apple>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section><!-- /Why Us Section -->
+
+            <!-- Services Section -->
+            <section id="services" class="services section bg-white text-dark">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>Our Services</h2>
+                    <p>We provide custom solutions designed to fit your business and help it grow.</p>
+                </div><!-- End Section Title -->
+
+                <div class="container">
+
+                    <div class="row gy-4">
+
+                        <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+                            <div class="service-item position-relative">
+                                <div class="icon"><i class="bi bi-code-slash icon"></i></div>
+                                <h4>IT Solution</h4>
+                                <p>Providing innovative IT solutions tailored to optimize your business operations, streamline processes, and enhance overall performance.</p>
+                            </div>
+                        </div><!-- End Service Item -->
+
+                        <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+                            <div class="service-item position-relative">
+                                <div class="icon"><i class="bi bi-robot icon"></i></div>
+                                <h4>AI Solution</h4>
+                                <p>Harnessing the power of artificial intelligence to improve decision-making, automate tasks, and create smarter, more efficient business strategies.</p>
+                            </div>
+                        </div><!-- End Service Item -->
+
+                        <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+                            <div class="service-item position-relative">
+                                <div class="icon"><i class="bi bi-people-fill icon"></i></div>
+                                <h4>Outsources Services</h4>
+                                <p>Supplying skilled resources to support your business needs, from technical expertise to project management, ensuring seamless operations and growth.</p>
+                            </div>
+                        </div><!-- End Service Item -->
+
+                        <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
+                            <div class="service-item position-relative">
+                                <div class="icon"><i class="bi bi-chat-dots-fill icon"></i></div>
+                                <h4>Software Consult</h4>
+                                <p>Offering expert guidance to help you navigate complex IT challenges, optimize your infrastructure, and align technology with your business goals.</p>
+                            </div>
+                        </div><!-- End Service Item -->
+
+                    </div>
+
+                </div>
+
+            </section><!-- /Services Section -->
+
+            <!-- Different Section -->
+            <section id="diffent" class="different section light-background">
+ 
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>What makes us different</h2>
+                    <p>We deliver industry best practices through practical, cost-effective solutions and leading technologies—enhanced by a personal touch. As digital transformation becomes a top priority, we help businesses adopt effective strategies to stay competitive and future-ready.</p>
+                </div><!-- End Section Title -->
+ 
+                <div class="container">
+ 
+                    <div class="row gy-4">
+ 
+                        <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+                            <div class="different-item position-relative">
+                            <div class="icon"><i class="bi bi-people-fill icon"></i></div>
+                            <h4>Local Support</h4>
+                            </div>
+                        </div><!-- End Service Item -->
+ 
+                        <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+                             <div class="different-item position-relative">
+                                 <div class="icon"><i class="bi bi-pencil-fill icon"></i></div>
+                                 <h4>Customisation solutions</h4>
+                            </div>
+                         </div><!-- End Service Item -->
+ 
+                         <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+                             <div class="different-item position-relative">
+                                 <div class="icon"><i class="bi bi-cash-coin icon"></i></div>
+                                 <h4>Cost-Effective Solutions</h4>
+                              </div>
+                         </div><!-- End Service Item -->
+ 
+                         <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
+                             <div class="different-item position-relative">
+                                 <div class="icon"><i class="bi bi-person-gear icon"></i></div>
+                                 <h4>Dedicated Support</h4>
+                             </div>
+                         </div><!-- End Service Item -->
+ 
+                    </div>
+                </div>
+ 
+            </section><!-- /How Different Section -->
+
+            <!-- Skills Section -->
+            <section id="skills" class="skills section bg-light text-dark">
+
+                <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                    <div class="row">
+
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <img src="~/Images/img/illustration/illustration-10.webp" class="img-fluid" alt="illustration images" apple>
+                        </div>
+
+                        <div class="col-lg-6 pt-4 pt-lg-0 content">
+
+                            <h3>Expertise and Experience</h3>
+                            <p class="fst-italic">
+                                Leveraging Years of Expertise to Provide Tailored IT and AI Solutions That Drive Success.
+                            </p>
+
+                            <div class="skills-content skills-animation">
+
+                                
+                                <div class="progress">
+                                <span class="skill"><span>Outsources Services</span> <i class="val">100%</i></span>
+                                    <div class="progress-bar-wrap">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!-- End Skills Item -->
+
+
+                                <div class="progress">
+                                    <span class="skill"><span>IT Solution (Web,Mobile, Window)</span> <i class="val">100%</i></span>
+                                    <div class="progress-bar-wrap">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!-- End Skills Item -->
+
+                                <div class="progress">
+                                    <span class="skill"><span>Software Consult</span> <i class="val">95%</i></span>
+                                    <div class="progress-bar-wrap">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!-- End Skills Item -->
+
+                                <div class="progress">
+                                    <span class="skill"><span>AI Solution</span> <i class="val">85%</i></span>
+                                    <div class="progress-bar-wrap">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!-- End Skills Item -->
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </section><!-- /Skills Section -->
+       
+            <!-- Work Process Section -->
+            <section id="work-process" class="work-process section">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>Work Process</h2>
+                    <p>Our Simple, Step-by-Step Process to Deliver Results that Matter</p>
+                </div><!-- End Section Title -->
+
+                <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                    <div class="row gy-5">
+
+                        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                            <div class="steps-item">
+                                <div class="steps-image">
+                                    <img src="~/Images/img/steps/steps-1.webp" alt="Step 1" class="img-fluid" apple>
+                                </div>
+                                <div class="steps-content">
+                                    <div class="steps-number">01</div>
+                                    <h3>Research &amp; Analyse</h3>
+                                    <p>Meet customer and analyse requirements needed.</p>
+                                    <div class="steps-features">
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Get Requirements</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Analyse Requirements</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>User Feedback</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- End Steps Item -->
+                        </div>
+
+                        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                            <div class="steps-item">
+                                <div class="steps-image">
+                                    <img src="~/Images/img/steps/steps-2.webp" alt="Step 2" class="img-fluid" apple>
+                                </div>
+                                <div class="steps-content">
+                                    <div class="steps-number">02</div>
+                                    <h3>Design &amp; Planning</h3>
+                                    <p>Design and plan the project base on requirement.</p>
+                                    <div class="steps-features">
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Wireframing</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>UI/UX Design</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Prototyping</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- End Steps Item -->
+                        </div>
+
+                        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                            <div class="steps-item">
+                                <div class="steps-image">
+                                    <img src="~/Images/img/steps/steps-3.webp" alt="Step 3" class="img-fluid" apple>
+                                </div>
+                                <div class="steps-content">
+                                    <div class="steps-number">03</div>
+                                    <h3>Develop &amp; Deliver</h3>
+                                    <p>Develop the best solution and deliver quality product.</p>
+                                    <div class="steps-features">
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Development</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Testing</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="bi bi-check-circle"></i>
+                                            <span>Deployment</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- End Steps Item -->
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section><!-- /Work Process Section -->
+
+            <!-- Call To Action Section -->
+            <section id="call-to-action" class="call-to-action section dark-background">
+
+                <img src="~/Images/img/bg/bg-8.webp" alt="Background Image" apple>
+
+                <div class="container">
+
+                    <div class="row" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="col-xl-9 text-center text-xl-start">
+                            <h3>Unlock the Future of Digital Innovation</h3>
+                            <p>Empower your business with cutting-edge technology. From custom software solutions to web applications and digital transformation, we help businesses grow and thrive in a connected world.</p>
+                            <p>Let's build the future together – start your journey with us today.</p>
+                        </div>
+                        <div class="col-xl-3 cta-btn-container text-center">
+                            <a class="cta-btn align-middle" href="#contact">Get Started Now</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section><!-- /Call To Action Section -->
+
+            <!-- Portfolio Section -->
+            <section id="portfolio" class="portfolio section">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>Our Portfolio</h2>
+                    <p>Explore our diverse portfolio of web, mobile, AI, and Microsoft 365 solutions, designed to enhance productivity, streamline operations, and drive innovation in businesses of all sizes.</p>
+                </div><!-- End Section Title -->
+
+                <div class="container">
+
+                    <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+                        <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+                            <li data-filter="*" class="filter-active">All</li>
+                            <li data-filter=".filter-app">Web Solution</li>
+                            <li data-filter=".filter-product">Ai Solution</li>
+                            <li data-filter=".filter-branding">Mobile & M365 Solution</li>
+                        </ul><!-- End Portfolio Filters -->
+
+                        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+                           @*  <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-app">
+                                <img src="~/Images/img/portfolio/Helpdesk.png" class="img-fluid" alt="Ticketing system helpdesk" apple>
+                                <div class="portfolio-info">
+                                    <h4>Web - Ticketing System Helpdesk</h4>
+                                    <p>A real-time alert system for detecting emergencies, notifying relevant personnel, and ensuring quick response actions.</p>
+                                    <a href="~/Images/img/portfolio/Helpdesk.png" title="Ticketing System Helpdesk" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div><!-- End Portfolio Item --> *@
+
+                            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+                                <img src="~/Images/img/portfolio/AI.png" class="img-fluid" alt="Ai face recongition" apple>
+                                <div class="portfolio-info">
+                                    <h4>AI Face Recognition</h4>
+                                    <p>Facial recognition software captures facial features and creates a pattern of facial features which it uses to identify or group a face.</p>
+                                    <a href="~/Images/img/portfolio/AI.png" title="AI Face Recognition" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div><!-- End Portfolio Item -->
+
+                             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+                            <img src="~/Images/img/portfolio/defect_detection.png" class="img-fluid" alt="Defect detection" apple>
+                                <div class="portfolio-info">
+                                    <h4>Defect Detection (Ai)</h4>
+                                    <p>Using power of computer vision to track defect of the product.</p>
+                                <a href="~/Images/img/portfolio/defect_detection.png" title="AI Face Recognition" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div><!-- End Portfolio Item -->
+
+@*                             <div class="col-lg-4 col-md-3 col-sm-12 portfolio-item isotope-item filter-branding">
+                                <img src="~/Images/img/portfolio/EAS.png" class="img-fluid" alt="Emergency Alarm System" apple>
+                                <div class="portfolio-info">
+                                    <h4>Mobile - Emergency Alarm System</h4>
+                                    <p>A real-time alert system trigger emergencies, notifying relevant personnel, and ensuring quick response actions.</p>
+                                    <a href="~/Images/img/portfolio/EAS.png" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div><!-- End Portfolio Item --> *@
+
+                    @*         <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-app">
+                                <img src="~/Images/img/portfolio/Management.jpg" class="img-fluid" alt="Project Management System" apple>
+                                <div class="portfolio-info">
+                                    <h4>Web - Project Management System</h4>
+                                    <p>A comprehensive tool for planning, tracking, and managing projects, tasks, and team collaboration efficiently.</p>
+                                    <a href="~/Images/img/portfolio/Management.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div><!-- End Portfolio Item --> *@
+
+                            @* <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product"> *@
+                            @*     <img src="~/Images/img/portfolio/portfolio-portrait-2.webp" class="img-fluid" alt=""> *@
+                            @*     <div class="portfolio-info"> *@
+                            @*         <h4>Product 2</h4> *@
+                            @*         <p>Lorem ipsum, dolor sit</p> *@
+                            @*         <a href="~/Images/img/portfolio/portfolio-portrait-2.webp" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a> *@
+                            @*         <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> *@
+                            @*     </div> *@
+                            @* </div><!-- End Portfolio Item --> *@
+
+                            <div class="col-lg-4 col-md-3 col-sm-12 portfolio-item isotope-item filter-branding">
+                                <img src="~/Images/img/portfolio/mobile.png" class="img-fluid" alt="HR Management System" apple>
+                                <div class="portfolio-info">
+                                    <h4>Microsft 365 - HR Management System</h4>
+                                    <p>HR solution integrated with Microsoft 365 to streamline employee records, leave management, payroll, and performance tracking.</p>
+                                    <a href="~/Images/img/portfolio/mobile.png" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div><!-- End Portfolio Item -->
+
+                            @* <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-app"> *@
+                            @*     <img src="~/Images/img/portfolio/COA.jpg" class="img-fluid" alt=""> *@
+                            @*     <div class="portfolio-info"> *@
+                            @*         <h4>Web - COA (Certificate of Analysis)</h4> *@
+                            @*         <p>A digital system for generating, managing, and verifying Certificates of Analysis to ensure product quality and compliance.</p> *@
+                            @*         <a href="~/Images/img/portfolio/COA.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a> *@
+                            @*         <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> *@
+                            @*     </div> *@
+                            @* </div><!-- End Portfolio Item --> *@
+
+                            <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-app">
+                                <img src="~/Images/img/portfolio/penduduk.jpg" class="img-fluid" alt="ePenduduk" apple>
+                                <div class="portfolio-info">
+                                    <h4>Web - ePenduduk</h4>
+                                    <p>Designed to streamline the management and tracking of resident information. It enables users to efficiently view and manage resident data.</p>
+                                    <a href="~/Images/img/portfolio/penduduk.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div>
+                        <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-product">
+                            <img src="~/Images/img/portfolio/detection_v.png" class="img-fluid" alt="Vehicle Detection" apple>
+                            <div class="portfolio-info">
+                                <h4>Vehicle Detection</h4>
+                                <p>Vehicle detection allow the business to track the movement of the lorry or tracking vehicle from existing cctv.</p>
+                                <a href="~/Images/img/portfolio/detection_v.png" title="Vehicle Detection" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                            </div>
+                        </div>
+                            <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-product">
+                                <img src="~/Images/img/portfolio/poweragent.png" class="img-fluid" alt="Power Agent" apple>
+                                <div class="portfolio-info">
+                                    <h4>Chat Bot Power Agent</h4>
+                                    <p>Power agent is internal chatbot for maxsystem staff to know about standard operation, rule and on boarding process.</p>
+                                    <a href="~/Images/img/portfolio/poweragent.png" title="Power Agent" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-product">
+                                <img src="~/Images/img/portfolio/MaxsysChatbot.png" class="img-fluid" alt="Power Agent" apple>
+                                <div class="portfolio-info">
+                                    <h4>Chat Bot Power Agent</h4>
+                                    <p>This chatbot interface, branded as "AI Agent (Melissa)," is designed to assist clients or users in accessing company information and HR-related queries. It serves as a virtual assistant for Max System, helping visitors learn about services provided, contact methods, and job application procedures. The clean, white-background layout enhances readability and professionalism, making it ideal for corporate use on websites or internal portals..</p>
+                                    <a href="~/Images/img/portfolio/MaxsysChatbot.png" title="Power Agent" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                </div>
+                            </div>
+                           
+                            <!-- End Portfolio Item -->
+
+                            @* <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product"> *@
+                            @*     <img src="~/Images/img/portfolio/portfolio-8.webp" class="img-fluid" alt=""> *@
+                            @*     <div class="portfolio-info"> *@
+                            @*         <h4>Product 3</h4> *@
+                            @*         <p>Lorem ipsum, dolor sit</p> *@
+                            @*         <a href="~/Images/img/portfolio/portfolio-8.webp" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a> *@
+                            @*         <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> *@
+                            @*     </div> *@
+                            @* </div><!-- End Portfolio Item --> *@
+
+                            @* <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding"> *@
+                            @*     <img src="~/Images/img/portfolio/portfolio-9.webp" class="img-fluid" alt=""> *@
+                            @*     <div class="portfolio-info"> *@
+                            @*         <h4>Branding 3</h4> *@
+                            @*         <p>Lorem ipsum, dolor sit</p> *@
+                            @*         <a href="~/Images/img/portfolio/portfolio-9.webp" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a> *@
+                            @*         <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a> *@
+                            @*     </div> *@
+                            @* </div><!-- End Portfolio Item --> *@
+
+                        </div><!-- End Portfolio Container -->
+
+                    </div>
+
+                </div>
+
+            </section><!-- /Portfolio Section -->
+
+            <!-- Team Section -->
+            <section id="team" class="team section" style="display:none">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>Meet Our Management</h2>
+                    @* <p>Behind every great project is a passionate team! Get to know the talented professionals who bring our innovative solutions to life.</p> *@
+                    <p>At Max System, our leadership team brings together years of experience and deep industry knowledge to drive innovation, integrity, and excellence. Meet the people guiding our vision and ensuring we deliver outstanding value to our clients and employees.</p>
+                </div><!-- End Section Title -->
+
+                <div class="container">
+
+                    <style>
+                        .team-member .pic img {
+                            width: 150px; /* Adjust size as needed */
+                            height: 150px;
+                            object-fit: cover;
+                            border-radius: 50%;
+                        }
+                    </style>
+
+                    <div class="row gy-4">
+
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="team-member d-flex align-items-start">
+                                <div class="pic me-3">
+                                    <img src="~/Images/img/person/lee.jpg" class="img-fluid" alt="Lee Eng Hwa" apple>
+                                </div>
+                                <div class="member-info">
+                                    <h4>Lee Eng Hwa</h4>
+                                    <span>Chief Executive Officer</span>
+                                    <p>Leading the company with a vision for innovation and excellence.</p>
+                                    <div class="email">
+                                        <a href="mailto:ehlee@maxsys.com.my">
+                                            <i class="bi bi-envelope-fill"></i> ehlee@maxsys.com.my
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                            <div class="team-member d-flex align-items-start">
+                                <div class="pic me-3">
+                                    <img src="~/Images/img/person/shazwanie.png" class="img-fluid" alt="Shazwanie" apple>
+                                </div>
+                                <div class="member-info">
+                                    <h4>Shazwanie</h4>
+                                    <span>HR Manager</span>
+                                    <p>Managing human resources and employee well-being.</p>
+                                    <div class="email">
+                                        <a href="mailto:shazwanie@maxsys.com.my">
+                                            <i class="bi bi-envelope-fill"></i> shazwanie@maxsys.com.my
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="team-member d-flex align-items-start">
+                                <div class="pic me-3">
+                                    <img src="~/Images/img/person/azham.jpg" class="img-fluid" alt="Azham" apple>
+                                </div>
+                                <div class="member-info">
+                                    <h4>Azham</h4>
+                                    <span>Technical Leader</span>
+                                    <p>Overseeing technical development and innovation.</p>
+                                    <div class="email">
+                                        <a href="mailto:azham@maxsys.com.my">
+                                            <i class="bi bi-envelope-fill"></i> azham@maxsys.com.my
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+                            <div class="team-member d-flex align-items-start">
+                                <div class="pic me-3">
+                                    <img src="~/Images/img/person/yan.jpg" class="img-fluid" alt="Teh Jia Yan" apple>
+                                </div>
+                                <div class="member-info">
+                                    <h4>Teh Jia Yan</h4>
+                                    <span>Assistant Manager</span>
+                                    <p>Supporting operations and strategic initiatives.</p>
+                                    <div class="email">
+                                        <a href="mailto:jiayan.teh.r9@mail.toray">
+                                            <i class="bi bi-envelope-fill"></i> jiayan.teh.r9@mail.toray
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
+                            <div class="team-member d-flex align-items-start">
+                                <div class="pic me-3">
+                                    <img src="~/Images/img/person/hong.jpg" class="img-fluid" alt="Yuen Wei Hong" apple>
+                                </div>
+                                <div class="member-info">
+                                    <h4>Yuen Wei Hong</h4>
+                                    <span>Assistant Manager</span>
+                                    <p>Assisting in management and project execution.</p>
+                                    <div class="email">
+                                        <a href="mailto:whyuan@maxsys.com.my">
+                                            <i class="bi bi-envelope-fill"></i> whyuan@maxsys.com.my
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
+                            <div class="team-member d-flex align-items-start">
+                                <div class="pic me-3">
+                                    <img src="~/Images/img/person/foo.jpg" class="img-fluid" alt="Yuen Wei Hong" apple>
+                                </div>
+                                <div class="member-info">
+                                    <h4>Foo Sze Khai</h4>
+                                    <span>Assistant Manager</span>
+                                    <p>Coordinating with stakeholders to align goals and expectations.</p>
+                                    <div class="email">
+                                        <a href="mailto:skfoo-i@maxsys.com.my">
+                                            <i class="bi bi-envelope-fill"></i> skfoo-i@maxsys.com.my
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section><!-- /Team Section -->
+       
+             @*   <!-- Faq 2 Section --> *@
+            @* <section id="faq-2" class="faq-2 section light-background"> *@
+
+            @*     <!-- Section Title --> *@
+            @*     <div class="container section-title" data-aos="fade-up"> *@
+            @*         <h2>Frequently Asked Questions</h2> *@
+            @*         <p>Get the answers you need to understand how our tailored solutions can help optimize and grow your business.</p> *@
+            @*     </div><!-- End Section Title --> *@
+
+            @*     <div class="container"> *@
+
+            @*         <div class="row justify-content-center"> *@
+
+            @*             <div class="col-lg-10"> *@
+
+            @*                 <div class="faq-container"> *@
+
+            @*                     <div class="faq-item faq-active" data-aos="fade-up" data-aos-delay="200"> *@
+            @*                         <i class="faq-icon bi bi-question-circle"></i> *@
+            @*                         <h3>What IT solutions does your company provide?</h3> *@
+            @*                         <div class="faq-content"> *@
+            @*                             <p>We offer a wide range of IT solutions that are customized to optimize your business operations. Our services help streamline processes, improve performance, and enhance overall business productivity.</p> *@
+            @*                         </div> *@
+            @*                         <i class="faq-toggle bi bi-chevron-right"></i> *@
+            @*                     </div><!-- End Faq item--> *@
+
+            @*                     <div class="faq-item" data-aos="fade-up" data-aos-delay="300"> *@
+            @*                         <i class="faq-icon bi bi-question-circle"></i> *@
+            @*                         <h3>How can your AI solutions benefit my business?</h3> *@
+            @*                         <div class="faq-content"> *@
+            @*                             <p>Our AI solutions leverage cutting-edge technology to improve decision-making, automate repetitive tasks, and enhance business strategies, making your company more efficient and competitive in the market.</p> *@
+            @*                         </div> *@
+            @*                         <i class="faq-toggle bi bi-chevron-right"></i> *@
+            @*                     </div><!-- End Faq item--> *@
+
+            @*                     <div class="faq-item" data-aos="fade-up" data-aos-delay="400"> *@
+            @*                         <i class="faq-icon bi bi-question-circle"></i> *@
+            @*                         <h3>What types of resources do you provide for businesses?</h3> *@
+            @*                         <div class="faq-content"> *@
+            @*                             <p>We supply highly skilled resources that cater to various business needs, including technical expertise and project management. Our resource provision ensures seamless business operations and growth.</p> *@
+            @*                         </div> *@
+            @*                         <i class="faq-toggle bi bi-chevron-right"></i> *@
+            @*                     </div><!-- End Faq item--> *@
+
+            @*                     <div class="faq-item" data-aos="fade-up" data-aos-delay="500"> *@
+            @*                         <i class="faq-icon bi bi-question-circle"></i> *@
+            @*                         <h3>What kind of IT consulting services do you offer?</h3> *@
+            @*                         <div class="faq-content"> *@
+            @*                             <p>Our IT consultants provide expert guidance to help businesses navigate complex IT challenges, optimize existing infrastructure, and align technology with business goals, ensuring long-term success.</p> *@
+            @*                         </div> *@
+            @*                         <i class="faq-toggle bi bi-chevron-right"></i> *@
+            @*                     </div><!-- End Faq item--> *@
+
+            @*                     <div class="faq-item" data-aos="fade-up" data-aos-delay="600"> *@
+            @*                         <i class="faq-icon bi bi-question-circle"></i> *@
+            @*                         <h3>How do your services help my business grow?</h3> *@
+            @*                         <div class="faq-content"> *@
+            @*                             <p>By offering tailored solutions that address your unique business challenges, we help you adopt technologies and strategies that streamline operations, improve efficiency, and ultimately drive business growth.</p> *@
+            @*                         </div> *@
+            @*                         <i class="faq-toggle bi bi-chevron-right"></i> *@
+            @*                     </div><!-- End Faq item--> *@
+
+            @*                 </div> *@
+
+            @*             </div> *@
+
+            @*         </div> *@
+
+            @*     </div> *@
+
+            @* </section><!-- /Faq 2 Section --> *@
+       
+            <!-- Recent Blog Postst Section -->
+            <section id="recent-blog-postst" class="recent-blog-postst section light-background">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>Recent Blog Posts</h2>
+                    <p>Explore the latest events, team activities, and company highlights that showcase our vibrant culture and commitment to excellence.</p>
+                </div><!-- End Section Title -->
+
+                <div class="container">
+
+                    <div class="row gy-5">
+
+                        <div class="col-xl-4 col-md-6">
+                            <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="100">
+
+                                <div class="post-img position-relative overflow-hidden">
+                                    <img src="~/Images/img/blog/team9.jpg" class="img-fluid" alt="team 9" apple>
+                                    <span class="post-date">July 1</span>
+                                </div>
+
+                                <div class="post-content d-flex flex-column">
+
+                                    <h3 class="post-title">Team Building 2024</h3>
+
+                                    <div class="meta d-flex align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-person"></i> <span class="ps-2">HR and Admin</span>
+                                        </div>
+                                        <span class="px-3 text-black-50">/</span>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-folder2"></i> <span class="ps-2">Team Activities</span>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <a href="#" class="readmore stretched-link" data-bs-toggle="modal" data-bs-target="#blogModal1"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+
+                                </div>
+
+                            </div>
+                        </div><!-- End post item -->
+
+                        <div class="col-xl-4 col-md-6">
+                            <div class="post-item position-relative h-100" data-aos="fade-up" data-aos-delay="200">
+
+                                <div class="post-img position-relative overflow-hidden">
+                                    <img src="~/Images/img/blog/Ramadan8.jpeg" class="img-fluid" alt="Ramadan 8" apple>
+                                    <span class="post-date">March 27</span>
+                                </div>
+
+                                <div class="post-content d-flex flex-column">
+
+                                    <h3 class="post-title">Ramadan Buffet 2025</h3>
+
+                                    <div class="meta d-flex align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-person"></i> <span class="ps-2">HR and Admin</span>
+                                        </div>
+                                        <span class="px-3 text-black-50">/</span>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-folder2"></i> <span class="ps-2">Buffet Gathering</span>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <a href="#" class="readmore stretched-link" data-bs-toggle="modal" data-bs-target="#blogModal2"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+
+                                </div>
+
+                            </div>
+                        </div><!-- End post item -->
+
+                        <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="post-item position-relative h-100">
+
+                                <div class="post-img position-relative overflow-hidden">
+                                    <img src="~/Images/img/blog/recognition.jpeg" class="img-fluid" alt="Recognition event" apple>
+                                    <span class="post-date">2024 - 2025</span>
+                                </div>
+
+                                <div class="post-content d-flex flex-column">
+
+                                    <h3 class="post-title">Company Recognition and Gift</h3>
+
+                                    <div class="meta d-flex align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-person"></i> <span class="ps-2">HR and Admin</span>
+                                        </div>
+                                        <span class="px-3 text-black-50">/</span>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-folder2"></i> <span class="ps-2">Appreciation</span>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <a href="#" class="readmore stretched-link" data-bs-toggle="modal" data-bs-target="#blogModal3">><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+
+                                </div>
+
+                            </div>
+                        </div><!-- End post item -->
+
+                    </div>
+
+                </div>
+
+            </section><!-- /Recent Blog Postst Section -->
+
+            <!-- Modal for Blog 1 with Image Carousel -->
+            <div class="modal fade" id="blogModal1" tabindex="-1" aria-labelledby="blogModal1Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="blogModal1Label">Team Building 2024</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <!-- Carousel -->
+                            <div id="carouselTeamBuilding" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                     <div class="carousel-item active">
+                                        <img src="~/Images/img/blog/team9.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 8" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team8.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 8" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team7.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 7" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team6.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 6" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team5.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 5" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team4.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 4" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team3.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 3" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team2.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;"alt="Team 2" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/team1.jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Team 1" apple>
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselTeamBuilding" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselTeamBuilding" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="mt-3">
+                                <p><strong>Date:</strong> July 1 2024</p>
+                                <p>
+                                    Our 2024 team building event featured various collaborative challenges, games, and bonding activities aimed at strengthening our culture.
+                                </p>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal for Blog 1 with Image Carousel -->
+     
+            <!-- Modal for Blog 2 with Image Carousel -->
+            <div class="modal fade" id="blogModal2" tabindex="-1" aria-labelledby="blogModal2Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="blogModal2Label">Ramadan Buffet 2025</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="carouselRamadan" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="~/Images/img/blog/Ramadan8.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 7" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/Ramadan7.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 7" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/Ramadan6.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 6" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/Ramadan5.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 5" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/Ramadan4.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 4" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/Ramadan3.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 3" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/Ramadan2.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 2" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="~/Images/img/blog/Ramadan1.jpeg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Ramadan 1" apple>
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselRamadan" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselRamadan" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="mt-3">
+                                <p><strong>Date:</strong> March 27, 2025</p>
+                                <p>
+                                    A delightful Ramadan buffet gathering where our team bonded over delicious food and celebrated the holy month together.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal for Blog 2 with Image Carousel -->
+        
+            <!-- Modal for Blog 3 with Image Carousel -->
+            <div class="modal fade" id="blogModal3" tabindex="-1" aria-labelledby="blogModal3Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="blogModal3Label">Company Recognition and Gift</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="carouselGifts" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                      <img src="~/Images/img/blog/recognition.jpeg"  class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 9" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (9).jpg"  class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 9" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (8).jpg"  class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 8" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (7).jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 7" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (6).jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 6" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (5).jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 5" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (4).jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 4" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (3).jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 3" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (2).jpg" class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 2" apple>
+                                    </div>
+                                    <div class="carousel-item">
+                                      <img src="~/Images/img/blog/Gift (1).jpg"class="d-block w-100 img-fluid" style="height: 600px; object-fit: contain;" alt="Gift 1" apple>
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselGifts" data-bs-slide="prev">
+                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselGifts" data-bs-slide="next">
+                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <div class="mt-3">
+                                <p><strong>Date:</strong> 2024 - 2025</p>
+                                <p>
+                                  Employees were recognized and appreciated with heartfelt gifts and thank-you notes for their outstanding contributions.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal for Blog 3 with Image Carousel -->
+
+            <!-- Contact Section -->
+            <section id="contact" class="contact section">
+
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>Contact Us</h2>
+                    <p>We are just one email away! Reach out to us and we’ll get back to you as soon as possible.</p>
+                </div><!-- End Section Title -->
+
+                <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                    <div class="row gy-4">
+
+                        <div class="col-lg-5">
+
+                            <div class="info-wrap">
+                                <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+                                    <i class="bi bi-geo-alt flex-shrink-0"></i>
+                                    <div>
+                                        <h3>Address</h3>
+                                        <p>
+                                            Max System Solution Sdn Bhd
+                                            No. 27, 1st Floor, Jalan Villa Tanjung, Villa Tanjung, 12300 Butterworth, Pulau Pinang
+                                        </p>
+                                    </div>
+                                </div><!-- End Info Item -->
+
+                                <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+                                    <i class="bi bi-telephone flex-shrink-0"></i>
+                                    <div>
+                                        <h3>Call Us</h3>
+                                        <p>+60 4 3137612</p>
+                                    </div>
+                                </div><!-- End Info Item -->
+
+                                <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+                                    <i class="bi bi-envelope flex-shrink-0"></i>
+                                    <div>
+                                        <h3>Email Us</h3>
+                                        <p>hr@maxsys.com.my</p>
+                                    </div>
+                                </div><!-- End Info Item -->
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.9322254553813!2d100.38625689999999!3d5.427267299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304ac5ed7013568f%3A0xdef060b81b4def67!2sMax%20System%20Solution%20Sdn%20Bhd!5e0!3m2!1sen!2smy!4v1744084335866!5m2!1sen!2smy" width="500" height="450" style="border:0;" allowfullscreen="" apple referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <form id="form-contactSubmit" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                                <div class="row gy-4">
+
+                                    <div class="col-md-6">
+                                        <label for="name-field" class="pb-2">Your Name</label>
+                                        <input type="text" name="name" id="name-field" class="form-control" required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="email-field" class="pb-2">Your Email</label>
+                                        <input type="email" class="form-control" name="email" id="email-field" required>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="subject-field" class="pb-2">Subject</label>
+                                        <input type="text" class="form-control" name="subject" id="subject-field" required>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="message-field" class="pb-2">Message</label>
+                                        <textarea class="form-control" name="message" rows="10" id="message-field" required></textarea>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <div class="loading">Loading</div>
+                                        <div class="error-message"></div>
+                                        <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                                        <button type="submit">Send Message</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div><!-- End Contact Form -->
+
+                    </div>
+
+                </div>
+
+            </section><!-- /Contact Section -->
+
+               <!-- Carrer -->
+<section id="career" class="career section light-background">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Career Growth With us</h2>
+        <p>Join a team that values innovation, growth, and your future. Explore opportunities to develop your skills, take on exciting challenges, and build a rewarding career with us.</p>
+    </div><!-- End Section Title -->
+    <div class="container">
+
+        <div class="row gy-4">
+
+            <div class="col-lg-4 aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100">
+                <div class="career-item">
+                    <h3>Software Engineer (AI)</h3>
+                    <ul>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Gather and produce specifications for new or modified features.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Research, develop, test, and deploy machine learning algorithms and predictive models.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Create and enhance scalable machine learning algorithms and predictive models using
+                                AI tools
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Transform machine learning models into APIs and integrate them with other
+                                applications
+                            </span>
+                        </li>
+                        <li><i class="bi bi-check"></i> <span>Test, tune, monitor, and support AI-related models and APIs</span></li>
+                    </ul>
+                    <div class="button-group">
+                        <a href="~/document/jd/(maxsys) jd-ai engineer.pdf" class="buy-btn" target="_blank" rel="noopener noreferrer">More Info</a>
+                        <a href="#applyModal" class="buy-btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" data-position="Software Engineer (AI)">Apply Now</a>
+                    </div>
+
+                </div>
+            </div><!-- End career Item -->
+
+            <div class="col-lg-4 aos-init aos-animate" data-aos="zoom-in" data-aos-delay="200">
+                <div class="career-item">
+                    <h3>IT Technical Support</h3>
+                    <ul>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Serve as the first point of contact for customers seeking technical assistance over the phone or
+                                email.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Perform remote troubleshooting through diagnostic techniques and pertinent questions.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Determine the best solution based on the issue and details provided by customers
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Attend to customer’s queries, support, services and issues.
+                            </span>
+                        </li>
+                        <li><i class="bi bi-check"></i> <span>Prioritize and manage several open issues at one time</span></li>
+                    </ul>
+                    <div class="button-group">
+                        <a href="~/document/jd/(MaxSys) JD - IT Technical Support.pdf" class="buy-btn" target="_blank" rel="noopener noreferrer">More Info</a>
+                        <a href="#applyModal" class="buy-btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" data-position="IT Technical Support">Apply Now</a>
+                    </div>
+                </div>
+            </div><!-- End career Item -->
+
+            <div class="col-lg-4 aos-init aos-animate" data-aos="zoom-in" data-aos-delay="300">
+                <div class="career-item">
+                    <h3>IT Engineer (Network)</h3>
+                    <ul>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Design, implement, and manage network infrastructure and services, including servers, routers,
+                                switches, firewalls, and other network devices.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Configure and maintain network devices, ensuring that they operate efficiently.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Proactively monitor, troubleshoot, and resolve network issue, outages, and cloud
+                                infrastructure/ services implementing corrective measures in a timely and effective manner.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Ensure high availability, scalability, and security of server infrastructure, cloud-based
+                                applications, systems, and data.
+                            </span>
+                        </li>
+                        <li><i class="bi bi-check"></i> <span>Implement and maintain backup solutions for network, server, and cloud infrastructures.</span></li>
+                    </ul>
+                    <div class="button-group">
+                        <a href="~/document/jd/(MaxSys) JD - IT Engineer (Network).pdf" class="buy-btn" target="_blank" rel="noopener noreferrer">More Info</a>
+                        <a href="#applyModal" class="buy-btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" data-position="IT Engineer (Network)">Apply Now</a>
+                    </div>
+                </div>
+            </div><!-- End career Item -->
+            <div class="col-lg-4 aos-init aos-animate" data-aos="zoom-in" data-aos-delay="300">
+                <div class="career-item">
+                    <h3>Software Developer</h3>
+                    <ul>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Study, analyse, design, develop, enhance, or maintain the systems in accordance with the
+                                design and its requirements.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Set up system architecture, system visualization and unit testing based on project
+                                requirements
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Ensure technology standard are implemented as part of the deliverables.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Ensure coding quality and follow company policies.
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Developing code documentation and functional specification to support programme
+                                development and operation support.
+                            </span>
+                        </li>
+                    </ul>
+                     <div class="button-group">
+                        <a href="~/document/jd/(MaxSys) JD - Software Developer.pdf" class="buy-btn" target="_blank" rel="noopener noreferrer">More Info</a>
+                        <a href="#applyModal" class="buy-btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" data-position="Software Developer">Apply Now</a>
+                    </div>
+                </div>
+            </div><!-- End career Item -->
+            <div class="col-lg-4 aos-init aos-animate" data-aos="zoom-in" data-aos-delay="300">
+                <div class="career-item">
+                    <h3>IT Engineer (Cloud)</h3>
+                    <ul>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Maintain of daily network operation (network, server) which including but not limited
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Network routine performance assessment, troubleshoot the network issues and outages
+                                (LAN & WAN)
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Administer firewall settings in line with IT security policy
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Implementation of new technologies and platforms for supporting on premise network and
+                                connectivity to cloud environment (AWS & Azure).
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Server & Storage performance, Server Backup Plan, propose & manage new network related
+                                project with proper project management
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="button-group">
+                        <a href="~/document/jd/(MaxSys) JD IT Engineer (Cloud).pdf" class="buy-btn" target="_blank" rel="noopener noreferrer">More Info</a>
+                        <a href="#applyModal" class="buy-btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" data-position="IT Engineer (Cloud)">Apply Now</a>
+                    </div>
+                </div>
+            </div><!-- End career Item -->
+            <div class="col-lg-4 aos-init aos-animate" data-aos="zoom-in" data-aos-delay="300">
+                <div class="career-item">
+                    <h3>Mobile Developer</h3>
+                    <ul>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Developing application programming interfaces (APIs) to support mobile functionality
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Keeping up to date with the terminology, concepts and best practices for coding mobile
+                                apps
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Using and adapting existing web applications for apps
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Fixing bugs and performance problems
+                            </span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check"></i> <span>
+                                Cooperating with back-end developers, designers, and the rest of the team to deliver
+                                well architected and high-quality solutions
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="button-group">
+                        <a href="~/document/jd/(MaxSys) JD Mobile Developer.pdf" class="buy-btn" target="_blank" rel="noopener noreferrer">More Info</a>
+                        <a href="#applyModal" class="buy-btn-apply" data-bs-toggle="modal" data-bs-target="#applyModal" data-position="Mobile Developer">Apply Now</a>
+                    </div>
+                </div>
+            </div><!-- End career Item -->
+        </div>
+
+    </div>
+    </section>
+ <!-- Carrer -->
+        </main>
+
+        <footer id="footer" class="footer bg-light">
+
+            <div class="container footer-top bg-light">
+                <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6 footer-about">
+                        <a href="#" class="d-flex align-items-center">
+                            <span class="sitename">Max System Solution</span>
+                        </a>
+                        <div class="footer-contact pt-3">
+                            <p>27, 1st Floor</p>
+                            <p>Jalan Villa Tanjung</p>
+                            <p>
+                                Villa Tanjung
+                                12300 Butterworth
+                            </p>
+                            <p class="mt-3"><strong>Phone:</strong> <span>+60 4 3137612</span></p>
+                            <p><strong>Email:</strong> <span>hr@maxsys.com.my</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#about">About us</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#services">Services</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#services">Web Design</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#services">Web Development</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#services">Product Management</a></li>
+                            <li><i class="bi bi-chevron-right"></i> <a href="#services">Marketing</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-12">
+                        <h4>Follow Us</h4>
+                        <p>Stay connected with us on social media for the latest updates and news.</p>
+                        <div class="social-links d-flex">
+                        <a href="https://www.facebook.com/profile.php?id=100093248738324"><i class="bi bi-facebook"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="container copyright text-center mt-4">
+                <p>© <span>Copyright</span> <strong class="px-1 sitename">Max System Solution</strong> <span>All Rights Reserved</span></p>
+                <div class="credits">
+                    <!-- All the links in the footer should remain intact. -->
+                    <!-- You can delete the links only if you've purchased the pro version. -->
+                    <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                    <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+                    @* Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> *@
+                </div>
+            </div>
+
+        </footer>
+
+        <!-- Scroll Top -->
+        <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center d-none"><i class="bi bi-arrow-up-short"></i></a>
+
+        <!-- Preloader -->
+        <div id="preloader"></div>
+
+        <!-- Bootstrap JS: CDN first -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Fallback: Load local if CDN fails -->
+        <script>
+            if (typeof bootstrap === 'undefined') {
+                document.write('<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"><\/script>');
+            }
+        </script>
+
+        <!-- 🌐 Other Vendor JS Files -->
+        <script src="~/vendor/php-email-form/validate.js"></script>
+        <script src="~/vendor/aos/aos.js"></script>
+        <script src="~/vendor/glightbox/js/glightbox.min.js"></script>
+        <script src="~/vendor/swiper/swiper-bundle.min.js"></script>
+        <script src="~/vendor/waypoints/noframework.waypoints.js"></script>
+        <script src="~/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+        <script src="~/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+
+        <!-- Main JS File -->
+        <script src="~/js/indexmain.js"></script>
+
+        <!-- Login Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="loginForm" method="post" action="/Home/Login">
+                            @Html.AntiForgeryToken() <!-- Add this line -->
+                            <div class="mb-3">
+                                <label for="loginEmail" class="form-label">Email address</label>
+                                @Html.TextBoxFor(a => a.LOGIN_ID, new { placeholder = "Enter email", id = "loginEmail", @class = "form-control remove-left-border login-txt textbox keyboard", @value = "", type = "email" })
+                                <span class="text-danger" id="emailError"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginPassword" class="form-label">Password</label>
+                                @Html.TextBoxFor(a => a.PASSWORD, new { placeholder = "Password", id = "loginPassword", @class = "form-control remove-left-border login-txt textbox keyboard", @value = "", type = "password" })
+                                <span class="text-danger" id="passwordError"></span>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                        </form>
+                        <hr />
+                    <div class="text-center mt-3">
+                        <a class="btn btn-outline-primary btn-microsoft-small d-flex align-items-center justify-content-center w-100" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="Sign">
+                            <img src="~/Images/Microsoft_logo.svg" alt="Microsoft Logo" style="height: 20px; margin-right: 8px;">
+                            <span>Microsoft Sign In</span>
+                        </a>
+                    </div>
+
+
+                       
+                        @*  <button type="submit" class="btn btn-outline-primary w-100">Microsoft Sign In</button> *@
+
+                        <div class="text-center mt-3">
+                            <a href="/Account/ForgotPassword" id="forgotPasswordLink">Forgot Password?</a> <!-- Forgot Password link -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--CHATBOT-->
+        <div class="chbot-frame" id="chatbot_frame">
+            <div class="chbot-header">
+                <div class="chbot-uprofile">
+                    <div class="chbot-uprofile-icon d-flex align-items-center justify-content-center text-white" style="font-size:8px;">
+                        <img src="~/Images/Max_logo3.ico" alt="Max System Logo" class="logo-img" style="height: 23px; width: auto;">
+                    </div>
+                    <span class="chbot-uprofile-text">Ai Agent (Melissa)</span>
+                </div>
+                <div class="chbot-menu">
+                    <div class="chbot-menu-btn" title="Hide" id="chatbot_hide_btn"><i class="bi bi-x-circle-fill"></i></div>
+                </div>
+            </div>
+            <div class="chbot-body">
+                <div class="chbot-conversation" id="chbot_conversation">
+                    <div class="chbot-message">
+                        <div class="chbot-date">Today</div>
+                    </div>
+
+                    <div class="chbot-message in">
+                        <div class="chbot-message-content">Hello. I'm Melissa, Max System's AI chatbot. I'm happy to answer your questions. What brings you here?</div>
+                    </div>
+
+                    <div class="chbot-message d-none">
+                        <div class="chbot-suggest">
+                            <div class="chbot-suggest-item">What is our service provided?</div>
+                            <div class="chbot-suggest-item">How to contact us?</div>
+                            <div class="chbot-suggest-item">How to join us?</div>
+                        </div>
+                    </div>
+
+                    <div class="chbot-message out d-none">
+                        <div class="chbot-message-content">What brings you here?</div>
+                    </div>
+                    <div class="chbot-message in d-none">
+                        <div class="chbot-message-content">
+                            <div class="chbot-loader"><span></span><span></span><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chbot-footer">
+                <div class="chbot-input-zone">
+                    <div class="chbot-input"><textarea id="chatbot_send_input"></textarea></div>
+                    <div class="chbot-input-btn" id="chatbot_send_btn" title="sent message"><i class="bi bi-send-fill"></i></div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Modal Apply Job -->
+    <!-- Modal -->
+    <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applyModalLabel">Apply for Position</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="application-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="applicant-name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="applicant-name" name="applicant-name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="applicant-tel" class="form-label">Tel No</label>
+                                <input type="tel" class="form-control" id="applicant-tel" name="applicant-tel" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="applicant-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="applicant-email" name="applicant-email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="applicant-resume" class="form-label">Upload Resume</label>
+                                <input type="file" class="form-control" id="applicant-resume" name="applicant-resume" accept=".pdf, .docx, image/*" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="transportation" class="form-label">Have Transportation?</label>
+                                <select class="form-select" id="transportation" name="transportation" required>
+                                    <option value="">Select</option>
+                                    <option value="No transportation">No Transportation</option>
+                                    <option value="Car">Car</option>
+                                    <option value="Motorcycle">Motorcycle</option>
+                                    <option value="Both">Both</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="applicant-position" class="form-label">Position Applied</label>
+                                <input type="text" class="form-control" id="applicant-position" name="applicant-position" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="expected-salary" class="form-label">Expected Salary</label>
+                                <input type="number" class="form-control" id="expected-salary" name="expected-salary" required value="0">
+                            </div>
+                            <div class="mb-3">
+                                <label for="notice-period" class="form-label">Notice Period</label>
+                                <select class="form-select" id="notice-period" name="notice-period" required>
+                                    <option value="">Select</option>
+                                    <option value="Can Start Immediately">Can Start Immediately</option>
+                                    <option value="1 Month">1 Month</option>
+                                    <option value="2 Months">2 Months</option>
+                                    <option value="3 Months">3 Months</option>
+                                    <option value="4 Months">4 Months</option>
+                                    <option value="5 Months">5 Months</option>
+                                    <option value="6 Months">6 Months</option>
+                                    <option value="More than 6">More than 6 Months</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="applicant-description" class="form-label">Short Description</label>
+                                <textarea class="form-control" id="applicant-description" name="applicant-description" rows="5" placeholder="Tell us briefly why you are suitable for this role."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </div>
+                    <div class="d-md-none">
+                        <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- jQuery Script to Show Modal -->
+        <script>
+            // document.addEventListener('DOMContentLoaded', function () {
+            //   const loginBtn = document.getElementById('loginBtn');
+            //   const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+
+            //   loginBtn.addEventListener('click', function () {
+            //     loginModal.show();
+            //   });
+            // });
+        </script>
+
+        <!--CHATBOT-->
+        <script>
+            //ChatBot Positioning Handler
+            $(document).ready(function () {
+                AOS.init();
+
+                const introTexts = ["Hello, I am Melissa", "How can assist you"];
+                let index = 0;
+
+                $('#chatbot_intro').removeClass('d-none').hide().fadeIn(600);
+
+                const interval = setInterval(() => {
+                    index++;
+                    if (index < introTexts.length) {
+                        $('#chatbot_intro_text').fadeOut(300, function () {
+                            $(this).text(introTexts[index]).fadeIn(300);
+                        });
+                    } else {
+                        clearInterval(interval);
+                        $('#chatbot_intro').fadeOut(500, function () {
+                        $(this).addClass('d-none');
+                        $('#chatbot_btn').removeClass('d-none').hide().fadeIn(500, function () {
+                            // Automatically trigger click after showing the button
+                            $('#chatbot_btn').trigger('click');
+                        });
+                    });
+                    }
+                }, 1800); // Change text every 1.8 seconds
+            });
+
+            $(document).on('click', '#chatbot_btn', function (e) {
+                //console.log($(this).hasClass('active'));
+                const chatbot = $('#chatbot_frame');
+                if (!$(this).hasClass('active')) {
+                    $(this).addClass('active');
+                    chatbot.addClass('active');
+                    chatbot.appendTo('.tr-tooltips-container');
+                    $('#chbot_conversation').scrollTop($('#chbot_conversation')[0].scrollHeight);
+
+                    const elementRect = this.getBoundingClientRect();
+
+                    const windowWidth = window.innerWidth;
+                    const windowHeight = window.innerHeight;
+
+                    const isSpaceOnBottom = windowHeight - elementRect.bottom >= chatbot.outerHeight();
+                    const isSpaceOnTop = elementRect.top >= chatbot.outerHeight();
+                    const isSpaceOnRight = windowWidth - elementRect.left >= chatbot.outerWidth();
+                    const isSpaceOnLeft = elementRect.left >= chatbot.outerWidth();
+
+                    //console.log(windowWidth - elementRect.left);
+                    //console.log(chatbot.outerWidth());
+                    //console.log(isSpaceOnRight)
+
+                    if (isSpaceOnBottom) {
+                        //console.log('A');
+                        chatbot.css({
+                            top: elementRect.bottom + 5 + 'px',
+                        });
+                    } else if (isSpaceOnTop) {
+                        //console.log('B');
+                        chatbot.css({
+                            top: (elementRect.top - chatbot.outerHeight() - 5) + 'px',
+                        });
+                    }
+
+                    if (isSpaceOnRight) {
+                        //console.log('C');
+                        chatbot.css({
+                            left: elementRect.left + 'px',
+                        });
+                    } else {
+                        //console.log('D');
+                        chatbot.css({
+                            left: (elementRect.right - chatbot.outerWidth()) + 'px',
+                        });
+                    }
+
+                } else {
+                    $(this).removeClass('active');
+                    chatbot.removeClass('active');
+                }
+            });
+
+            //CHATBOT
+            var chbot_cookie_name;
+            var chbot_process = 0;
+            $(document).ready(function (e) {
+
+                chbot_cookie_name = "CSIRT_CHBOT_" + $('#txt_Usr_ID').val();
+                if (getCookie(chbot_cookie_name) != null) {
+                    try {
+                        var pos = getCookie(chbot_cookie_name);
+                        pos = JSON.parse(pos);
+                        $('#chatbot_btn').css({
+                            position: 'fixed',
+                            top: pos.top,
+                            left: pos.left
+                        });
+                        chbot_positioningAdjustment();
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+
+                var originalPosition = {
+                    top: $('#chatbot_btn').css('top'),
+                    left: $('#chatbot_btn').css('left')
+                };
+
+                $('#chatbot_btn').draggable({
+                    containment: "window",
+                    start: function () {
+                        // Save the current position before dragging
+                        originalPosition.top = $('#chatbot_btn').css('top');
+                        originalPosition.left = $('#chatbot_btn').css('left');
+                    },
+                    drag: function (event, ui) {
+                        $('#chatbot_btn').removeClass('active');
+                        $('#chatbot_frame').removeClass('active');
+                    },
+                    stop: function (event, ui) {
+                        var topValue = parseInt($('#chatbot_btn').css('top'), 10);
+                        var leftValue = parseInt($('#chatbot_btn').css('left'), 10);
+                        var windowHeight = $(window).height();
+
+                        // If dragged too low (e.g., bottom out of viewport)
+                        if (topValue + 50 > windowHeight) {
+                            // Revert to original position
+                            $('#chatbot_btn').css({
+                                top: originalPosition.top,
+                                left: originalPosition.left
+                            });
+                        } else {
+                            // Save new position
+                            createCookie(chbot_cookie_name, JSON.stringify({
+                                top: topValue + 'px',
+                                left: leftValue + 'px'
+                            }), 1);
+                        }
+                    }
+                });
+
+                // $('#chatbot_btn').draggable({
+                //     containment: [0, 0, $(window).width() - 50, $(window).height() - 50], // [x1, y1, x2, y2]
+                //     drag: function (event, ui) {
+                //         $('#chatbot_btn').removeClass('active');
+                //         $('#chatbot_frame').removeClass('active');
+                //     },
+                //     stop: function (event, ui) {
+                //         var topValue = $('#chatbot_btn').css('top');
+                //         var leftValue = $('#chatbot_btn').css('left');
+                //         var bottomValue = $('#chatbot_btn').css('bottom');
+                //         if (topValue > 0 && leftValue > 0 && bottomValue > 0){
+
+                //             createCookie(chbot_cookie_name, JSON.stringify({ top: topValue, left: leftValue }), 1);
+                //         }
+                //     }
+                // });
+
+                $(window).on('resize', function () {
+                    //$('#chatbot_btn').draggable('option', 'containment', [0, 0, $(window).width() - 50, $(window).height() - 50]);
+                    chbot_positioningAdjustment();
+                });
+
+                test_addSuggest();
+
+                // $('#chatbot_btn').click(function (e) {
+                //    $(this).toggleClass('active');
+                //    $('#chatbot_frame').toggleClass('active');
+                // });
+
+                $('#chatbot_hide_btn').click(function (e) {
+                    $('#chatbot_btn').removeClass('active');
+                    $('#chatbot_frame').removeClass('active');
+                });
+
+                $('#chatbot_send_btn').click(function (e) {
+                    var question = $('#chatbot_send_input').val();
+                    chbot_sendQuestion(question);
+                    $('#chatbot_send_input').val('');
+                });
+                $('#chatbot_send_input').keydown(function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        chbot_sendQuestion($(this).val());
+                        $(this).val('');
+                    }
+                });
+            });
+
+            function chbot_positioningAdjustment() {
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                const elementRect = $('#chatbot_btn')[0].getBoundingClientRect();
+                //console.log(elementRect);
+                if (elementRect.top < 0) {
+                    $('#chatbot_btn').css('top', 0);
+                }
+                if ((elementRect.top + elementRect.height) > windowHeight) {
+                    $('#chatbot_btn').css('top', (windowHeight - elementRect.height) + 'px');
+                }
+                if (elementRect.left < 0) {
+                    $('#chatbot_btn').css('left', 0);
+                }
+                if ((elementRect.left + elementRect.width) > windowWidth) {
+                    $('#chatbot_btn').css('left', (windowWidth - elementRect.width) + 'px');
+                }
+            }
+
+            function chbot_loading(load = true) {
+                if (load) {
+                    chbot_process = 1;
+                    const containerDiv = $('<div>').addClass('chbot-message chbot-message-loader in');
+                    const contentDiv = $('<div>').addClass('chbot-message-content');
+                    const loaderDiv = $('<div>').addClass('chbot-loader');
+                    for (let i = 0; i < 3; i++) {
+                        $('<span>').appendTo(loaderDiv);
+                    }
+                    loaderDiv.appendTo(contentDiv);
+                    contentDiv.appendTo(containerDiv);
+                    containerDiv.appendTo('#chbot_conversation');
+                    $('#chbot_conversation').scrollTop($('#chbot_conversation')[0].scrollHeight);
+                } else {
+                    chbot_process = 0;
+                    $('#chbot_conversation .chbot-message-loader').remove();
+                }
+            }
+            function chbot_rmvSuggest() {
+                $('#chbot_conversation .chbot-message-suggest').remove();
+            }
+            function chbot_addMessage(type, data) {
+                switch (type) {
+                    case 'msg-date':
+                        $('#chbot_conversation').append(`
+                            <div class="chbot-message">
+                                <div class="chbot-date">${data.msg}</div>
+                            </div>
+                        `);
+                        break;
+                    case 'msg-in':
+                        $('#chbot_conversation').append(`
+                            <div class="chbot-message in">
+                                <div class="chbot-message-content">${data.msg}</div>
+                            </div>
+                        `);
+                        break;
+                    case 'msg-out':
+                        $('#chbot_conversation').append(`
+                            <div class="chbot-message out">
+                                <div class="chbot-message-content">${data.msg}</div>
+                            </div>
+                        `);
+                        break;
+                    case 'suggest':
+                        var suggest_item = '';
+                        for (var i = 0; i < data.length; i++) {
+                            var suggest = data[i];
+                            suggest_item += `<div class="chbot-suggest-item" data-msg="${suggest.msg}">${suggest.msg}</div>`;
+                        }
+                        $('#chbot_conversation').append(`
+                            <div class="chbot-message chbot-message-suggest">
+                                <div class="chbot-suggest">${suggest_item}</div>
+                            </div>
+                        `);
+                        $('.chbot-suggest .chbot-suggest-item').each(function (index) {
+                            var delay = 0.2 * index; // Adjust the delay as needed
+                            $(this)[0].offsetHeight;
+                            $(this).css('transition-delay', delay + 's');
+                            $(this).addClass('cbs-fade-in');
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                $('#chbot_conversation').scrollTop($('#chbot_conversation')[0].scrollHeight);
+            }
+
+            $(document).on('click', '#chbot_conversation .chbot-suggest-item', function (e) {
+                var data_msg = $(this).data('msg');
+                $(this).parent().parent().remove();
+                chbot_sendQuestion(data_msg);
+            });
+
+            function chbot_sendQuestion(question) {
+                var cont = true;
+                var msg = "";
+
+                if (chbot_process == 1) {
+                    cont = false;
+                    msg = "Previous response is ongoing. Please wait.";
+                }
+                if (cont && question.trim() === "") {
+                    cont = false;
+                    msg = "Message cannot be empty.";
+                }
+
+                if (cont) {
+                    chbot_process = 1;
+
+                    chbot_rmvSuggest();
+                    chbot_addMessage('msg-out', { msg: question });
+                    chbot_loading();
+
+                    // Get previous messages
+                    var messages = [];
+
+                    $("#chbot_conversation .chbot-message").each(function () {
+                        var isIn = $(this).hasClass("in");
+                        var content = $(this).find(".chbot-message-content").text().trim();
+
+                        if (content !== "") {
+                            messages.push({
+                                role: isIn ? "assistant" : "user",
+                                content: content
+                            });
+                        }
+                    });
+
+                    // Add current question
+                    messages.push({ role: "user", content: question });
+
+                    // Call ASP.NET Core controller
+                    $.ajax({
+                        url: "/Home/Chatbot",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ messages: messages }),
+                        success: function (response) {
+                            chbot_loading(false);
+                            chbot_addMessage('msg-in', { msg: response });
+                            test_addSuggest();
+                            chbot_process = 0;
+                        },
+                        error: function () {
+                            chbot_loading(false);
+                            chbot_addMessage('msg-in', { msg: "Sorry, something went wrong." });
+                            chbot_process = 0;
+                        }
+                    });
+
+                } else {
+                    toastError("Invalid Action", msg);
+                }
+            }
+
+            // function chbot_sendQuestion(question) {
+            //     var cont = true;
+            //     var msg = "";
+
+            //     if (chbot_process == 1) {
+            //         cont = false;
+            //         msg = "Previous response is ongoing. Please wait.";
+            //     }
+            //     if (cont && question.trim() == "") {
+            //         cont = false;
+            //         msg = "Message cannot be empty.";
+            //     }
+
+            //     if (cont) {
+            //         //TEMPORARY
+            //         chbot_rmvSuggest();
+            //         chbot_addMessage('msg-out', { msg: question });
+            //         chbot_loading();
+
+            //         setTimeout(function () {
+            //             chbot_loading(false);
+            //             chbot_addMessage('msg-in', { msg: 'Sorry, i cant quite understand your question.' });
+            //             test_addSuggest();
+            //         }, 2000);
+
+            //     } else {
+            //         toastError("Invalid Action", msg);
+            //     }
+            // }
+
+            function test_addSuggest() {
+                chbot_addMessage('suggest', [{ msg: 'What are our services provided' }, { msg: 'How to contact us' }, { msg: 'How to join us' }]);
+                $('#chbot_conversation').scrollTop($('#chbot_conversation')[0].scrollHeight);
+            }
+        </script>
+
+    <!--APPLY JOB-->
+    <script>
+              $('#applyModal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget); // Button that triggered the modal
+          var position = button.data('position'); // Extract info from data-* attributes
+          var modal = $(this);
+          modal.find('.modal-title').text('Apply for ' + position);
+          modal.find('#applicant-position').val(position);
+        });
+
+        $('#application-form').on('submit', function(e) {
+          e.preventDefault();
+          var formData = new FormData(this);
+          var isValid = true;
+
+          // Simple validation
+          $('#application-form input[required], #application-form textarea[required]').each(function() {
+            if ($(this).val() === '') {
+              isValid = false;
+              $(this).addClass('is-invalid');
+            } else {
+              $(this).removeClass('is-invalid');
+            }
+          });
+
+          if (isValid) {
+              console.log("XXX")
+            $.ajax({
+              url: '/Home/ApplyJob',
+              type: 'POST',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function(response) {
+                alert('Application submitted successfully!');
+                $('#applyModal').modal('hide');
+                console.log(response.message)
+              },
+              error: function() {
+                alert('There was an error submitting your application. Please try again.');
+              }
+            });
+          }
+        });
+         $(document).ready(function () {
+            $("#form-contactSubmit").on("submit", function (e) {
+                e.preventDefault();
+
+                // Clear previous messages
+                $(".error-message").hide().text("");
+                $(".sent-message").hide().text("");
+
+                var name = $("#name-field").val().trim();
+                var email = $("#email-field").val().trim();
+                var subject = $("#subject-field").val().trim();
+                var message = $("#message-field").val().trim();
+                var error = "";
+
+                // Simple validation
+                if (name === "") {
+                    error = "Please enter your name.";
+                } else if (email === "") {
+                    error = "Please enter your email.";
+                } else if (!validateEmail(email)) {
+                    error = "Please enter a valid email address.";
+                } else if (subject === "") {
+                    error = "Please enter the subject.";
+                } else if (message === "") {
+                    error = "Please enter your message.";
+                }
+
+                if (error !== "") {
+                    $(".error-message").show().text(error);
+                    return;
+                }
+
+                var formData = $(this).serialize();
+
+                $(".loading").show(); 
+
+                $.ajax({
+                    type: "POST", 
+                    url: "/Home/ContactSubmit", // Adjust route if needed
+                    data: formData,
+                    success: function (response) {
+                        $(".loading").hide();
+                        if (response.success) {
+                            $(".sent-message").show().text(response.message);
+                            $(".error-message").hide();
+                            $("#form-contactSubmit")[0].reset();
+                        } else {
+                            $(".error-message").show().text(response.message);
+                              console.log(response.message)
+                        }
+                    },
+                  });
+            });
+            function validateEmail(email) {
+                var re = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                return re.test(email);
+            }
+         });
+
+    </script>
+
+
+    </body>
+</html>

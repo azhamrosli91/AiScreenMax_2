@@ -1,0 +1,29 @@
+﻿@using Component_TableListing.Models
+@using MaxSys.Models
+@using static MaxSys.Enum.Enum
+@{
+    //Top Panel ===============================================================================================
+    ComponentTopPanelModel componentTopPanelModel = new ComponentTopPanelModel();
+    componentTopPanelModel.Title_LabelVisible = true;
+    componentTopPanelModel.Title_LabelText = "Employee List";
+    componentTopPanelModel.CreateForm_ButtonText = "Create Employee";
+    componentTopPanelModel.CreateForm_ButtonVisible = true;
+    componentTopPanelModel.CreateForm_ButtonPath = "/DE_Employee/Detail";
+    componentTopPanelModel.Export_ButtonExport_Visible = true;
+    componentTopPanelModel.Export_ButtonExport_PDF_Text = "Export PDF";
+    componentTopPanelModel.Export_ButtonExport_PDF_Visible = true;
+    componentTopPanelModel.Export_ButtonExport_PDF_FunctionName = "exportTableTo('pdf')";
+    componentTopPanelModel.Export_ButtonExport_XLS_Text = "Export Excel";
+    componentTopPanelModel.Export_ButtonExport_XLS_Visible = true;
+    componentTopPanelModel.Export_ButtonExport_XLS_FunctionName = "exportTableTo('excel')";
+}
+@await Component.InvokeAsync("ComponentTopPanel", componentTopPanelModel)
+<div class="page-container card-height">
+    <div class="row mb-2 align-items-baseline">
+       
+    </div>
+    <div class="col-md-12 h-100" id="project_list" style="min-height:500px;">
+        @await Component.InvokeAsync("ComponentTableV1", ViewBag.ID)
+    </div>
+
+</div>

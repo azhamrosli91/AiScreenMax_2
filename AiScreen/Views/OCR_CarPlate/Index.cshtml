@@ -1,0 +1,382 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_new.cshtml";
+}
+<style>
+    /* Make the preview container scrollable */
+    .dropzone .dz-preview.dz-preview-multiple {
+        max-height: 200px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    /* Make image thumbnails 15x15 */
+    .dropzone .dz-preview .dz-image {
+        width: 15px !important;
+        height: 15px !important;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Adjust text and spacing */
+    .dropzone .dz-preview .media {
+        padding: 5px;
+        font-size: 12px;
+        align-items: center;
+    }
+
+    .dropzone .dz-preview h6,
+    .dropzone .dz-preview p,
+    .dropzone .dz-preview span {
+        font-size: 11px !important;
+        margin-bottom: 2px;
+    }
+
+    .dropzone .dz-message {
+        margin: 0px !important;
+    }
+</style>
+<div class="mb-9 w-100">
+    <div class="row align-items-center justify-content-between g-3">
+        <div class="col-auto">
+            <h2 class="mb-0">OCR Car Plate Testing</h2>
+        </div>
+        <div class="col-auto">
+            <div class="row g-3">
+               @*  <div class="col-auto">
+                    <a class="btn btn-phoenix-secondary" href="../AiResume/History"><span class="fas fa-history me-2"></span>History</a>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-success" href="../AiResume/Shortlisted"><span class="fas fa-check me-2"></span>Shortlisted</a>
+                </div> *@
+            </div>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col-12 col-xl-10 order-1 order-xl-0 w-100">
+            <div class="card shadow-none border my-4 w-100" data-component-card="data-component-card">
+                <div class="card-body p-3">
+                    <div class="mb-3">
+                        <div class="input-group mb-3">
+                            <input class="form-control" id="txtTitle" type="text" placeholder="Title" aria-label="Title" aria-describedby="button-addon2" value="Data" />
+                            <button class="btn btn-primary" type="submit" id="button-addon2">
+                                <i class="fa fa-paper-plane"></i>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-xxl-5 col-sm-12">
+                                <label class="form-label" for="exampleFormControlInput">Configuration </label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="txtThreshold">Detail </label>
+                                    <select class="form-control" name="detail">
+                                        <option value="1" selected>True</option>
+                                        <option value="0">False</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="txtThreshold">Threshold </label>
+                                    <input class="form-control" id="txtThreshold" type="number" min="0" max="0" value="0.5" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="txtlowText">Low Text </label>
+                                    <input class="form-control" id="txtlowText" type="number" min="0" max="0" value="0.5" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="txtLinkThreshold">Link Threshold </label>
+                                    <input class="form-control" id="txtLinkThreshold" type="number" min="0" max="0" value="0.5" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="exampleFormControlInput">Grayscale </label>
+                                    <select class="form-control" name="grayscale">
+                                        <option value="true" selected>True</option>
+                                        <option value="false">False</option>
+                                    </select>
+                                </div>
+                                @* <textarea id="txtJobDescription"></textarea> *@
+                            </div>
+                            <div class="col-12 col-md-6 col-xxl-7 col-sm-12">
+                                <label class="form-label" for="exampleFormControlInput">Upload Picture </label>
+                                <div class="p-4 code-to-copy">
+                                    <div class="dropzone dropzone-multiple p-0" id="dropzone-multiple" data-dropzone="data-dropzone">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple accept="image/*" />
+                                        </div>
+                                        <div class="dz-message" data-dz-message="data-dz-message"><img class="me-2" src="~/images/icons/cloud-upload.svg" width="25" alt="" />Drop your files here</div>
+                                        <div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
+                                            <div class="d-flex mb-3 pb-3 border-bottom border-translucent media">
+                                                <div class="border p-2 rounded-2 me-2"><img class="rounded-2 dz-image" src="~/images/icons/file.png" alt="..." data-dz-thumbnail="data-dz-thumbnail" /></div>
+                                                <div class="flex-1 d-flex flex-between-center">
+                                                    <div>
+                                                        <h6 data-dz-name="data-dz-name"></h6>
+                                                        <div class="d-flex align-items-center">
+                                                            <p class="mb-0 fs-9 text-body-quaternary lh-1" data-dz-size="data-dz-size"></p>
+
+                                                        </div><span class="fs-10 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-link text-body-tertiary btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
+                                                        <div class="dropdown-menu dropdown-menu-end border border-translucent py-2"><a class="dropdown-item" href="#!" data-dz-remove="data-dz-remove">Remove File</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <div class="mb-3">
+                        <!-- Your table -->
+                        <hr />
+                        <div id="ocrCardContainer" class="d-flex flex-wrap gap-3"></div>
+
+                        @* <table id="example" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Information</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Disable autoDiscover BEFORE Dropzone loads -->
+<script>
+    window.Dropzone = window.Dropzone || {};
+    Dropzone.autoDiscover = false;
+</script>
+
+<!-- Load Dropzone -->
+<script src="~/vendor/dropzone/dropzone-min.js"></script>
+
+<!-- Disable Dropzone auto-discover -->
+<script>
+    window.Dropzone = window.Dropzone || {};
+    Dropzone.autoDiscover = false;
+</script>
+
+<!-- Load Dropzone -->
+<script src="~/vendor/dropzone/dropzone-min.js"></script>
+
+<div class="modal fade" id="ocrModal" tabindex="-1" aria-labelledby="ocrModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ocrModalLabel">OCR Result</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column align-items-center">
+                <img id="modalImage" src="" class="img-fluid rounded mb-3" style="max-width:300px; max-height:300px; width:auto; height:auto;" />
+            
+                <div id="modalText" class="text-start w-100 mb-3"></div>
+            
+                <div id="modalConfig" class="text-start w-100 border-top pt-3 small text-muted">
+                    <!-- config info will be populated here -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let myDropzone;
+
+    $(document).ready(function () {
+
+        // Dropzone Initialization
+        if ($('#dropzone-multiple').length) {
+            if (Dropzone.instances.length > 0) {
+                myDropzone = Dropzone.instances.find(dz => dz.element.id === "dropzone-multiple");
+                console.log("Dropzone reused");
+            } else {
+                myDropzone = new Dropzone("#dropzone-multiple", {
+                    url: "/dummy", // dummy; real upload is manual
+                    autoProcessQueue: false,
+                    addRemoveLinks: true,
+                    acceptedFiles: ".pdf,.doc,.docx,image/*"
+                });
+                console.log("Dropzone initialized");
+            }
+        }
+
+        // Initialize DataTable
+        const table = $('#example').DataTable({
+            initComplete: function () {
+                 $("#example").wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+            }
+        });
+
+        // Submit handler
+        $('#button-addon2').on('click', async function (e) {
+            e.preventDefault();
+
+            const $btn = $(this);
+            if ($btn.prop('disabled')) return;
+
+            // Lock button
+            $btn.prop('disabled', true).html(`<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Submitting...`);
+
+            const title = $('#txtTitle').val().trim();
+           
+            const files = myDropzone?.getAcceptedFiles() || [];
+
+            if (!title) {
+                alert("❗ Please enter Job Title.");
+                $('#txtTitle').focus();
+                resetButton();
+                return;
+            }
+
+
+            if (!files.length) {
+                alert("❗ Please upload at least one resume file.");
+                resetButton();
+                return;
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const formData = new FormData();
+
+
+                // Append required OCR parameters
+                formData.append("image", file);
+                formData.append("detail", $('select[name="detail"]').val() || "1");
+                formData.append("text_threshold", $('#txtThreshold').val() || "0.5");
+                formData.append("low_text", $('#txtlowText').val() || "0.5");
+                formData.append("link_threshold", $('#txtLinkThreshold').val() || "0.5");
+                formData.append("grayscale", $('select[name="grayscale"]').val() || "true");
+
+                // Show placeholder card
+                const $cardContainer = $('#ocrCardContainer');
+                const placeholderId = `card-${Date.now()}-${i}`;
+                $cardContainer.append(`
+                    <div class="card shadow-sm border text-center p-3" id="${placeholderId}" style="width:300px;">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2 mb-0 small text-muted">Processing ${file.name}...</p>
+                    </div>
+                `);
+
+                try {
+                    const detail = $('select[name="detail"]').val() || "1";
+                    const text_threshold = $('#txtThreshold').val() || "0.5";
+                    const low_text = $('#txtlowText').val() || "0.5";
+                    const link_threshold = $('#txtLinkThreshold').val() || "0.5";
+                    const grayscale = $('select[name="grayscale"]').val() || "true";
+
+                    const response = await uploadOCRData(formData);
+
+                   const imageTag = `<img src="${response.imageUrl}" class="img-fluid rounded border mb-2" style="width:300px; height:300px; object-fit:cover;" />`;
+
+                    const textData = Array.isArray(response.texts) ? response.texts.join("<br/>") : "-";
+
+                    // Replace placeholder with real card
+                    $(`#${placeholderId}`).replaceWith(`
+                        <div class="card ocr-result-card shadow-sm border p-3"
+                             style="width:300px; cursor:pointer;"
+                             data-img="${response.imageUrl}"
+                             data-text="${encodeURIComponent(textData)}"
+                             data-detail="${detail}"
+                             data-threshold="${text_threshold}"
+                             data-lowtext="${low_text}"
+                             data-link="${link_threshold}"
+                             data-grayscale="${grayscale}">
+
+                            ${imageTag}
+
+                            <div class="mt-2 text-start small text-body">
+                                <strong>Result:</strong><br/>
+                                ${textData}
+                                <hr class="my-2"/>
+                                <strong>Config:</strong><br/>
+                                Detail: ${detail}<br/>
+                                Threshold: ${text_threshold}<br/>
+                                Low Text: ${low_text}<br/>
+                                Link Threshold: ${link_threshold}<br/>
+                                Grayscale: ${grayscale}
+                            </div>
+                        </div>
+                    `);
+
+
+
+                } catch (error) {
+                    $(`#${placeholderId}`).remove(); // Remove failed placeholder
+                    alert(`❌ Failed to upload ${file.name}: ` + error.message);
+                }
+            }
+
+
+
+
+            // Unlock button
+            resetButton();
+
+            function resetButton() {
+                $btn.prop('disabled', false).html('<i class="fa fa-paper-plane"></i> Submit');
+            }
+        });
+
+        // Ajax wrapper
+        function uploadOCRData(formData) {
+            return new Promise(function (resolve, reject) {
+                  $.ajax({
+                     url: "/OCR_CarPlate/UploadProxy",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log("Upload success:", response);
+                        resolve(response);
+                    },
+                    error: function (xhr) {
+                        console.error("Upload failed", xhr);
+                        reject(new Error(xhr.responseText || xhr.statusText || "Unknown error"));
+                    }
+                });
+            });
+        }
+
+         // Show modal on card click
+        $('#ocrCardContainer').on('click', '.ocr-result-card', function () {
+            const img = $(this).data('img');
+            const text = decodeURIComponent($(this).data('text'));
+
+            // OCR config values
+            const detail = $(this).data('detail');
+            const threshold = $(this).data('threshold');
+            const lowtext = $(this).data('lowtext');
+            const link = $(this).data('link');
+            const grayscale = $(this).data('grayscale');
+
+            $('#modalImage').attr('src', img);
+            $('#modalText').html(`<strong>Detected Text:</strong><br>${text}`);
+
+            $('#modalConfig').html(`
+                <strong>OCR Configuration:</strong><br/>
+                Detail: ${detail}<br/>
+                Threshold: ${threshold}<br/>
+                Low Text: ${lowtext}<br/>
+                Link Threshold: ${link}<br/>
+                Grayscale: ${grayscale}
+            `);
+
+            const modal = new bootstrap.Modal(document.getElementById('ocrModal'));
+            modal.show();
+        });
+
+
+    });
+</script>

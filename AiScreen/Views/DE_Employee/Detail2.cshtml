@@ -1,0 +1,405 @@
+﻿@using Component_TableListing.Models
+@using MaxSys.Models
+@using static MaxSys.Enum.Enum
+
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<style>
+    .upload-list {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    .upload-list-item {
+        display: flex;
+        overflow: hidden;
+        padding: 5px 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        cursor: pointer;
+        position: relative;
+        word-break: break-word;
+        flex-shrink: 0;
+    }
+
+    .upload-list-item-del {
+        color: red;
+        transition: 0.5s;
+        opacity: 0;
+        position: absolute;
+        top: 5px;
+        right: 15px;
+        transform: translateX(calc(100% + 15px));
+    }
+
+    .upload-list-item:hover .upload-list-item-del {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .upload-list-item .upload-list-item-del:hover {
+        color: darkred;
+        animation: fa-shake 2s linear;
+    }
+</style>
+
+<form asp-action="Post" asp-controller="Appraise" method="post" id="frmEmployee">
+    <div class="row g-0 px-3 tr-listing-header">
+        <!-- Title takes full width on mobile, half width on medium and larger screens -->
+        <div class="col-12 col-md-6 align-self-center">
+            <p class="text-muted m-0 tr-listing-header-title " id="lblHeaderTitle" name="lblHeader">Candidate Detail</p>
+        </div>
+        <!-- Buttons take full width on mobile, half width on medium and larger screens -->
+        <div class="col-12 col-md-6 text-md-end align-self-center">
+            <div class="row g-2 justify-content-center justify-content-md-end" id="buttonContainer">
+                <div class="col-6 col-md-auto btnDelete" style="display: none;"></div>
+                <div class="col-6 col-md-auto" style="display: none;">
+                    <a class="btn btn-sm btn-secondary minw-100px" onclick="onclickBack()">Back</a>
+                </div>
+                <div class="col-6 col-md-auto isEditable_Display" style="display: none;">
+                    <button class="btn btn-sm btn-primary minw-100px" id="btnEdit" onclick="onclickEdit(this)">Edit</button>
+                </div>
+                <div class="col-12 col-md-auto btnSubmit">
+                    <button id="btnDelete" type="button" class="btn btn-sm btn-danger minw-100px" style="display:none;">Delete</button>
+                    <button id="btnSubmit" type="button" class="btn btn-sm btn-primary minw-100px">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container card-height">
+        <div class="card d-flex flex-column h-100 minh-100 h-fit-content">
+            <div class="card-body g-0 px-3">
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="row mb-2 align-items-baseline">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                <p class="text-muted">Name <span class="text-danger">*</span><span style="float:right">:</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                                <input type="text" id="txtName" class="form-control isEdit required" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="row mb-2 align-items-baseline">
+                            <div class="col-sm-12">
+                                <p class="text-muted">Job Description</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <textarea id="txtDesc" class="form-control isEdit required" style="height:300px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="row mb-2 align-items-baseline">
+                            <div class="col-sm-12">
+                                <p class="text-muted">Upload Resume</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="d-flex mb-2">
+                                    <input type="file" id="txtUpload" class="form-control isEdit required" />
+                                    <div id="btnUpload" class="btn btn-sm btn-primary btn-center px-3 ms-2">Upload</div>
+                                </div>
+                                <div class="upload-list overflow-auto h-100" id="upload_list" style="max-height:400px;">
+                                    @* <div class="upload-list-item">
+                                        <div class="upload-list-item-text">Filename</div>
+                                        <div class="upload-list-item-del"><i class="fa fa-trash"></i></div>
+                                    </div> *@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="overflow-auto h-100">
+                            <table class="table table-bordered" id="result-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Percentage Match</th>
+                                        <th>Short Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    //GET DATA
+    var allData = [];
+    var currentSelectedIndex = null;
+    //var currentData = {};
+    var uploadedFile = [];
+
+    $(document).ready(function () {
+        var localData = JSON.parse(localStorage.getItem('INTERVIEW_DATA'));
+
+        $('#LO_listing thead').html(`<tr>
+                <th>Name</th>
+                <th>Date</th>
+            </tr>`);
+
+        if (localData) {
+            console.log(localData);
+            allData = localData;
+
+            refreshLayoutList(allData);
+        }
+
+        $('#LO_txtSearch').keyup(function(){
+            refreshLayoutList(allData);
+        });
+
+        $('#LO_btnAdd').click(function(){
+            resetAll();
+        });
+    });
+
+    function refreshLayoutList(data){
+        var list = '';
+        var searchVal = $('#LO_txtSearch').val().trim();
+        data.forEach(function (d, index) {
+            var display = true;
+            if (searchVal != "" && d.Name != null && !d.Name.toLowerCase().includes(searchVal.toLowerCase())) {
+                display = false;
+            }
+            if (display) {
+                list += `<tr data-did="${index}">
+                    <td>${d.Name}</td>
+                    <td>${d.LastDateTimeExecute}</td>
+                </tr>`;
+            }
+        });
+        $('#LO_listing tbody').html(list);
+    }
+
+    $(document).on('click', '#LO_listing tbody tr', function(){
+        var did = $(this).data("did");
+        if(did != null){
+            $('#LO_listing tbody tr').removeClass('active');
+            $(this).addClass('active');
+            currentSelectedIndex = did;
+            getSelectedData();
+        }
+    });
+
+    function getSelectedData(){
+        var selectedData = allData[currentSelectedIndex];
+        if(selectedData != null){
+            $('#btnDelete').show();
+            $('#txtName').val(selectedData.Name);
+            $('#txtDesc').val(selectedData.Desc);
+
+            if (selectedData.Resume != null){
+                var tmp_list = '';
+                var tmp_uploadedFile = [];
+                selectedData.Resume.forEach(function (d, index) {
+                    attRowIdx++;
+
+                    tmp_uploadedFile.push({ did: attRowIdx, file: d.FileBase });
+                    tmp_list += `<div class="upload-list-item" data-name="${d.FileName}" data-url="INPUT" data-did="${attRowIdx}">
+                        <div class="upload-list-item-text">${d.FileName}</div>
+                        <div class="upload-list-item-del" data-did="${attRowIdx}"><i class="fa fa-trash"></i></div>
+                    </div>`;
+                });
+                uploadedFile = tmp_uploadedFile;
+                $('#upload_list').html(tmp_list);
+            }
+        }
+    }
+
+</script>
+
+<script>
+    //UI Control
+    $(document).ready(function () {
+        //pageViewType();
+    });
+
+    var attRowIdx = 0;
+    var max_upload_size = 5;
+    $('#btnUpload').click(function(){
+        //CHECK FILE INPUT
+        var fileInput = $('#txtUpload')[0];
+        var maxFileSize = max_upload_size ? max_upload_size * 1024 * 1024 : 0;
+        var allowedExtensions = ['png', 'jpg', 'jpeg', 'xlsx', 'xls', 'pdf'];
+
+        var cont = true;
+        var message = "";
+
+        if (fileInput.files.length > 0) {
+            var allFileName = '';
+            for (var i = 0; i < fileInput.files.length; i++) {
+                var file = fileInput.files[i];
+                var fileName = file.name;
+                var fileSize = file.size;
+                var fileExtension = fileName.split('.').pop().toLowerCase();
+                allFileName += (allFileName != "") ? (", " + fileName) : fileName;
+                if (cont) {
+                    if (allowedExtensions.indexOf(fileExtension) === -1) {
+                        cont = false;
+                        message = 'Unsupported file type detected.';
+                    }
+                }
+                if (cont) {
+                    if (fileSize > maxFileSize) {
+                        cont = false;
+                        message = "Maximum file size is " + max_upload_size + "MB for each file.";
+                    }
+                }
+            }
+        } else {
+            cont = false;
+        }
+
+        if (cont) {
+            for (var i = 0; i < fileInput.files.length; i++) {
+                var file = fileInput.files[i];
+                var fileName = file.name;
+                var fileSize = file.size;
+                var fileExtension = fileName.split('.').pop().toLowerCase();
+                allFileName += (allFileName != "") ? (", " + fileName) : fileName;
+
+                attRowIdx++;
+                uploadedFile.push({ did: attRowIdx, file: file });
+                //if (['jpg', 'jpeg', 'png', 'gif'].indexOf(fileExtension) >= 0) {}
+                $('#upload_list').append(`
+                    <div class="upload-list-item" data-name="${fileName}" data-url="INPUT" data-did="${attRowIdx}">
+                        <div class="upload-list-item-text">${fileName}</div>
+                        <div class="upload-list-item-del" data-did="${attRowIdx}"><i class="fa fa-trash"></i></div>
+                    </div>
+               `);
+            }
+
+            $('#txtUpload').val('');
+        }else{
+            if(message != ""){
+                alert(message);
+            }
+        }
+    });
+
+    function formatFileSize(bytes) {
+        const units = ['Bytes', 'kB', 'MB', 'GB', 'TB'];
+        // If the bytes are 0, return "0 Bytes"
+        if (bytes === 0) return '0 Bytes';
+        // Calculate the logarithm base 1024 of the bytes
+        const i = Math.floor(Math.log(bytes) / Math.log(1024));
+        // Format the size to one decimal point and append the appropriate unit
+        return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + units[i];
+    }
+
+    $(document).on('click', '.upload-list-item-del', function(){
+        $(this).parent().remove();
+    });
+</script>
+
+<script>
+    $('#btnSubmit').click(function(){
+        var cont = true;
+        var message = "";
+
+        var name = $('#txtName').val().trim();
+        var desc = $('#txtDesc').val().trim();
+
+        var attachment_list = [];
+        $("#upload_list .upload-list-item").each(function () {
+            var did = $(this).data("did");
+            if (did != '' && did != null && did != undefined) {
+                var att_name = $(this).data("name").trim();
+                var att_file = ""; //$('#att_file_' + did).val().trim();
+
+                var matchedFile = uploadedFile.find(obj => obj.did === parseInt(did));
+                att_file = matchedFile.file;
+
+                attachment_list.push({
+                    'FileName': att_name,
+                    'FileBase': att_file
+                });
+            }
+        });
+
+        if (name === ""){
+            cont = false;
+            message = "Name cannot be empty.";
+        }
+
+        if (cont){
+
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+            const yyyy = today.getFullYear();
+
+            const formattedDate = `${dd}/${mm}/${yyyy}`;
+
+            var newData = {
+                Name: name,
+                Desc: desc,
+                Resume: attachment_list,
+                LastDateTimeExecute: formattedDate,
+                TokenUsage: ''
+            };
+
+            // Save to localStorage
+            console.log(newData);
+
+            if (currentSelectedIndex != null) {
+                allData[currentSelectedIndex] = newData;
+            } else {
+                allData.push(newData);
+            }
+
+            localStorage.setItem("INTERVIEW_DATA", JSON.stringify(allData));
+
+            refreshLayoutList(allData);
+            resetAll();
+
+        } else {
+            if(message != ""){
+                toastMessage(message, 'error');
+            }
+        }
+    });
+
+    $('#btnDelete').click(function(){
+        allData.splice(currentSelectedIndex, 1);
+        refreshLayoutList(allData);
+        resetAll();
+    });
+
+    function resetAll() {
+        //Reset
+        currentSelectedIndex = null;
+        $('#btnDelete').hide();
+        $('#txtName').val('');
+        $('#txtDesc').val('');
+
+        attRowIdx = 0;
+        uploadedFile = [];
+        $('#upload_list').html('');
+        //LO
+         $('#LO_listing tbody tr').removeClass('active');
+    }
+</script>

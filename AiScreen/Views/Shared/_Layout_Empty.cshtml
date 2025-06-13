@@ -1,0 +1,182 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="my">
+<head>
+@*     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> *@
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Max System Solution - Your trusted IT partner for business solutions, software development, outsourcing, and corporation maintenance.">
+    <meta name="keywords" content="Max System Solution, IT solutions, software development, outsourcing, corporation maintenance">
+    <meta name="author" content="Max System Solution">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph for social media sharing -->
+    <meta property="og:title" content="Max System Solution - IT Partner of Choice">
+    <meta property="og:description" content="We provide customized software solutions, IT outsourcing, and business automation.">
+    <meta property="og:image" content="https://www.maxsys.com.my/Images/Max_logo_2.png">
+    <meta property="og:url" content="https://www.maxsys.com.my">
+
+    <title>@Configuration["ProjectName"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/sidebar.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/spinthatshit.css" rel="stylesheet" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/solid.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/regular.min.css" />
+    <link href="~/lib/select2-4.1.0/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <link href="~/lib/select2-4.1.0/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.bootstrap5.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.checkboxes.css" rel="stylesheet" />
+    <link href="~/css/mobilecss.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+
+    @* This code is ASP.NET Core CSS Isolation*@
+    @*  <link href="~/MaxSys.styles.css" rel="stylesheet" asp-append-version="true" /> *@
+
+    @* This is script *@
+    @* Comment1 *@
+    @* Comment JY *@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @*     <script src="~/js/jquery-ui-1.12.1.min.js"></script> *@
+    <script src="~/js/jquery-ui-1.12.1.js"></script>
+    <script src="~/js/bootstrap.bundle.js"></script>
+    <script src="~/js/jquery.validate-vsdoc.js"></script>
+    <script src="~/js/jquery.validate.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery.cookie.min.js"></script>
+    <script src="~/js/attrchange.js"></script>
+    <script src="~/js/modernizr-2.8.3.js"></script>
+    <script src="~/js/mainJS.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/views/shared/_Layout_Empty.js"></script>
+    <script src="~/lib/select2-4.1.0/js/select2.min.js"></script>
+
+    <script src="~/lib/datatables/js/jquery.datatables.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap.js"></script>
+    <script src="~/lib/datatables/js/datatables.select.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap5.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.checkboxes.min.js"></script>
+
+    @* <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Penduduk - Sistem Pengurusan Komuniti</title>
+    <meta name="description" content="Sistem E-Penduduk memudahkan pengurusan komuniti termasuk maklumat penduduk, program, khairat kematian, asnaf, pembayaran komuniti, dan sumbangan.">
+    <meta name="keywords" content="E-Penduduk, pengurusan komuniti, khairat kematian, asnaf, sistem komuniti, program komuniti">
+    <meta name="author" content="Your Name or Organization">
+    <meta property="og:title" content="E-Penduduk - Sistem Pengurusan Komuniti">
+    <meta property="og:description" content="Sistem ini memudahkan pengurusan komuniti seperti maklumat penduduk, program, khairat kematian, dan sumbangan.">
+    <meta property="og:image" content="images/og-image.jpg">
+    <meta property="og:url" content="https://ependuduk.com">
+    <meta name="twitter:card" content="summary_large_image"> *@
+    <!-- 🔹 SEO Meta Tags -->
+    <meta name="description" content="E-Penduduk adalah sistem pengurusan komuniti yang memudahkan pentadbiran maklumat penduduk, program, pembayaran komuniti, dan sumbangan.">
+    <meta name="keywords" content="E-Penduduk, pengurusan komuniti, khairat kematian, asnaf, sistem komuniti, program komuniti, sumbangan, pembayaran komuniti">
+    <meta name="author" content="E-Penduduk Team">
+    <meta name="robots" content="index, follow">  <!-- ✅ Ensure search engines index this page -->
+    <!-- 🔹 Canonical URL (Prevents duplicate content issues) -->
+    <link rel="canonical" href="https://ependuduk.com" />
+
+    <!-- 🔹 Open Graph (OG) - Social Media (Facebook, WhatsApp) -->
+    <meta property="og:title" content="E-Penduduk - Sistem Pengurusan Komuniti">
+    <meta property="og:description" content="Sistem ini memudahkan pengurusan komuniti seperti maklumat penduduk, program, khairat kematian, dan sumbangan.">
+    <meta property="og:image" content="https://ependuduk.com/images/og-image.jpg">  <!-- ✅ Ensure this image exists -->
+    <meta property="og:url" content="https://ependuduk.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="E-Penduduk">
+
+    <!-- 🔹 Favicon & Apple Touch Icons (Improves Branding) -->
+    <link rel="icon" href="https://ependuduk.com/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://ependuduk.com/apple-touch-icon.png">
+
+    <!-- 🔹 Additional Performance & Indexing -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#05285E">
+
+    <style>
+        /* Preload Images for Faster Loading */
+        img {
+            will-change: transform;
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "WebSite",
+          "name": "E-Penduduk",
+          "url": "https://ependuduk.com",
+          "description": "Sistem E-Penduduk memudahkan pengurusan komuniti termasuk maklumat penduduk, program, khairat kematian, asnaf, pembayaran komuniti, dan sumbangan.",
+          "potentialAction": {
+            "@@type": "SearchAction",
+            "target": "https://ependuduk.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid d-flex flex-column">
+        <div class="row flex-nowrap">
+            <main class="col ps-md-2 mx-2 detail-frame">
+                @RenderBody()
+                <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+                    <div id="errorToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #B1003C">
+                        <div class="toast-header" style="background-color: #FFF0EE">
+                            <strong class="me-auto text-danger title">Warning!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body text-muted message" style="background-color: #FFF0EE; border-top: 1px solid #FFF0EE; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                            This is an error message.
+                        </div>
+                    </div>
+                </div>
+                <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+                    <div id="successToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #00A251">
+                        <div class="toast-header" style="background-color: #E9FFF8">
+                            <strong class="me-auto title" style="color: #00A251">Successful!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body text-muted message" style="background-color: #E9FFF8; border-top: 1px solid #E9FFF8; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                            This is a successful message.
+                        </div>
+                    </div>
+                </div>
+                <!-- Loading -->
+                <div class="spanner align-self-center">
+                    <img src="~/Images/loading12.gif" alt="Loading" style="width: 85px; height: auto" />
+                </div>
+            </main>
+        </div>
+    </div>
+    <!--GENERAL MODAL-->
+    <!--Confirmation Modal-->
+    <div class="modal fade" id="submit-confirmation-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header pb-0">
+                    <h5 class="modal-title">Confirmation</h5>
+                </div>
+                <hr />
+                <div class="modal-body">
+                    <h6 class="modal-text">Are you sure to submit this record?</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                    <button type="button" class="btn btn-sm btn-primary modal-submit-btn" data-bs-dismiss="modal">Ya</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

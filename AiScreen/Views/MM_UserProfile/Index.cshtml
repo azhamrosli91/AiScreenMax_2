@@ -1,0 +1,314 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_new.cshtml";
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var isLoggedIn = HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+}
+
+<div class="mb-9">
+    <div class="row align-items-center justify-content-between g-3 mb-4">
+        <div class="col-auto">
+            <h2 class="mb-0">Profile</h2>
+        </div>
+        <div class="col-auto">
+            <div class="row g-3">
+                @* <div class="col-auto">
+                    <button class="btn btn-phoenix-secondary"><span class="fas fa-key me-2"></span>Apply Leave</button>
+                </div> *@
+            </div>
+        </div>
+    </div>
+    <div class="row g-0 g-md-4 g-xl-6">
+        <div class="col-12 col-md-12 col-xxl-12">
+            <div class="card h-100 h-xxl-auto">
+                <div class="card-body d-flex flex-column justify-content-between pb-3">
+                    <div class="row align-items-center g-5 mb-3 text-center text-sm-start">
+                        <div class="col-12 col-sm-auto mb-sm-2">
+                            <div class="avatar avatar-5xl"><img class="img-userprofile  rounded-circle" src="~/Images//user-avatar.png" alt="" /></div>
+                        </div>
+                        <div class="col-12 col-sm-auto flex-1">
+                            <h3 id="txtUserName">USER PROFILE NAME</h3>
+                            <p class="text-body-secondary" id="txtJoinedDate">Joined 3 months ago</p>
+                            <p class="text-body-secondary" id="txtsupervisor">Supervisor : </p>
+                        </div>
+                    </div>
+                    <div class="row border-top border-dashed pt-4">
+                        <div class="col-12 col-md-3 mb-3 mb-md-0">
+                            <h6>Role</h6>
+                            <p class="fs-7 text-body-secondary mb-0" id="txtRole"></p>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 mb-md-0">
+                            <h6>Department</h6>
+                            <p class="fs-7 text-body-secondary mb-0" id="txtDepartment"></p>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 mb-md-0">
+                            <h6>Team</h6>
+                            <p class="fs-7 text-body-secondary mb-0" id="txtTeam"></p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <h6>Emp No</h6>
+                            <p class="fs-7 text-body-secondary mb-0" id="txtEmpNo"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-lg-6 col-xl-7">
+            <div class="sticky-leads-sidebar">
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <h3 class="me-1">Default Address</h3>
+                            <button class="btn btn-link p-0"><span class="fas fa-pen fs-8 ms-3 text-body-quaternary"></span></button>
+                        </div>
+                        <h5 class="text-body-secondary">Address</h5>
+                        <p class="text-body-secondary" id="txtAddress">Not found</p>
+                        <div class="mb-3">
+                            <h5 class="text-body-secondary">Email</h5><a id="txtEmailAdress" href="mailto:shatinon@jeemail.com"> </a>
+                            <span data-feather="copy"
+                                  onclick="onClickCopy('txtEmailAdress')"
+                                  class="cursor-pointer"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-placement="top"
+                                  title="Copy to email">
+                            </span>
+                        </div>
+                        <h5 class="text-body-secondary">Phone</h5><a id="txtPhoneNo" class="text-body-secondary" href="tel:+1234567890"></a>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <h3 class="me-1">Leave Information</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Carry Forward Leave</h5>
+                                <p class="text-body-secondary" id="txtCarryForward">0</p>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Annual Leave</h5>
+                                <p class="text-body-secondary" id="txtAnnualLeave">0</p>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Medical Leave</h5>
+                                <p class="text-body-secondary" id="txtMedicalLeave">0</p>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Paternity Leave</h5>
+                                <p class="text-body-secondary" id="txtPaternityLeave">0</p>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Maternity Leave</h5>
+                                <p class="text-body-secondary" id="txtMaternityLeave">0</p>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Compassionate Leave</h5>
+                                <p class="text-body-secondary" id="txtCompassionateLeave">0</p>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Marriage Leave</h5>
+                                <p class="text-body-secondary" id="txtMarriageLeave">0</p>
+                            </div>
+                            <div class="col-6">
+                                <h5 class="text-body-secondary">Convocation Leave</h5>
+                                <p class="text-body-secondary" id="txtConvocationLeave">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-lg-6 col-xl-5">
+            <div class="lead-details-container">
+                <div class="scrollspy-example rounded-2" data-bs-spy="scroll" data-bs-offset="0" data-bs-target="#navbar-deals-detail" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
+                    <div class="mb-8">
+                        <h3 class="mb-4">Leave History <span class="text-body-tertiary fw-normal">(97)</span></h3>
+                        <div class="border-top border-bottom border-translucent" id="customerOrdersTable" data-list='{"valueNames":["TYPE_LEAVE","DATE_START_DESC","DATE_END_DESC"],"page":10,"pagination":true}'>
+                            <div class="table-responsive scrollbar">
+                                <table class="table table-sm fs-9 mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="sort align-middle white-space-nowrap text-start" scope="col" data-sort="TYPE_LEAVE">Status</th>
+                                            <th class="sort align-middle text-start pe-7" scope="col" data-sort="DATE_START_DESC">Date Start</th>
+                                            <th class="sort align-middle text-start pe-3" scope="col" data-sort="DATE_END_DESC">Date End</th>
+                                            <th class="sort text-start align-middle pe-0 ps-5" scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="list" id="customer-order-table-body">
+        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row align-items-center justify-content-between py-2 pe-0 fs-9">
+                                <div class="col-auto d-flex">
+                                    <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p>
+                                    @* <p class="mb-0 d-none d-sm-block me-3 fw-semibold text-body" data-list-info="data-list-info"></p><a class="fw-semibold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a><a class="fw-semibold d-none" href="#!" data-list-view="less">View Less<span class="fas fa-angle-right ms-1" data-fa-transform="down-1"></span></a> *@
+                                </div>
+                                <div class="col-auto d-flex">
+                                    <button class="page-link" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
+                                    <ul class="mb-0 pagination"></ul>
+                                    <button class="page-link pe-0" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        const email = "@User.Identity.Name"//$("#txtuseremail").val(); // Replace with dynamic value if needed
+         console.log("loadUserDataProfiler :" + email)
+        loadUserProfileImage(email);
+        loadUserLeaveHistory(email);
+        loadLeaveInformation(email);
+
+        function loadUserProfileImage(email) {
+
+            $.ajax({
+                url: `/MM_UserProfile/GetProfileDetail?email=${encodeURIComponent(email)}`,
+                method: 'GET',
+                success: function (response) {
+                    if (response.success && response.data) 
+                    {
+
+                        if (response.success)
+                        {
+                            $("#txtUserName").html(response.data.EMP_NAME);
+                            $("#txtJoinedDate").html(response.data.JOINED_DATE_DESC);
+                            $("#txtAddress").html("Not found");
+                            $("#txtEmailAdress").html(response.data.EMP_EMAIL);
+                            $("#txtEmailAdress").attr("href","mailto:" + response.data.EMP_EMAIL);
+                            $("#txtPhoneNo").html("-");
+                            $("#txtPhoneNo").attr("href","mailto:" + response.data.EMP_EMAIL);
+                            $("#txtRole").html(response.data.DESIGNATION);
+                            $("#txtTeam").html(response.data.TEAM);
+                            $("#txtEmpNo").html(response.data.EMP_NO);
+                            $("#txtDepartment").html(response.data.DEPARTMENT);
+                            $("#txtsupervisor").html("Supervisor : " + response.data.LEADER)
+                        }
+                        else
+                        {
+                        console.error("Failed to load profile:", response.msg);
+                        }
+                       
+                    } else {
+                        console.error("Failed to load profile:", response.msg);
+                    }
+                },
+                error: function (xhr) {
+                    console.error("Error fetching profile:", xhr);
+                }
+            });
+        }
+        function loadUserLeaveHistory(email)
+        {
+            $.ajax({
+                url: `/MM_Leave/GetLeaveHistory?email=${encodeURIComponent(email)}`,
+                method: 'GET',
+                success: function (response) {
+                    if (response.success && response.data)
+                    {
+                        console.log(response.data.emP_NAME)
+                        if (response.success)
+                        {
+                          const tbody = $('#customer-order-table-body');
+                          tbody.empty(); // Clear previous data
+
+                          response.data.forEach(item => {
+                              const row = `
+                                      <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                          <td class="typE_LEAVE align-middle white-space-nowrap text-start fw-bold text-body-tertiary">${item.TYPE_LEAVE}</td>
+                                          <td class="datE_START align-middle text-start fw-semibold pe-7 text-body-highlight">${item.DATE_START_DESC}</td>
+                                          <td class="datE_END align-middle text-start fw-semibold pe-7 text-body-highlight">${item.DATE_END_DESC}</td>
+                                          <td class="align-middle white-space-nowrap text-start pe-0 ps-5">
+                                              <div class="btn-reveal-trigger position-static">
+                                                  <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs-10" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                                                      <span class="fas fa-ellipsis-h fs-10"></span>
+                                                  </button>
+                                                  <div class="dropdown-menu dropdown-menu-end py-2">
+                                                      <a class="dropdown-item" href="#!">View</a>
+                                                      <a class="dropdown-item" href="#!">Export</a>
+                                                      <div class="dropdown-divider"></div>
+                                                      <a class="dropdown-item text-danger" href="#!">Remove</a>
+                                                  </div>
+                                              </div>
+                                          </td>
+                                      </tr>`;
+                                  tbody.append(row);
+                              });
+
+                              // Initialize list.js AFTER data is inserted
+                             if (window.leaveList) {
+                                 window.leaveList.reIndex();
+                                 window.leaveList.update();
+                             } else {
+                                 window.leaveList = new List('customerOrdersTable', {
+                                     valueNames: ["TYPE_LEAVE", "DATE_START_DESC", "DATE_END_DESC"],
+                                     page: 10,
+                                     pagination: true
+                                 });
+                             }
+                        }
+                        else
+                        {
+                        console.error("Failed to load profile:", response.msg);
+                        }
+
+                    } else {
+                        console.error("Failed to load profile:", response.msg);
+                    }
+                },
+                error: function (xhr) {
+                    console.error("Error fetching profile:", xhr);
+                }
+            });
+        }
+        function loadLeaveInformation(email)
+        {
+            $.ajax({
+                url: `/MM_Leave/GetLoadLeaveInformation?email=${encodeURIComponent(email)}`,
+                method: 'GET',
+                success: function (response) {
+                    if (response.success && response.data)
+                    {
+                        $("#txtCarryForward").html(`${response.data.Carry_Forward}/${response.data.A_Carry_Forward}`);
+                        $("#txtAnnualLeave").html(`${response.data.Annual_Leave}/${response.data.A_Annual_Leave}`);
+                        $("#txtMedicalLeave").html(`${response.data.Medical_Leave}/${response.data.A_Medical_Leave}`);
+                        $("#txtPaternityLeave").html(`${response.data.Paternity_Leave}/${response.data.A_Paternity_Leave}`);
+                        $("#txtMaternityLeave").html(`${response.data.Maternity_Leave}/${response.data.A_Maternity_Leave}`);
+                        $("#txtCompassionateLeave").html(`${response.data.Compassionate_Leave}/${response.data.A_Compassionate_Leave}`);
+                        $("#txtMarriageLeave").html(`${response.data.Marriage_Leave}/${response.data.A_Marriage_Leave}`);
+                        $("#txtConvocationLeave").html(`${response.data.Convocation_Leave}/${response.data.A_Convocation_Leave}`);
+                    }
+                },
+                error: function (xhr) {
+                    console.error("Error fetching leave information:", xhr);
+                }
+            });
+        }
+    });
+    function onClickCopy(obj) {
+        const textToCopy = $("#" + obj).text().trim();
+
+        // Create a temporary input element
+        const tempInput = $("<input>");
+        $("body").append(tempInput);
+        tempInput.val(textToCopy).select();
+        document.execCommand("copy");
+        tempInput.remove();
+
+        alert("Copied to clipboard: " + textToCopy);
+    }
+
+</script>

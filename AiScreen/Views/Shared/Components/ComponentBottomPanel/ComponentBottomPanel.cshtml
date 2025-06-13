@@ -1,0 +1,166 @@
+﻿@model BaseModel.Models.Component.ComponentBottomPanelModel
+<div class="row g-0 px-3 tr-btm-btn-area">
+    <div class="col-6 col-md-6">
+        @if (Model.ButtonVisible_Delete && @Model.ButtonDisabled_Delete != "disabled")
+        {
+            <button id="@Model.ButtonID_Delete" type="@Model.ButtonType_Delete" @Model.ButtonDisabled_Delete title="@Model.ButtonTitle_Delete" class="btn btn-sm btn-danger btnDelete" onclick="onclickDelete(this)">@Model.ButtonText_Delete</button>
+        }
+        @if (Model.ButtonVisible_Export)
+        {
+            <button id="@Model.ButtonID_Export" type="@Model.ButtonType_Export" class="btn btn-sm btn-primary">@Model.ButtonText_Export</button>
+        }
+    </div>
+    <div class="col-6 col-md-6">
+        <div class="d-flex justify-content-end">
+            @if (Model.ButtonVisible_Back)
+            {
+                <a href="@Model.ButtonPath_Back" class="btn btn-sm btn-secondary mx-1 my-button" onclick="onclickBack()">@Model.ButtonText_Back</a>
+            }
+            @if (Model.ButtonVisible_SaveAsDraft && @Model.ButtonDisabled_SaveAsDraft != "disabled")
+            {
+                <button id="@Model.ButtonID_SaveAsDraft" type="button" @Model.ButtonDisabled_SaveAsDraft title="@Model.ButtonTitle_SaveAsDraft" class="btn btn-sm btn-primary mx-1 isEditable_Display" @(string.IsNullOrWhiteSpace(Model.ButtonFunctionName_SaveAsDraft) ? "" : $"onclick=\"{Model.ButtonFunctionName_SaveAsDraft}\"")>@Model.ButtonTextColor_SaveAsDraft</button>
+            }
+            @if (Model.ButtonVisible_Submit && @Model.ButtonDisabled_Submit != "disabled")
+            {
+                <button id="@Model.ButtonID_Submit" type="@Model.ButtonType_Submit" @Model.ButtonDisabled_Submit title="@Model.ButtonTitle_Submit" class="btn btn-sm btn-primary mx-1 isEditable_Display" @(string.IsNullOrWhiteSpace(Model.ButtonFunctionName_Submit) ? "" : $"onclick=\"{Model.ButtonFunctionName_Submit}\"")>@Model.ButtonText_Submit</button>
+            }
+        </div>
+    </div>
+</div> 
+@if (Model.ButtonVisible_Back)
+{
+    @if (!string.IsNullOrEmpty(Model.ButtonURL_Back))
+    {
+        <script>
+            function onclickBack() {
+                window.history.back();
+            }
+        </script>
+    }
+    else
+    {
+        <script>
+            function onclickBack() {
+                window.location.href = '@Model.ButtonURL_Back';
+            }
+        </script>
+    }
+}
+
+@if (Model.ButtonVisible_Delete)
+{
+<script>
+    function onclickDelete()
+    {
+        var cont = true;
+        var message = "";
+
+        var url = window.location.href;
+        var parts = url.split('/');
+        var idofURL = parts[parts.length - 1];
+
+        var checkedValues = [];
+        checkedValues.push(idofURL);
+
+        if (cont)
+        {
+                confirmSubmit(function () { executeDelete(checkedValues); }, 'Pengesahan', 'Anda pasti mahu membuang data ini?');
+        }
+        else
+        {
+            if (message != "")
+            {
+                toastError(message);
+            }
+        }
+    }
+    function executeDelete(list)
+    {
+        $.ajax({
+             url: '@Model.AjaxInfo_FetchData_Delete.URL_Ajax',
+             type: '@Model.AjaxInfo_FetchData_Delete.Type_Ajax.ToString()',
+             data:
+             {
+                 ListData: list,
+             },
+             beforeSend: function() {
+             loadings();
+             },
+             success: function(response) {
+                loadings(false);
+                response = JSON.parse(response);
+                if (response.success)
+                {
+                    toastSuccess("Success", "Successfully deleted data", function () { 
+                        window.location.href = '@Model.AjaxInfo_FetchData_Delete.Success_URL';
+                    });
+                }
+                else
+                {
+                    toastError(response.message);
+                }
+             },
+             error: function(xhr) {
+             if (xhr.status === 400)
+                {
+                    location.href = system_logout_url;
+                }
+                else
+                {
+                    toastError("Error occured");
+                }
+             }
+            });
+        }
+</script>
+}
+@if (Model.ButtonVisible_Submit && Model.ButtonVisible_SubmitUsingDefault == false)
+{
+    <script>
+        $('form').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Validate the form
+        
+             // Validate the form
+             var formIsValid = true;
+             $(this).find('input, select, textarea').each(function() {
+                 if (!validateField($(this))) {
+                     formIsValid = false;
+                 }
+             });
+             
+             if (!formIsValid) {
+                 return; // Stop form submission if validation fails
+             }
+
+            // Serialize form data
+            var formData = $(this).serialize();
+
+            // Send AJAX request
+            $.ajax({
+                url: '@Model.AjaxInfo_FetchData_Submit.URL_Ajax', // Replace with your controller action URL
+                type: '@Model.AjaxInfo_FetchData_Submit.Type_Ajax',
+                data: formData,
+                dataType: 'json', // Expect JSON response
+                success: function (response) {
+                    if (response.success) {
+                        toastSuccess("Success", response.message, function () {
+                            window.location.href = '@Model.AjaxInfo_FetchData_Submit.Success_URL';
+                        });
+                    } else { 
+                        toastError("Error", response.message);
+                    }
+                   
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    console.error(xhr.responseText);
+                    // Example: Show error message or handle specific errors
+                }
+            });
+        });
+    </script>
+
+}
+

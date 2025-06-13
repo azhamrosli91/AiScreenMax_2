@@ -1,0 +1,179 @@
+﻿.card-header {
+    background-color: #cddbf2 !important;
+    font-weight: bold; /* Make font bold */
+}
+
+.progress-bar {
+    height: 4px;
+}
+.text-wraper {
+    width: 100%; /* Take full width of the parent */
+    white-space: nowrap !important; /* Prevent the text from wrapping to the next line */
+    overflow: hidden !important; /* Hide any overflowing text */
+    text-overflow: ellipsis !important; /* Add "..." for the truncated text */
+}
+.d-calosurel {
+    max-height: 250px !important;
+    height: 250px;
+    object-fit: contain;
+    overflow: hidden;
+}
+.m-calosurel {
+    max-height: 250px !important;
+    height: 250px;
+    object-fit: cover;
+    overflow: hidden;
+}
+.ds-group-item:hover {
+    cursor: pointer;
+}
+.w-dash {
+    overflow: hidden !important;
+    text-decoration: none;
+    color: inherit;
+}
+.carousel-item {
+    background-color:rgba(0, 0, 0, 0.12);
+}
+.btnDash {
+    width: 105px !important;
+    height: 105px !important;
+    cursor: pointer;
+}
+.btnDash:hover {
+    background-color:#dfecff
+}
+
+    .btnDash i {
+        font-size: 24px; /* Standardized icon size */
+        margin-bottom: 5px; /* Consistent spacing between icon and text */
+        line-height: 1; /* Consistent icon alignment */
+    }
+
+    .btnDash span {
+        font-size: 14px; /* Consistent font size for text */
+        line-height: 1.2; /* Consistent text spacing */
+    }
+.ds-group-item {
+    display: flex;
+    flex-direction: column;
+    min-height: 120px;
+    max-height: 120px;
+    padding: 5px;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    background: #fff;
+    position: relative;
+}
+.dashboard-label {
+    font-size: 1.2rem; /* Adjust font size slightly larger */
+    font-weight: bold; /* Optional: make it bold for better visibility */
+}
+.text-truncated {
+    white-space: nowrap; /* Prevents text from wrapping */
+    overflow: hidden; /* Hides any overflowing text */
+    text-overflow: ellipsis; /* Adds ellipsis (...) to indicate overflow */
+}
+.dash-success {
+    border-left: 3px solid #198754;
+}
+.dash-danger {
+    border-left: 3px solid #dc3545;
+}
+.dash-primary {
+    border-left: 3px solid #0d6efd;
+}
+.dash-warning {
+    border-left: 3px solid #ffc107;
+}
+.dash-purple {
+    border-left: 3px solid #8e00ab;
+}
+.dash-cyan {
+    border-left: 3px solid #01d2c5;
+}
+.dash-black {
+    border-left: 3px solid #000000;
+}
+.dash-magenta {
+    border-left: 3px solid #d2019c;
+}
+.stepper-wrapper {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.stepper-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
+    @media (max-width: 768px) {
+        font-size: 12px;
+    }
+}
+.step-counter {
+    color:#ffffff;
+}
+.stepper-item::before {
+    position: absolute;
+    content: "";
+    border-bottom: 2px solid #ccc;
+    width: 100%;
+    top: 20px;
+    left: -50%;
+    z-index: 2;
+}
+
+    .stepper-item::after {
+        position: absolute;
+        content: "";
+        border-bottom: 2px solid #ccc;
+        width: 100%;
+        top: 20px;
+        left: 50%;
+        z-index: 2;
+    }
+
+    .stepper-item .step-counter {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #ccc;
+        margin-bottom: 6px;
+    }
+
+    .stepper-item.active {
+        font-weight: bold;
+    }
+
+    .stepper-item.completed .step-counter {
+        background-color: #4bb543;
+    }
+
+    .stepper-item.completed::after {
+        position: absolute;
+        content: "";
+        border-bottom: 2px solid #4bb543;
+        width: 100%;
+        top: 20px;
+        left: 50%;
+        z-index: 3;
+    }
+
+    .stepper-item:first-child::before {
+        content: none;
+    }
+
+    .stepper-item:last-child::after {
+        content: none;
+    }

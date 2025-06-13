@@ -1,0 +1,102 @@
+﻿@using Component_TableListing.Models
+@using MaxSys.Models
+@using static MaxSys.Enum.Enum
+
+@{
+    Layout = "~/Views/Shared/_Layout3.cshtml";
+}
+
+<form asp-action="Post" asp-controller="Appraise" method="post" id="frmEmployee">
+    <div class="row g-0 px-3 tr-listing-header">
+        <!-- Title takes full width on mobile, half width on medium and larger screens -->
+        <div class="col-12 col-md-6 align-self-center">
+            <p class="text-muted m-0 tr-listing-header-title " id="lblHeaderTitle" name="lblHeader">Employee Listing (Ajax)</p>
+        </div>
+        <!-- Buttons take full width on mobile, half width on medium and larger screens -->
+        <div class="col-12 col-md-6 text-md-end align-self-center">
+            <div class="row g-2 justify-content-center justify-content-md-end" id="buttonContainer"></div>
+        </div>
+    </div>
+
+    <div class="page-container card-height">
+        <div class="card d-flex flex-column h-100 minh-100">
+            <div class="card-body g-0 px-3 h-100">
+
+                <div class="row h-100">
+                    <div class="col-sm-12 h-100">
+                        <table id="employeeTable" class="table-striped table-hover tr-responsive-table default-list" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First</th>
+                                    <th>Last</th>
+                                    <th>Position</th>
+                                    <th>Join Date</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    var table = $('#employeeTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '/DE_EMPLOYEE/GetData',
+            type: 'POST',
+            data: function (d) {
+                // Use the default search input value
+                d.searchTerm = d.search.value;
+
+                // Add your custom values
+                d.tableName = 'MM_EMPLOYEE';
+                d.columnsToSearch = 'FIRST_NAME,LAST_NAME,POSITION';
+            }
+        },
+        columns: [
+            { data: 'ID_MM_EMPLOYEE' },
+            { data: 'FIRST_NAME' },
+            { data: 'LAST_NAME' },
+            { data: 'POSITION' },
+            { data: 'JOIN_DATE' }
+        ],
+        columnDefs: [{
+            targets: "_all", // Apply to all columns
+            createdCell: function (td, cellData, rowData, row, col) {
+                var api = this.api();
+                // Add the data-title attribute with the column header text
+                if ($(api.column(col).header()).hasClass('mv-d-none')) {
+                    $(td).addClass('mv-d-none');
+                }
+                var headerText = api.column(col).header().textContent;
+                console.log(headerText);
+                $(td).attr('data-title', headerText);
+            }
+        }],
+        dom: '<"row mb-2"<"col-sm-6"l><"col-sm-6"f>>' +
+             '<"row h-100 minh-0"<"col-sm-12 h-100"tr>>' +
+             '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+        initComplete: function () {
+            var api = this.api();
+            $('#employeeTable').wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+        }
+    });
+
+    // Debounce logic
+    let searchDelay;
+    $('#employeeTable_filter input')  // DataTables' default search input
+        .off()                        // Remove existing event
+        .on('input', function () {
+            clearTimeout(searchDelay);
+            searchDelay = setTimeout(function () {
+                table.search($('#employeeTable_filter input').val()).draw();
+            }, 500); // 500ms delay
+        });
+</script>

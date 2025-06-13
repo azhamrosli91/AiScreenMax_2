@@ -1,0 +1,19 @@
+﻿#sidebar, #sidebar-nav {
+    width: 332px !important;
+}
+
+#sidebar-nav {
+    position: fixed;
+    overflow-y: auto;
+    height: calc(100vh - 10px - 42px - 42px - 25px - 19px) !important;
+}
+
+@media only screen and (min-device-width: 1280px) and (max-device-width: 1599px) {
+    #sidebar, #sidebar-nav {
+        width: 200px !important;
+    }
+
+    #sidebar-nav {
+        height: calc(100vh - 10px - 42px - 42px - 25px) !important;
+    }
+}

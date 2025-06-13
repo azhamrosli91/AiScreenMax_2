@@ -1,0 +1,260 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@model MaxSys.Models.AuthenticatorModel
+@{
+    ViewBag.Title = Configuration["ProjectName"];
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html class="h-100">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@Configuration["ProjectName"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/solid.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/regular.min.css" />
+    <link rel="stylesheet" href="~/css/spinthatshit.css" />
+    <link rel="stylesheet" href="~/css/site-login.css" />
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/jquery.validate-vsdoc.js"></script>
+    <script src="~/js/jquery.validate.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/js/jquery.cookie.min.js"></script>
+    <script src="~/js/attrchange.js"></script>
+    <script src="~/js/modernizr-2.8.3.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.bundle.js"></script>
+    <script src="~/js/mainJS.js"></script>
+
+    <style>
+        body{
+           /*  background-color: #52698e !important; */
+            font-family: 'Arial,sans-serif
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="h-100 w-100">
+    <div class="container-fluid">
+        <div class="row vh-100">
+            <div class="col-sm-12 col-md-2 col-lg-4 d-none d-sm-block">
+                &nbsp;
+            </div>
+            <div class="col-sm-12 col-md-8 col-lg-4 d-block h-100">
+                <div class="row gx-0 flex-grow-1 h-100">
+                    <div class="col-12 px-5 bg-white">
+                        <div class="row gx-0 align-items-center tr-system-title mx-0 d-flex flex-column justify-content-end">
+                            <p class="text-center tr-system-title-text">
+                                @Configuration["ProjectName"]
+                            </p>
+                        </div>
+
+                        <div class="row gx-0">
+                            <hr />
+                        </div>
+                        <div class="row gx-0">
+                            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "box", id = "loginForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <fieldset>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="form-label mt-4">Email pengguna</label>
+                                        <div class="form-group">
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text icon-border-container input-group-addon" style="position: relative">
+                                                    <i class="fa-solid fa-user"></i>
+                                                    <span class="icon-border-right"></span>
+                                                </span>
+                                                @Html.TextBoxFor(a => a.LOGIN_ID, new { placeholder = "nama@email.com", @class = "form-control remove-left-border login-txt textbox keyboard", @value = "" })
+                                                @Html.TextBoxFor(a => a.RETURN_URL, new { placeholder = "ReturnUrl", @class = "textbox", @style = "display:none" })
+                                            </div>
+                                            <div id="validationServer03Feedback">
+                                                @Html.ValidationMessageFor(a => a.LOGIN_ID, "", new { @class = "invalid-feedback d-block text-start" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="form-label mt-4">Kata Laluan</label>
+                                        <div class="form-group">
+                                            <div class="input-group has-validation" id="show_hide_password">
+                                                <span class="input-group-text icon-border-container input-group-addon">
+                                                    <i class="fa-solid fa-lock"></i>
+                                                    <span class="icon-border-right"></span>
+                                                </span>
+                                                @Html.PasswordFor(a => a.PASSWORD, new { placeholder = "kata laluan", @class = "form-control password-txt login-txt textbox", @value = "", @style = "border-right: 0px" })
+                                                <div class="input-group-text icon-border-container input-group-addon remove-left-border">
+                                                    <a href="#" class="text-reset"><i class="fa-solid fa-eye-slash showPass" aria-hidden="true"></i></a>
+                                                    <span class="icon-border-left"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="validationServer03Feedback">@Html.ValidationMessageFor(a => a.PASSWORD, "", new { @class = "invalid-feedback d-block text-start" })</div>
+                                    </div>
+                                    <div class="form-group text-end mb-3">
+                                        <button id="btnForgot" type="button" class="btn btn-link" style="padding-right: 0px; color: #004098; font-weight: bold; text-decoration: none; padding-bottom: 0px">Lupa Kata Laluan?</button>
+                                    </div>
+                                    <div class="form-group d-grid gap-2 mt-4 pb-5">
+                                        <button class="btn btn-success tr-login-btn" type="submit" id="btnSubmit" style="border-radius: 2px"><b>LOG MASUK</b></button>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 border-top"></div>
+                                        <span class="mx-2e">ATAU</span>
+                                        <div class="flex-grow-1 border-top"></div>
+                                    </div>
+
+                                    <div class="form-group d-grid gap-2 mt-4 pb-5">
+                                        <a href="/Home/RegisterUser" class="btn btn-primary" id="btnNewUser" style="border-radius: 2px">
+                                            <i class="fa fa-user"></i>
+                                            DAFTAR AKAUN BARU
+                                        </a>
+                                        <a href="/LandingPage" class="btn btn-secondary id="btnBackHome" style="border-radius: 2px">
+                                            <i class="fa fa-home"></i>
+                                            KEMBALI KE LAMAN UTAMA
+                                        </a>
+                                    </div>
+                                    <div class="flex-column flex-grow-1 text-center text-black-50 tr-footer-text pt-4">
+                                        @Configuration["CopyrightText"].Replace("[YEAR]", DateTime.Now.Year.ToString())
+                                    </div>
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-4 d-none d-sm-block">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Loading Indicator -->
+    <div class="overlay align-self-center"></div>
+    <div class="spanner align-self-center">
+        <img src="~/images/loading12.gif" alt="Loading" style="width: 85px; height: auto">
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed end-0 p-3" style="bottom: 20px">
+        <div id="liveToast" class="toast bg-primary-toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin-top: -50px">
+            <div class="toast-header bg-primary-tr">
+                <strong class="me-auto">Success Message</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Login Successful
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed end-0 p-3" style="bottom: 20px">
+        <div id="liveToast2" class="toast bg-danger-toast" role="alert" aria-live="assertive" aria-atomic="true" style="margin-top: -50px">
+            <div class="toast-header bg-primary-tr">
+                <strong class="me-auto">Gagal log masuk</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @* Failed to login, invalid user! *@
+                Gagal, email / kata laluan yang dimasukkan tidak betul!
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Reset Password</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label>Enter your email to reset your password</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1" class="form-label mt-4">Username <span class="text-danger">*</span></label>
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                            <input type="text" class="form-control" id="exampleInput1" placeholder="Enter your Username">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="button">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="modalContent">
+                    <!-- Partial view content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="modalContent2">
+                    <!-- Partial view content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal3" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="modalContent3">
+                    <!-- Partial view content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal4" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="modalContent3">
+                    <!-- Partial view content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewbag_validate" class="d-none" data-validate="@ViewBag.Validate"></div>
+    <div id="viewbag_isFistTime" class="d-none" data-firsttime="@ViewBag.isFirstTime" data-userdetail="@ViewBag.UserDetails"></div>
+
+    <script src="~/js/views/home/login.js"></script>
+</body>
+
+</html>

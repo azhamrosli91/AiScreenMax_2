@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif !important;
+            font-size: 10px;
+            margin: 0;
+            padding: 5mm;
+            box-sizing: border-box;
+        }
+
+        .header, .footer {
+            text-align: center;
+        }
+
+            .header h1 {
+                margin: 0;
+                font-size: 14px;
+            }
+
+        .details, .summary {
+            margin: 5mm 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+
+            .table th, .table td {
+                border: 1px solid #ddd;
+                padding: 3px;
+                text-align: left;
+            }
+
+            .table th {
+                background-color: #f4f4f4;
+            }
+
+        .summary p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>[COMPANY_NAME]</h1>
+        <p>[ADDRESS_FULL]</p>
+        <p>[COMPANY_EMAIL_PHONE]</p>
+    </div>
+
+    <hr>
+
+    <div class="details">
+        <p><strong>Resit No:</strong> [INVOICE_NO]</p>
+        <p><strong>Tarikh Pembayaran:</strong> [DATE_DESC]</p>
+        <p><strong>Nama Ahli:</strong> [TO_NAME_PAYER]</p>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Info</th>
+                <th style="width:120px">Jumlah</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>[RECEIPT_INFO]</td>
+                <td style="width:120px">[AMOUNT_DESC]</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="summary">
+        <p><strong>Jumlah Keseluruhan Pembayaran:</strong> [AMOUNT_DESC]</p>
+    </div>
+    <hr />
+    <div class="footer">
+        <p>Terima kasih kami ucapkan</p>
+        <p>Resit ini dikeluarkan pada [DATE_NOW]</p>
+    </div>
+</body>
+</html>

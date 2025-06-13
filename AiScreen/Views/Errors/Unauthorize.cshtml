@@ -1,0 +1,17 @@
+﻿@page
+@model ErrorViewModel_Page
+@{
+    Layout = "~/Views/Shared/_Layout_Empty.cshtml";
+}
+
+<div class="container-fluid w-100 vh-100 d-flex align-items-center justify-content-center">
+    <div class="row gx-0 tr-body">
+        <div class="text-center">
+            <i class="fa fa-lock fa-8x" aria-hidden="true"></i>
+            <h1>Unauthorized Access</h1>
+            <p>You do not have permission to access this resource.</p>
+            <p>@ViewBag.Message</p>
+            <a href="/Home/Index" class="btn btn-primary">Back To Home</a>
+        </div>
+    </div>
+</div>

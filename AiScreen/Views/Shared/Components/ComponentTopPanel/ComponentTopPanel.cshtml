@@ -1,0 +1,271 @@
+﻿@model MaxSys.Models.ComponentTopPanelModel
+<div class="row g-0 px-3 tr-listing-header">
+    @if (Model.Title_LabelVisible)
+    {
+        <!-- Title takes full width on mobile, half width on medium and larger screens -->
+        <div class="col-12 col-md-6 align-self-center">
+            <p class="text-muted m-0 tr-listing-header-title @Model.Title_LabelColor" id="@Model.Title_LabelID" name="@Model.Title_LabelName">@Model.Title_LabelText</p>
+        </div>
+    }
+    <!-- Buttons take full width on mobile, half width on medium and larger screens -->
+    <div class="col-12 col-md-6 text-md-end align-self-center">
+        <div class="row g-2 justify-content-center justify-content-md-end" id="buttonContainer">
+            @if (Model.Del_ButtonVisible_Delete && Model.Del_ButtonDisabled_Delete != "disabled")
+            {
+                <div class="col-6 col-md-auto btnDelete">
+                    <button id="@Model.Del_ButtonID_Delete" type="@Model.Del_ButtonType_Delete"
+                            class="btn btn-sm btn-danger w-100" onclick="onclickDelete(this)">
+                        @Model.Del_ButtonText_Delete
+                    </button>
+                </div>
+            }
+            @if (Model.Import_ButtonImportVisible)
+            {
+                <div class="col-6 col-md-auto">
+                    <a href="@Model.Import_ButtonImportPath" class="btn btn-sm btn-outline-secondary w-100"
+                       title="@Model.Import_ButtonImportText" id="@Model.Import_ButtonImportID"
+                    @(string.IsNullOrWhiteSpace(Model.Import_ButtonImportFunctionName) ? "" : $"onclick={Model.Import_ButtonImportFunctionName}")>
+                        <i class="fa-solid @Model.Import_ButtonImportIcon"></i> @Model.Import_ButtonImportText
+                    </a>
+                </div>
+            }
+            @if (Model.Export_ButtonExport_Visible)
+            {
+                <div class="col-6 col-md-auto">
+                    <div class="dropdown w-100">
+                        <button class="btn btn-sm btn-outline-secondary w-100 dropdown-toggle"
+                                type="button" id="@Model.Export_ButtonExport_ID" data-bs-toggle="dropdown">
+                            @Model.Export_ButtonExport_Text <i class="fa-solid fa-caret-down text-primary"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="@Model.Export_ButtonExport_ID">
+                            <li>
+                                <a class="dropdown-item" href="#" id="@Model.Export_ButtonExport_PDF_ID"
+                                @(string.IsNullOrWhiteSpace(Model.Export_ButtonExport_PDF_FunctionName) ? "" : $"onclick={Model.Export_ButtonExport_PDF_FunctionName}")>
+                                    <i class="fa-solid @Model.Export_ButtonExport_PDF_Icon"></i> @Model.Export_ButtonExport_PDF_Text
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" id="@Model.Export_ButtonExport_XLS_ID"
+                                @(string.IsNullOrWhiteSpace(Model.Export_ButtonExport_XLS_FunctionName) ? "" : $"onclick={Model.Export_ButtonExport_XLS_FunctionName}")>
+                                    <i class="fa-solid @Model.Export_ButtonExport_XLS_Icon"></i> @Model.Export_ButtonExport_XLS_Text
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
+            @if (Model.CreateForm_ButtonVisible && Model.CreateForm_ButtonDisabled != "disabled")
+            {
+                <div class="col-6 col-md-auto">
+                    <a href='@Model.CreateForm_ButtonPath' class="btn btn-sm btn-outline-secondary w-100"
+                       id="@Model.CreateForm_ButtonID" @(string.IsNullOrWhiteSpace(Model.CreateForm_ButtonFunctionName) ? "" : $"onclick={Model.CreateForm_ButtonFunctionName}")>
+                        <i class="fa-solid @Model.CreateForm_ButtonIcon"></i> @Model.CreateForm_ButtonText
+                    </a>
+                </div>
+            }
+            @if (Model.Back_ButtonVisible_Back)
+            {
+                <div class="col-6 col-md-auto">
+                    <a href="@Model.Back_ButtonPath_Back" class="btn btn-sm btn-secondary w-100" onclick="onclickBack()">
+                        @Model.Back_ButtonText_Back
+                    </a>
+                </div>
+            }
+            @if (Model.Edit_ButtonEditVisible && Model.Edit_ButtonEditDisabled != "disabled")
+            {
+                <div class="col-6 col-md-auto isEditable_Display">
+                    <button class="btn btn-sm btn-primary w-100" id="@Model.Edit_ButtonEditID"
+                            onclick="onclickEdit(this)">
+                        @Model.Edit_ButtonEditText
+                    </button>
+                </div>
+            }
+            @if (Model.SaveAsDraft_ButtonVisible_SaveAsDraft && Model.SaveAsDraft_ButtonDisabled_SaveAsDraft != "disabled")
+            {
+                <div class="col-6 col-md-auto btnSubmit">
+                    <button id="@Model.SaveAsDraft_ButtonID_SaveAsDraft" type="button"
+                            class="btn btn-sm btn-primary w-100" @(string.IsNullOrWhiteSpace(Model.SaveAsDraft_ButtonFunctionName_SaveAsDraft) ? "" : $"onclick={Model.SaveAsDraft_ButtonFunctionName_SaveAsDraft}")>
+                        @Model.SaveAsDraft_ButtonText_SaveAsDraft
+                    </button>
+                </div>
+            }
+            @if (Model.Submit_ButtonVisible_Submit && Model.Submit_ButtonDisabled_Submit != "disabled")
+            {
+                <div class="col-6 col-md-auto btnSubmit">
+                    <button id="@Model.Submit_ButtonID_Submit" type="@Model.Submit_ButtonType_Submit"
+                            class="btn btn-sm btn-primary w-100" @(string.IsNullOrWhiteSpace(Model.Submit_ButtonFunctionName_Submit) ? "" : $"onclick={Model.Submit_ButtonFunctionName_Submit}")>
+                        @Model.Submit_ButtonText_Submit
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div style="border-top:1px solid #F0F0F0; margin-top:-1px" class="tr-btm-line"></div>
+@if (Model.Back_ButtonVisible_Back)
+{
+    @if (!string.IsNullOrEmpty(Model.Back_ButtonURL_Back))
+    {
+        <script>
+            function onclickBack() {
+                window.history.back();
+            }
+        </script>
+    }
+    else
+    {
+        <script>
+            function onclickBack() {
+                window.location.href = '@Model.Back_ButtonURL_Back';
+            }
+        </script>
+    }
+}
+
+@if (Model.Del_ButtonVisible_Delete)
+{
+    <script>
+        function onclickDelete() {
+            var cont = true;
+            var message = "";
+
+            var url = window.location.href;
+            var parts = url.split('/');
+            var idofURL = parts[parts.length - 1];
+
+            var checkedValues = [];
+            checkedValues.push(idofURL);
+
+            if (cont) {
+                confirmSubmit(function () { executeDelete(checkedValues); }, 'Pengesahan', 'Anda pasti mahu membuang data ini?');
+            }
+            else {
+                if (message != "") {
+                    toastError(message);
+                }
+            }
+        }
+        function executeDelete(list) {
+            $.ajax({
+                url: '@Model.Del_AjaxInfo_FetchData_Delete.URL_Ajax',
+                type: '@Model.Del_AjaxInfo_FetchData_Delete.Type_Ajax.ToString()',
+                data:
+                {
+                    ListData: list,
+                },
+                beforeSend: function () {
+                    loadings();
+                },
+                success: function (response) {
+                    loadings(false);
+                    response = JSON.parse(response);
+                    if (response.success) {
+                        toastSuccess("Success", "Successfully deleted data", function () {
+                            window.location.href = '@Model.Del_AjaxInfo_FetchData_Delete.Success_URL';
+                        });
+                    }
+                    else {
+                        toastError(response.message);
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 400) {
+                        location.href = system_logout_url;
+                    }
+                    else {
+                        toastError("Error occured");
+                    }
+                }
+            });
+        }
+    </script>
+}
+@if (Model.Submit_ButtonVisible_Submit && Model.Submit_ButtonVisible_SubmitUsingDefault == false)
+{
+    <script>
+        $('form').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Validate the form
+
+            // Validate the form
+            var formIsValid = true;
+            $(this).find('input, select, textarea').each(function () {
+                if (!validateField($(this))) {
+                    formIsValid = false;
+                }
+            });
+
+            if (!formIsValid) {
+                return; // Stop form submission if validation fails
+            }
+
+            // Serialize form data
+            var formData = $(this).serialize();
+
+            // Send AJAX request
+            $.ajax({
+                url: '@Model.Submit_AjaxInfo_FetchData_Submit.URL_Ajax', // Replace with your controller action URL
+                type: '@Model.Submit_AjaxInfo_FetchData_Submit.Type_Ajax',
+                data: formData,
+                dataType: 'json', // Expect JSON response
+                success: function (response) {
+                    if (response.success) {
+                        toastSuccess("Success", response.message, function () {
+                            window.location.href = '@Model.Submit_AjaxInfo_FetchData_Submit.Success_URL';
+                        });
+                    } else {
+                        toastError("Error", response.message);
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    console.error(xhr.responseText);
+                    // Example: Show error message or handle specific errors
+                }
+            });
+        });
+    </script>
+
+}
+
+
+<script>
+    $(document).ready(function () {
+        var type = $("#txtPageType").val();
+
+        if (type != undefined) {
+            if (type == 'View') {
+                $(".btnEdit").show();
+            } else if (type == 'Add' || type == 'New') {
+                $(".btnEdit").hide();
+            } else if (type == 'Edit') {
+                $(".btnEdit").hide();
+            }
+        } else {
+            $(".btnEdit").hide();
+        }
+
+    });
+
+    function onclickEdit(obj) {
+
+        $("input.isEdit").attr("readonly", false);
+        $("input.isEdit").removeClass("disabled");
+        $("textarea.isEdit").attr("readonly", false);
+        $("textarea.isEdit").removeClass("disabled");
+
+        $("select.isEdit").attr("disabled", false);
+        $("select.isEdit").removeClass("disabled");
+
+        $("input[type=file].isEdit").attr("disabled", false);
+        $("input[type=radio].isEdit").attr("disabled", false);
+
+        $("input[type=checkbox].isEdit").attr("disabled", false);
+        $("a.isEdit").show();
+
+        $(obj).hide();
+        $(".isEditable_Display").show();
+    }
+</script>

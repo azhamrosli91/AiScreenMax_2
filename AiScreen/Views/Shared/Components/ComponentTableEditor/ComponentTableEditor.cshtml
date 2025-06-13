@@ -1,0 +1,555 @@
+﻿@using BaseModel.Models.Component
+@model BaseModel.Models.Component.COM_TABLE_EDITOR
+@using Microsoft.AspNetCore.Html
+@using Newtonsoft.Json
+<style>
+    .btn-keep-shink {
+        min-width: 20px !important;
+    }
+</style>
+<div class="row justify-content-between align-items-end">
+    <div class="col-sm-12 col-md-12 col-lg-6">
+        @if (Model.TITLE_VISIBLE)
+        {
+            <h6 class="text-muted" data-tableID="@Model.COM_TABLE_EDITOR_ID">@Html.Raw(Model.TITLE)</h6>
+        }
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-6 d-flex justify-content-end">
+        @if (Model.IS_DRAGGABLE)
+        {
+            <button class="btn btn-sm btn-md btn-keep-shink s btn-info me-1 tbleditor-btnMoveDown" id="tbleditor-btnMoveDown-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" title="Move Down" style="display:none;"><i class="fa fa-angle-down gx-0"></i></button>
+            <button class="btn btn-sm btn-md btn-keep-shink s btn-info me-1 tbleditor-btnMoveUp" id="tbleditor-btnMoveUp-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" title="Move Up" style="display:none;"><i class="fa fa-angle-up gx-0"></i></button>
+        }
+        @if (Model.IS_REMOVE)
+        {
+            <button class="btn btn-sm btn-md btn-danger s me-2 tbleditor-btnRemove" id="tbleditor-btnRemove-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" type="button" title="Remove select row" style="display:none;">@Html.Raw(Model.BTN_REMOVE_TEXT)</button>
+        }
+        @if (Model.IS_ADD)
+        {
+            <button class="btn btn-sm btn-md btn-primary s tbleditor-btnAdd" id="tbleditor-btnAdd-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" type="button" title="Add new row">@Html.Raw(Model.BTN_ADD_TEXT)</button>
+        }
+    </div>
+    <input type="checkbox" id="tbleditor-chkISbtnDrag-@Model.COM_TABLE_EDITOR_ID"
+           data-tableID="@Model.COM_TABLE_EDITOR_ID"
+           value="@Model.IS_DRAGGABLE"
+           @(Model.IS_DRAGGABLE ? "checked" : "")
+           style="display:none;" />
+
+    <input type="checkbox" id="tbleditor-chkISbtnRemove-@Model.COM_TABLE_EDITOR_ID"
+           data-tableID="@Model.COM_TABLE_EDITOR_ID"
+           value="@Model.IS_REMOVE"
+    @(Model.IS_REMOVE ? "checked" : "")
+           style="display:none;" />
+
+    <input type="checkbox" id="tbleditor-chkISbtnAdd-@Model.COM_TABLE_EDITOR_ID"
+           data-tableID="@Model.COM_TABLE_EDITOR_ID"
+           value="@Model.IS_ADD"
+    @(Model.IS_ADD ? "checked" : "")
+           style="display:none;" />
+
+    <input type="checkbox" id="tbleditor-chkISShowModal-@Model.COM_TABLE_EDITOR_ID"
+           data-tableID="@Model.COM_TABLE_EDITOR_ID"
+           value="@Model.IS_SHOW_INMODAL"
+    @(Model.IS_SHOW_INMODAL ? "checked" : "")
+           style="display:none;" />
+</div>
+<div class="row pt-2">
+    <div class="col-12" style="overflow:scroll;">
+        @{
+            string jsonData = "";
+            if (Model.COM_TABLE_D != null)
+            {
+                 jsonData = JsonConvert.SerializeObject(
+                Model.COM_TABLE_D
+                .Where(cm => cm.COLUMN_NAME != "ID#19471" && cm.COLUMN_NAME != "")
+                .OrderBy(cm => cm.SEQ)
+                );
+            }   
+        }
+        <textarea id="tbleditor-txtData-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" style="display:none;">
+            @jsonData
+        </textarea>
+
+        <input type="hidden" id="tbleditor_tmpID910307" value="@Model.COM_TABLE_EDITOR_ID" data-loadID="" />
+        <table id="tbleditor-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" name="@Model.NAME" class="table table-hover detailTable" style="width:100%">
+            <thead>
+                @if (Model.COM_TABLE_D != null && Model.COM_TABLE_D.Count > 0)
+                {
+                    <tr class="toolbar-row">
+                        <th width="30" class="text-center">
+                            <input id="trCheckbox-@Model.COM_TABLE_EDITOR_ID" type="checkbox" data-tableID="@Model.COM_TABLE_EDITOR_ID" class="dt-checkboxes select-all form-check-input isEdit trCheckbox">
+                        </th>
+                        @foreach (COM_TABLE_EDITOR_D clm in Model.COM_TABLE_D.Where(cm => cm.COLUMN_NAME != "ID#19471" && cm.COLUMN_NAME != "").OrderBy(cm => cm.SEQ))
+                        {
+                            if (clm != null && clm.SEQ != 0)
+                            {
+                                <th clmIndex="@clm.SEQ.ToString()" width="@clm.WIDTH" columnField="@clm.COLUMN_NAME">
+                                    @clm.COLUMN_TITLE
+                                </th>
+                            }
+                        }
+                    </tr>
+                }
+            </thead>
+            <tbody id="tbleditor-tbody-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID">
+                @if (Model.LIST_DATA != null && Model.LIST_DATA.Count > 0)
+                {
+                    @foreach (var tuple in Model.LIST_DATA)
+                    {
+                        <tr>
+                            <td width="30" class="text-center">
+                                <input id="trCheckbox" type="checkbox" data-tableID="@Model.COM_TABLE_EDITOR_ID" class="dt-checkboxes select-all form-check-input isEdit">
+                            </td>
+                                @foreach (COM_TABLE_EDITOR_D clm in tuple.Item2
+                                .Where(cm => !string.IsNullOrEmpty(cm.COLUMN_NAME) && cm.COLUMN_NAME != "ID#19471")
+                                .OrderBy(cm => cm.SEQ))
+                                {
+                                if (clm.SEQ != 0)
+                                {
+                                <td clmIndex="@clm.SEQ" width="@clm.WIDTH" columnField="@clm.COLUMN_NAME">
+                                        @Html.Raw(clm.COLUMN_OBJECT)
+                                </td>
+                                }
+                                }
+                        </tr>
+                        
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade tbleditor-modal" id="tbleditor-modal-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" tabindex="-1" aria-labelledby="tbleditor-modal-lbl-@Model.COM_TABLE_EDITOR_ID" aria-hidden="true">
+    <div class="modal-dialog @Model.MODAL_SIZE">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tbleditor-modal-lbl-@Model.COM_TABLE_EDITOR_ID">Jemput Rakan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="tbleditor-modal-body-@Model.COM_TABLE_EDITOR_ID">
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex w-100">
+                    <div class="w-20 me-auto">
+                        @if (Model.MODAL_BTN_DELETE_VISIBLE)
+                        {
+                            <button type="button" class="btn btn-danger" data-tableID="@Model.COM_TABLE_EDITOR_ID" onclick="onclickModalTableRemoveEditor(this)">@Model.MODAL_BTN_DELETE_TEXT</button>
+                        }
+                    </div>
+                    <div class="w-80 ms-auto text-end">
+                        @if (Model.MODAL_BTN_CLOSE_VISIBLE)
+                        {
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Model.MODAL_BTN_CLOSE_TEXT</button>
+                        }
+                        @if (Model.MODAL_BTN_ADD_UPDATE_VISIBLE)
+                        {
+                            <button type="button" class="btn btn-primary" data-tableID="@Model.COM_TABLE_EDITOR_ID" onclick="onclickModalTableAddEditor(this)">@Model.MODAL_BTN_ADD_TEXT</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+    $(document).ready(function () {
+        // Automatically populate the table with ID 1
+        autoCreateTableRows();
+    });
+
+    @if (Model.IS_DRAGGABLE)
+    {
+        <text>
+            $(function () {
+                // Initialize row dragging using jQuery UI sortable
+                $("#tbleditor-tbody-@Model.COM_TABLE_EDITOR_ID").sortable({
+                    handle: "td", // Allow dragging by the table rows
+                    axis: "y", // Only allow vertical dragging
+                    update: function (event, ui) {
+                        updateRowSequence();
+                    }
+                });
+                $("#tbleditor-tbody-@Model.COM_TABLE_EDITOR_ID").disableSelection();
+            });
+        </text>
+    }
+    // Function to create a new row dynamically for a specific table based on tableID
+    function addNewRow(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        var tblData = "#tbleditor-txtData-" + tableID;
+        $(tbl + " tbody .no-rows").remove();
+            //console.log(tbl)
+        let rowNumber = $(tbl + " tbody tr").length + 1;
+
+        var newRow = `<tr class='text-center'>
+                      <td><input type='checkbox' id='tbleditor-${rowNumber}-tr-checked' data-rowindex='${rowNumber}' class='dt-checkboxes form-check-input'></td>`;
+        let multiselectExists = false;
+
+        
+
+        var tableData = JSON.parse($(tblData).text());
+       // console.log(tableData);
+
+        tableData.forEach(function (clm) {
+            let columnName = clm.COLUMN_NAME || 'unknown';
+                newRow += `<td clmIndex="${rowNumber}" columnField="${columnName}">`;
+
+            let updatedObject = clm.COLUMN_OBJECT.replace(/id\s*=\s*['"]([^'"]+)['"]/, function (match, existingId) {
+                return `id="tbleditor-${rowNumber}-${columnName}-${existingId}"`;
+            });
+
+            if (!updatedObject.includes('id="')) {
+                updatedObject = updatedObject.replace(/(<\w+)/, `$1 id="tbleditor-${rowNumber}-${columnName}-new"`);
+            }
+
+            updatedObject = updatedObject.replace(/(<\w+)/, `$1 data-rowindex="${rowNumber}"`);
+            updatedObject = updatedObject.replace(/(<(input|select|textarea)\b[^>]*)(>)/i, `$1 name="${columnName}" $3`);
+            updatedObject = updatedObject.replace(/(<(input|select|textarea)\b[^>]*)(>)/i, `$1 onchange="onchangeTableEditor(this)" $3`);
+
+            if (updatedObject.includes('multiselect')) {
+                multiselectExists = true;
+            }
+            newRow += updatedObject;
+
+            newRow += "</td>";
+        });
+
+        newRow += "</tr>";
+
+        var $appendedRow = $(newRow);
+        $(tbl + " tbody").append($appendedRow);
+
+        toggleRemoveButtonVisibility(tableID);
+
+        if (multiselectExists) {
+            setTimeout(function () {
+                $appendedRow.find('.multiselect').multiselect({
+                    buttonClass: 'form-select form-control text-start',
+                    enableCaseInsensitiveFiltering: true,
+                    enableFiltering: true,
+                    numberDisplayed: 10,
+                    templates: {
+                        button: '<button type="button" class="multiselect dropdown-toggle" data-bs-toggle="dropdown"><span class="multiselect-selected-text"></span></button>',
+                        filter: '<div class="multiselect-filter"><div class="input-group input-group-sm p-1"><div class="input-group-prepend"></div><input class="form-control multiselect-search" type="text" /></div></div>'
+                    }
+                });
+
+                var multiselectDropdown = $appendedRow.find('.multiselect-container');
+                multiselectDropdown.css({
+                    'max-height': '200px',
+                    'overflow-y': 'auto'
+                });
+
+                $appendedRow.find('.multiselect-native-select > .btn-group').addClass("w-100");
+                $appendedRow.find('.multiselect-native-select > .btn-group > .multiselect').removeClass("text-center");
+                $appendedRow.find('.multiselect-native-select > .btn-group > .multiselect-container').addClass("w-100");
+            }, 0);
+        }
+    }
+
+    // Function to remove selected rows
+    function removeSelectedRows(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        var removedRows = [];
+
+        $(tbl + " tbody input[type='checkbox']:checked").each(function () {
+            var $row = $(this).closest('tr');
+            removedRows.push($row.clone());
+            $row.remove();
+        });
+
+        if ($(tbl + " tbody tr").length === 0) {
+            var colspan = $(tbl + " thead th").length;
+            var noRowsMessage = `<tr class="no-rows"><td colspan="${colspan}" class="text-center">No row(s) found</td></tr>`;
+            $(tbl + " tbody").append(noRowsMessage);
+        }
+
+        toggleRemoveButtonVisibility(tableID);
+    }
+
+    // Move selected rows up
+    function moveRowUp(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $(tbl + " tbody tr").each(function () {
+            var $row = $(this);
+            if ($row.find("input[type='checkbox']").is(":checked")) {
+                var $prev = $row.prev("tr:not(.no-rows)");
+                if ($prev.length) {
+                    $row.insertBefore($prev);
+                }
+            }
+        });
+        updateRowSequence(tableID);
+    }
+
+    // Move selected rows down
+    function moveRowDown(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $($(tbl + " tbody tr").get().reverse()).each(function () {
+            var $row = $(this);
+            if ($row.find("input[type='checkbox']").is(":checked")) {
+                var $next = $row.next("tr:not(.no-rows)");
+                if ($next.length) {
+                    $row.insertAfter($next);
+                }
+            }
+        });
+        updateRowSequence(tableID);
+    }
+
+    // Toggle the visibility of the remove button
+    function toggleRemoveButtonVisibility(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        var rowCount = $(tbl + " tbody tr").not('.no-rows').length;
+        
+        if (rowCount > 0) {
+            if ($('#tbleditor-chkISbtnRemove-' + tableID).is(':checked')) {
+                $(`#tbleditor-btnRemove-${tableID}`).show();
+            }
+            if ($('#tbleditor-chkISbtnDrag-' + tableID).is(':checked')) {
+                $(`#tbleditor-btnMoveDown-${tableID}`).show();
+                $(`#tbleditor-btnMoveUp-${tableID}`).show();
+            }
+            $(`#trCheckbox-${tableID}`).show();
+        } else {
+            $(`#tbleditor-btnRemove-${tableID}`).hide();
+            $(`#tbleditor-btnMoveDown-${tableID}`).hide();
+            $(`#tbleditor-btnMoveUp-${tableID}`).hide();
+            $(`#trCheckbox-${tableID}`).hide();
+        }
+    }
+
+    // Update row sequence after reordering
+    function updateRowSequence(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $(tbl + " tbody tr").each(function (index) {
+            $(this).find("input, select, textarea").each(function () {
+                var columnName = $(this).attr("name");
+                if (columnName === "SEQ") {
+                    $(this).val(index + 1);
+                }
+            });
+        });
+    }
+
+    // Check/uncheck all rows when header checkbox is clicked
+    function toggleAllRows(checked, tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $(tbl + " tbody input[type='checkbox']").prop('checked', checked);
+    }
+
+    //dummy onchange select
+    function onchangeTableEditor(obj) { 
+    
+    }
+
+    // Fetch data from the server and dynamically populate the table
+    function autoCreateTableRows() {
+        // var tableID = '@Model.COM_TABLE_EDITOR_ID';
+        // var tbl = "#tbleditor-" + tableID;
+         const listData = @Html.Raw(Json.Serialize(Model.LIST_DATA)); // Serializing LIST_DATA to JSON
+
+    }
+
+    function getTableEditorData(tableID, additionalData = {}) {
+        var tableData = [];
+        var rowIndex = 1; // Start index for SEQ
+
+        $(`#${tableID} tbody tr`).each(function () {
+            var rowData = { ...additionalData, SEQ: rowIndex }; // Add SEQ as the row index
+
+            $(this).find("td").each(function () {
+                 var columnField = $(this).attr("columnfield");
+
+                 if (columnField) {
+                //     var inputElement = $(this).find("input, textarea");
+                //     var value = inputElement.length > 0 ? inputElement.val() : $(this).text().trim();
+
+                //     rowData[columnField] = value;
+                    var inputElement = $(this).find("input, textarea, select");
+                    var value;
+
+                    if (inputElement.is("select")) {
+                        // For select elements, get the selected option's value
+                        value = inputElement.find("option:selected").val();
+                    } else if (inputElement.length > 0) {
+                        // For input or textarea, get the value
+                        value = inputElement.val();
+                    } else {
+                        // Otherwise, get the trimmed text
+                        value = $(this).text().trim();
+                    }
+
+                    rowData[columnField] = value;
+                 }
+               
+            });
+
+            if (Object.keys(rowData).length > 0) {
+                tableData.push(rowData);
+            }
+
+            rowIndex++; // Increment index for the next row
+        });
+
+        return tableData;
+    }
+
+    // Event bindings
+    $(document).off('click', ".tbleditor-btnAdd").on('click', ".tbleditor-btnAdd", function () {
+        // var tableID = $(this).data('tableid');
+        // addNewRow(tableID);
+        var tableID = $(this).data('tableid');
+        var isShowInModal = $('#tbleditor-chkISShowModal-' + tableID).is(':checked'); // Check if the checkbox is checked
+        console.log(isShowInModal);
+        if (isShowInModal) {
+            // Show modal
+            $('#tbleditor-modal-' + tableID).modal('show');
+        } else {
+            // Add new row directly to the table
+            addNewRow(tableID);
+        }
+    });
+
+    $(document).off('click', ".tbleditor-btnRemove").on('click', ".tbleditor-btnRemove", function () {
+        var tableID = $(this).data('tableid');
+        removeSelectedRows(tableID);
+    });
+
+    $(document).off('click', ".tbleditor-btnMoveUp").on('click', ".tbleditor-btnMoveUp", function () {
+        var tableID = $(this).data('tableid');
+        moveRowUp(tableID);
+    });
+
+    $(document).off('click', ".tbleditor-btnMoveDown").on('click', ".tbleditor-btnMoveDown", function () {
+        var tableID = $(this).data('tableid');
+        moveRowDown(tableID);
+    });
+
+    $(document).off('change', ".trCheckbox").on('change', ".trCheckbox", function () {
+        var tableID = $(this).data('tableid');
+        toggleAllRows(this.checked, tableID);
+    });
+
+    function onclickModalTableRemoveEditor(obj) 
+    {
+        var tableID = $(obj).data('tableid');
+
+    }
+    function onclickModalTableAddEditor(obj) {
+        var tableID = $(obj).data('tableid');
+        var modalBody = $('#tbleditor-modal-body-' + tableID);
+        var table = '#tbleditor-' + tableID;
+
+        // Get the current row count
+        let rowNumber = $(table + " tbody tr").length + 1;
+
+        // Construct the new row
+        var newRow = `<tr class='text-center'>
+                      <td><input type='checkbox' id='tbleditor-${rowNumber}-tr-checked' data-rowindex='${rowNumber}' class='dt-checkboxes form-check-input'></td>`;
+
+        // Loop through the modal inputs
+        modalBody.find('[columnfield]').each(function () {
+            var columnField = $(this).attr('columnField');
+            var columnValue = $(this).val() || '';
+
+            var inputElement = $(this); //.find("input, select, textarea");
+            if (inputElement.length > 0) {
+                var inputHtml = inputElement.prop('outerHTML');
+                inputHtml = inputHtml.replace(/id\s*=\s*['"]([^'"]+)['"]/, `id="tbleditor-${rowNumber}-${columnField}"`);
+                inputHtml = inputHtml.replace(/name\s*=\s*['"]([^'"]+)['"]/, `name="${columnField}"`);
+                inputHtml = inputHtml.replace(/data-rowindex\s*=\s*['"]([^'"]+)['"]/, `data-rowindex="${rowNumber}"`);
+
+                // Add the column value to the inputHtml
+                inputHtml = inputHtml.replace(/value\s*=\s*['"]([^'"]*)['"]/, `value="${columnValue}"`);
+
+                if (!/value\s*=/.test(inputHtml)) {
+                    inputHtml = inputHtml.replace(/(<input|<select|<textarea)/, `$1 value="${columnValue}"`);
+                }
+
+                newRow += `<td clmIndex="${rowNumber}" columnField="${columnField}">${inputHtml}</td>`;
+            } else {
+                console.warn(`No input, select, or textarea found for columnField: ${columnField}`);
+                newRow += `<td clmIndex="${rowNumber}" columnField="${columnField}"></td>`;
+            }
+        });
+
+        newRow += `</tr>`;
+        // Append the new row to the table
+        $(table + ' tbody').append(newRow);
+
+
+        // Remove focus from modal elements
+        modalBody.find(":focus").blur();
+
+        // Set aria-hidden to true and hide the modal
+        //modal.attr('aria-hidden', 'true').modal('hide');
+
+        // Move focus to a visible element (e.g., a button outside the modal)
+        $(`#tbleditor-button-${tableID}`).focus();
+
+
+
+        // Optionally, call toggleRemoveButtonVisibility or other functions if needed
+       // toggleRemoveButtonVisibility(tableID);
+    }
+
+    $('.tbleditor-modal').on('show.bs.modal', function () {
+        var tableID = $(this).data('tableid');
+        var tblData = "#tbleditor-txtData-" + tableID;
+        var modalBody = $('#tbleditor-modal-body-' + tableID);
+        var rowNumber = 0;
+        modalBody.empty(); // Clear previous content
+
+
+         var tableData = JSON.parse($(tblData).text());
+       // console.log(tableData);
+
+        var newRow = "";
+        var rowHtml = "";
+
+        tableData.forEach(function (clm) {
+            let columnName = clm.COLUMN_NAME || 'unknown';
+            let columnTitle = clm.COLUMN_TITLE || '-';
+
+            newRow = "";
+            //newRow += `<p class="text-muted">${columnName} clmIndex="${rowNumber}" columnField="${columnName}" <span class="text-danger">*</span><span style="float:right">:</span></p>`;
+
+            let updatedObject = clm.COLUMN_OBJECT.replace(/id\s*=\s*['"]([^'"]+)['"]/, function (match, existingId) {
+                return `id="tbleditor-modal-${rowNumber}-${columnName}-${existingId}"`;
+            });
+
+            if (!updatedObject.includes('id="')) {
+                updatedObject = updatedObject.replace(/(<\w+)/, `$1 id="tbleditor-modal-${rowNumber}-${columnName}-new"`);
+            }
+
+            updatedObject = updatedObject.replace(/(<\w+)/, `$1 data-rowindex="${rowNumber}"`);
+            updatedObject = updatedObject.replace(/(<(input|select|textarea)\b[^>]*)(>)/i, `$1 name="${columnName}" $3`);
+            updatedObject = updatedObject.replace(/(<(input|select|textarea)\b[^>]*)(>)/i, `$1 columnField="${columnName}" $3`);
+           // updatedObject = updatedObject.replace(/(<(input|select|textarea)\b[^>]*)(>)/i, `$1 onchange="onchangeTableModalEditor(this)" $3`);
+
+            if (updatedObject.includes('multiselect')) {
+                multiselectExists = true;
+            }
+            newRow += updatedObject;
+
+            rowHtml += `
+                    <div class="row mb-2 align-items-baseline">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
+                                        <p class="text-muted"  clmIndex="${rowNumber}">${columnTitle} <span class="text-danger">*</span><span style="float:right">:</span></p>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9">
+                                ${newRow}
+                        </div>
+                    </div>`;
+        });
+
+       
+        modalBody.append(rowHtml);
+
+    });
+
+</script>

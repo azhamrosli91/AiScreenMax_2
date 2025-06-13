@@ -1,0 +1,169 @@
+﻿@using MaxSystemWebSite.Models.MM;
+@model MM_SAMPLE;
+@{
+    Layout = "~/Views/Shared/_Layout_new.cshtml";
+}
+
+
+<div class="widgets-scrollspy-nav mt-n5 bg-body-emphasis z-5 mx-n4 mx-lg-n6 border-bottom p-2">
+    <div class="row g-0 tr-listing-header">
+        <!-- Title takes full width on mobile, half width on medium and larger screens -->
+        <div class="col-12 col-sm-6 align-self-center">
+            <div class="row g-0 justify-content-start align-items-center mb-2 mb-sm-0">
+                <div class="col-auto">
+                    <a href="/MM_Sample/Index" class="btn btn-sm btn-secondary me-2" id="btnBack"><i class="fa-solid fa-chevron-left"></i></a>
+                </div>
+                <div class="col-auto">
+                    <h7 class="text-muted m-0 tr-listing-header-title fw-bold fs-sm-8" id="lblHeaderTitle" name="lblHeader">@(Model.ID_MM_SAMPLE == 0 ? "New Sample" : "Sample Record ID: " + Model.ID_MM_SAMPLE)</h7>
+                </div>
+            </div>
+        </div>
+        <!-- Buttons take full width on mobile, half width on medium and larger screens -->
+        <div class="col-12 col-sm-6 text-md-end align-self-center">
+            <div class="row g-0 justify-content-center justify-content-sm-end mb-0" id="buttonContainer">
+                <div class="col-12 col-sm-auto">
+                    <button class="btn btn-sm btn-primary w-100" type="button" id="btnSubmit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form id="mainForm" class="needs-validation" autocomplete="off" novalidate>
+    <div class="col-md-12">
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <label class="form-label">Title</label>
+                @Html.TextBoxFor(Model => Model.TITLE, new { @class = "form-control", id = "txtTitle", placeholder = "Please enter title...", maxlength = "50", required = true })
+                <div class="invalid-feedback"></div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <label class="form-label">Remark</label>
+                <div class="tinymce-custom-inputarea form-control p-0">
+                    <textarea id="txtRemark">@Model.REMARK</textarea>
+                </div>
+                <div class="invalid-feedback"></div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<script>
+    var headerID = @Model.ID_MM_SAMPLE;
+
+    $(document).ready(function(){
+        tinymce.init({
+            selector: '#txtRemark',
+            skin: 'oxide',
+            height: 400,
+            menubar: false,
+            plugins: 'lists link image preview table',
+            toolbar: 'undo redo | formatselect fontsizeselect | bold italic underline forecolor backcolor | bullist numlist | table | link image | preview',
+            branding: false,
+            resize: false,
+            statusbar: false,
+            setup: function (editor) {
+                // Run on typing, pasting, or any input
+                editor.on('input keydown change', function () {
+                    $('#txtRemark').closest('.tinymce-custom-inputarea').removeClass('is-invalid');
+                });
+                // Optionally remove on focus too
+                editor.on('focus', function () {
+                    $('#txtRemark').closest('.tinymce-custom-inputarea').removeClass('is-invalid');
+                });
+            }
+        });
+
+
+        $('#btnSubmit').click(function(){
+            submitForm();
+        });
+    });
+
+    $(document).on('change', '[required]', function(){
+        $(this).removeClass('is-invalid');
+    });
+    function getEditorContent(element_id) {
+        const editor = tinymce.get(element_id);
+        if (editor) {
+            return editor.getContent(); // ✅ return the content
+        } else {
+            console.warn('Editor not ready yet.');
+            return ''; // safe fallback
+        }
+    }
+
+
+    function submitForm() {
+        var cont = true;
+        var message = "";
+
+        //$('#mainForm.needs-validation').addClass('was-validated');
+        $('#mainForm .is-invalid').removeClass('is-invalid');
+
+        $('#mainForm [required]').each(function () {
+            if (!$(this).val()) {
+                cont = false;
+                message = "Field cannot be empty.";
+                $(this).addClass('is-invalid');
+                $(this).parent().find('.invalid-feedback').text(message);
+            }
+        });
+
+        if (getEditorContent('txtRemark') === "") {
+            cont = false;
+            message = "Field cannot be empty.";
+            $('#txtRemark').parent().addClass('is-invalid');
+            $('#txtRemark').parent().parent().find('.invalid-feedback').text(message);
+        }
+
+        if (cont) {
+
+            var formData = new FormData();
+            formData.append('ID_MM_SAMPLE', headerID);
+            formData.append('TITLE', $('#txtTitle').val().trim());
+            formData.append('REMARK', getEditorContent('txtRemark'));
+
+            $.ajax({
+                url: '/MM_Sample/ExecuteSubmission',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    loadings();
+                },
+                success: function (response) {
+                    if (!response.error) {
+                        toastMessage("Data save successfully", 'success');
+                         setTimeout(function (e) {
+                            window.location.href = '/MM_Sample/Index';
+                        }, 1000);
+                    } else {
+                        loadings(false);
+                        toastMessage(response.msg, 'error');
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 400) {
+                        location.href = system_logout_url;
+                    } else {
+                        toastMessage("Error occured", 'error');
+                    }
+                }
+            });
+
+        } else {
+            if(message != ""){
+                toastMessage(message, 'error');
+            }
+        }
+    }
+
+</script>

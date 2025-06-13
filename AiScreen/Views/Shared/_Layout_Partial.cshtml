@@ -1,0 +1,66 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Configuration["ProjectName"]</title>
+   
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/sidebar.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/spinthatshit.css" rel="stylesheet" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/solid.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/regular.min.css" />
+    <link href="~/lib/select2-4.1.0/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <link href="~/lib/select2-4.1.0/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.bootstrap5.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.checkboxes.css" rel="stylesheet" />
+    <link href="~/css/mobilecss.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+
+    @* This code is ASP.NET Core CSS Isolation*@
+    @*  <link href="~/MaxSys.styles.css" rel="stylesheet" asp-append-version="true" /> *@
+
+    @* This is script *@
+    @* Comment1 *@
+    @* Comment JY *@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @*     <script src="~/js/jquery-ui-1.12.1.min.js"></script> *@
+    <script src="~/js/jquery-ui-1.12.1.js"></script>
+    <script src="~/js/bootstrap.bundle.js"></script>
+    <script src="~/js/jquery.validate-vsdoc.js"></script>
+    <script src="~/js/jquery.validate.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery.cookie.min.js"></script>
+    <script src="~/js/attrchange.js"></script>
+    <script src="~/js/modernizr-2.8.3.js"></script>
+    <script src="~/js/mainJS.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/views/shared/_Layout.js"></script>
+    <script src="~/lib/select2-4.1.0/js/select2.min.js"></script>
+
+    <script src="~/lib/datatables/js/jquery.datatables.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap.js"></script>
+    <script src="~/lib/datatables/js/datatables.select.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap5.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.checkboxes.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid d-flex flex-column">
+        <div class="row flex-nowrap">
+            <main class="col ps-md-2 mx-2 detail-frame">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+</body>
+</html>

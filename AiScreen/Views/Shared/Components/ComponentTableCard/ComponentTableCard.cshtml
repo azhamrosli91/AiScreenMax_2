@@ -1,0 +1,107 @@
+﻿@model MaxSys.Models.COM_TABLE_CARD
+<style>
+    .card-hover:hover {
+        background-color: #eaecee; /* Change to any color you like */
+    }
+</style>
+@{
+    <div class="">
+        @if (Model.COM_TABLE_CARD_D != null && Model.COM_TABLE_CARD_D.Count > 0)
+        {
+            <div>
+            @if (Model.ALLOW_FILTER || !string.IsNullOrEmpty(Model.TITLE))
+            {
+                <div class="row justify-content-start">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="d-flex justify-content-start justify-content-start-sm">
+                                <div class="toolbar">
+                                    @if (Model.ALLOW_FILTER)
+                                    {
+                                        <div class="input-group input-group-sm">
+                                      
+                                            <input type="text" id="pv-inclist-txtSearch-@Model.COM_TABLE_CARD_ID" class="form-control remove-right-border ui-autocomplete-input" placeholder="Search" aria- label="Search" aria-describedby="btnAdvanceSearch" autocomplete="off">
+                                            <div class="input-group-text listing-search-icon bg-primary">
+                                                <a href="" class="text-reset" id="pv-inclist-btnSearch-@Model.COM_TABLE_CARD_ID"><i class="fa-solid text-white fa-magnifying-glass"></i></a>
+                                            </div>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            }
+                <div class="row" id="card-container-@Model.COM_TABLE_CARD_ID">
+                    @foreach (var item in Model.COM_TABLE_CARD_D)
+                    {
+                        var clickUrl = Model.ALLOW_CLICK ? item.CLICK_URL : "";
+                        var cursorStyle = Model.ALLOW_CLICK ? "cursor: pointer;" : "";
+                        <div class="card p-1 m-2 card-hover" id="table-card-detail-@item.COM_TABLE_CARD_D_ID" data-TableCard="@item.COM_TABLE_CARD_ID" style="width: 18rem; @cursorStyle" data-title="@item.TITLE" data-body="@item.BODY" data-click-url="@clickUrl">
+                            @if (item.IMAGE_VISIBLE && !string.IsNullOrEmpty(item.IMAGE))
+                            {
+                                if (item.IMAGE_TYPE == MaxSys.Enum.Enum.COM_TABLE_CARD_D_IMAGE_TYPE.URL)
+                                {
+                                    <img src="@item.IMAGE" class="card-img-top" alt="Image not found">
+                                }
+                                else
+                                {
+                                    <img src="data:image /png;base64,@item.IMAGE" class="card-img-top" alt="Image not found">
+                                }
+                            }
+
+                            <div class="card-body" style="max-height: 350px; overflow: hidden;">
+                                @if (item.TITLE_VISIBLE && !string.IsNullOrEmpty(item.TITLE))
+                                {
+                                    <b>@item.TITLE</b>
+                                }
+                                @if (item.BODY_VISIBLE && !string.IsNullOrEmpty(item.BODY))
+                                {
+                                    @Html.Raw(@item.BODY)
+                                }
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+           
+        }
+    </div>
+    
+}
+<script>
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // Filter cards based on search input
+    $(document).ready(function () {
+        $('#pv-inclist-txtSearch-@Model.COM_TABLE_CARD_ID').on('input', function () {
+            loadings();
+            var searchText = $(this).val().toLowerCase();
+            $('#card-container-@Model.COM_TABLE_CARD_ID .card').each(function () {
+
+                var cardTitle = $(this).data('title') ? $(this).data('title').toLowerCase() : '';
+                var cardBody = $(this).data('body') ? $(this).data('body').toLowerCase() : '';
+
+                if (cardTitle.includes(searchText) || cardBody.includes(searchText)) {
+                    $(this).show();
+                    loadings(false);
+                } else {
+                    $(this).hide();
+                    loadings(false);
+                }
+            });
+        });
+
+        // Add click event to cards to navigate to URL if ALLOW_CLICK is true
+        $('#card-container-@Model.COM_TABLE_CARD_ID .card').on('click', function () {
+            var clickUrl = $(this).data('click-url');
+            if (clickUrl) {
+                window.location.href = clickUrl;
+            }
+        });
+    });
+</script>

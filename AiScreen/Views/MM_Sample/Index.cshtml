@@ -1,0 +1,131 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_new.cshtml";
+}
+
+<style>
+    .content {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding-top: calc(var(--phoenix-navbar-top-height) + 1rem);
+        padding-bottom: 1rem;
+    }
+</style>
+
+
+<div class="row g-0 mb-2 tr-listing-header">
+    <!-- Title takes full width on mobile, half width on medium and larger screens -->
+    <div class="col-12 col-md-6 align-self-center">
+        <h4 class="text-muted m-0 tr-listing-header-title " id="lblHeaderTitle" name="lblHeader">Sample Listing (Server Side Datatable)</h4>
+    </div>
+    <!-- Buttons take full width on mobile, half width on medium and larger screens -->
+    <div class="col-12 col-md-6 text-md-end align-self-center">
+        <div class="row g-2 justify-content-center justify-content-md-end" id="buttonContainer">
+            <div class="col-12 col-md-auto">
+                <a href="/MM_Sample/Detail" class="btn btn-sm btn-outline-secondary w-100" id="btnCreateForm">
+                    <i class="fa-solid fa-plus"></i> Create Sample
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card d-flex flex-column h-100 minh-0">
+    <div class="card-body g-0 px-3 h-100">
+
+        <div class="row h-100">
+            <div class="col-sm-12 h-100 dt-custom-ms">
+                <table id="mainTable" class="table-striped table-hover tr-responsive-table default-list" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    var table = $('#mainTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '/MM_Sample/FetchListing',
+            type: 'POST',
+            data: function (d) {
+                // Use the default search input value
+                d.searchTerm = d.search.value;
+
+                // Add your custom values
+                //d.tableName = 'MM_SAMPLE';
+                //d.columnsToSearch = '';
+            }
+        },
+        columns: [
+            { data: 'ID_MM_SAMPLE' },
+            { data: 'TITLE' }
+        ],
+        columnDefs: [
+            {
+                targets: 0,
+                render: function (data, type, row) {
+                    if (type === 'display') {
+                        data = `<a href="/MM_SAMPLE/Detail/${data}">${data}</a>`;
+                    }
+                    return data;
+                }
+            },
+            {
+                targets: "_all", // Apply to all columns
+                createdCell: function (td, cellData, rowData, row, col) {
+                    var api = this.api();
+                    // Add the data-title attribute with the column header text
+                    if ($(api.column(col).header()).hasClass('mv-d-none')) {
+                        $(td).addClass('mv-d-none');
+                    }
+                    var headerText = api.column(col).header().textContent;
+                    //console.log(headerText);
+                    $(td).attr('data-title', headerText);
+                }
+            }
+        ],
+        createdRow: function (row, data, dataIndex) {
+            $(row).attr('data-id', data.ID_MM_SAMPLE);
+        },
+        dom: '<"row mb-2"<"col-sm-6"l><"col-sm-6"f>>' +
+             '<"row h-100 minh-0"<"col-sm-12 h-100"tr>>' +
+             '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+        initComplete: function () {
+            var api = this.api();
+            $('#mainTable').wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+        }
+    });
+
+    // Debounce logic
+    let searchDelay;
+    $('#mainTable_filter input')  // DataTables' default search input
+        .off()                        // Remove existing event
+        .on('input', function () {
+            clearTimeout(searchDelay);
+            searchDelay = setTimeout(function () {
+                table.search($('#mainTable_filter input').val()).draw();
+            }, 500); // 500ms delay
+        });
+
+    // $(document).on('click', '#mainTable tbody tr', function (e) {
+    //     var $targetTd = $(e.target).closest('td');
+    //     if (!($targetTd.is('td:nth-child(1)'))) {
+    //         e.stopPropagation();
+    //         return;
+    //     }
+    //     var did = $(this).data('id');
+    //     if (did != null && did != undefined) {
+    //         window.location.href = "/MM_SAMPLE/Detail/" + did;
+    //     }
+    // });
+</script>

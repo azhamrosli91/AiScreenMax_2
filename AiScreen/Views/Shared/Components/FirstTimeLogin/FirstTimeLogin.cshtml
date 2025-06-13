@@ -1,0 +1,137 @@
+﻿@model SmartTemplateCore.Models.Common.User_login_System
+<form id="frmFirstTimeLogin">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <h4 class="text-center mt-4" style="font-weight:bold; color:#54575a;">First Login</h4>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="row mb-2 align-items-baseline">
+                <div class="col-xl-12">
+                    <p class="text-muted">Email</p>
+                </div>
+                <div class="col-xl-12">
+                    @Html.TextBoxFor(Model => Model.EMAIL, new { @class = "form-control disabled", @readonly = "readonly", Type = "email" })
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12">
+            <div class="row mb-2 align-items-baseline">
+                <div class="col-xl-12">
+                    <p class="text-muted">Password</p>
+                </div>
+                <div class="col-xl-12">
+                    @Html.TextBoxFor(Model => Model.PASSWORD, new { @class = "form-control isEdit require", type = "password", id = "txtPassword", pattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,}", data_error_pattern = "Password must minimum 6 character have upper case number and lower case.", data_error_msg_id = "txtPasswordError" })
+                    <label id="txtPasswordError" class="d-none text-danger"></label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12">
+            <div class="row mb-2 align-items-baseline">
+                <div class="col-xl-12">
+                    <p class="text-muted">Confirm Password</p>
+                </div>
+                <div class="col-xl-12">
+                    <input type="password" class="form-control isEdit require" id="txtPasswordConfirm" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" data-error-pattern="Password must minimum 6 character have upper case number and lower case." error-msg-id="txtPasswordConfirmError" />
+                    <label id="txtPasswordConfirmError" class="d-none text-danger"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="form-group d-grid gap-2 mt-4">
+        <button class="btn btn-primary tr-login-btn" type="button" id="btnForgotSubmit" style="border-radius: 2px"><b>Submit</b></button>
+        <label id="txtReturnStatus" class="d-none"></label>
+    </div>
+</form>
+<div class="form-group d-grid gap-2 mt-4">
+    <span class="text-center w-100">
+        <a href="@Url.Action("Login", "Home")" class="forget-password-text" style="text-decoration:none;"><i class="fa-solid fa-arrow-left me-2"></i>Back to login</a>
+    </span>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#btnForgotSubmit").click(function (e) {
+           
+            if (!validateForm()) {
+                return; 
+            }
+
+           
+            if ($("#txtPassword").val() != $("#txtPasswordConfirm").val()) 
+            {
+                var errorLabelId = $("#txtPasswordConfirm").attr("error-msg-id");
+                var data = $("#txtPasswordConfirm").data("error-pattern");
+                $("#" + errorLabelId).text("Password and confirm password not match");
+                $("#" + errorLabelId).show(); // Show the error label
+                $("#" + errorLabelId).removeClass("d-none");
+                $("#" + errorLabelId).html($("#txtPasswordConfirm").attr("error-msg"));
+            }else{
+                // If email is valid, reset border color
+                $("#txtPasswordConfirm").css("border-color", "");
+                var errorLabelId3 = $("#txtPasswordConfirm").attr("error-msg-id");
+                $("#" + errorLabelId3).hide(); // Hide the error label
+                $("#" + errorLabelId3).addClass("d-none");
+            }
+
+
+            var formData = $('#frmFirstTimeLogin').serialize();
+
+            $.ajax({
+                url: "../Home/CreatePassword",
+                type: 'POST',
+                data: formData,
+                beforeSend: function () {
+                    loadings();
+                },
+                headers: {
+                    // Get the anti-forgery token from the form
+                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    loadings(false);
+                    // console.log(response)
+                    if (response.success) {
+                       // console.log("OK")
+                        // toastSuccess("Successfully","Successfully update password", function () {
+                        //     // console.log("XX")
+                        //     // window.location.href = '@Url.Action("Login", "Home")';
+                        // });
+                        $("#txtReturnStatus").html(response.error)
+                        $("#txtReturnStatus").removeClass("d-none");
+                        $("#txtReturnStatus").removeClass("text-danger");
+                        $("#txtReturnStatus").addClass("text-success");
+                        setTimeout(function () {
+                            // Code to execute after 2 seconds
+                            window.location.href = '@Url.Action("Login", "Home")';
+                        }, 1500);
+
+                    } else {
+                        $("#txtReturnStatus").html("Failed to change password");
+                        $("#txtReturnStatus").removeClass("d-none");
+                        $("#txtReturnStatus").addClass("text-danger");
+                        $("#txtReturnStatus").removeClass("text-success");
+                        setTimeout(function () {
+                            // Code to execute after 2 seconds
+                            window.location.href = '@Url.Action("Login", "Home")';
+                        }, 1500);
+                    }
+                },
+                error: function () {
+                    $("#txtReturnStatus").html("Failed to change password");
+                    $("#txtReturnStatus").removeClass("d-none");
+                    $("#txtReturnStatus").addClass("text-danger");
+                    $("#txtReturnStatus").removeClass("text-success");
+                    setTimeout(function () {
+                        // Code to execute after 2 seconds
+                        window.location.href = '@Url.Action("Login", "Home")';
+                    }, 1500);
+                }
+            });
+        });
+
+    });
+
+</script>

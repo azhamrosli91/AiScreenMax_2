@@ -1,0 +1,227 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_new.cshtml";
+}
+<style>
+    .page-align-top {
+        align-self: flex-start !important;
+        width: 100%;
+    }
+</style>
+<div class="page-align-top w-100">
+    <div class="w-100">
+        <div class="row align-items-center justify-content-between g-3 mt-3">
+            <div class="col-auto">
+                <h2 class="mb-0">Ai Resume Screening - History</h2>
+            </div>
+            <div class="col-auto">
+                <div class="row g-3">
+                    <div class="col-auto">
+                        <a class="btn btn-success" href="../AiResume/Shortlisted"><span class="fas fa-check me-2"></span>Shortlisted</a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary" href="../AiResume/Index"><span class="fas fa-plus me-2"></span>New Screening</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-2">
+            <div class="col-12 col-xl-10 order-1 order-xl-0 w-100">
+                <div class="card shadow-none border my-4 w-100" data-component-card="data-component-card">
+                    <div class="card-body p-3">
+                        <table id="example" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 150px;">Title</th>
+                                    <th style="min-width: 250px;">Contact</th>
+                                    <th text-align: center;">Match %</th>
+                                    <th style="min-width: 300px;">Short Description</th>
+                                    <th>Date Run</th>
+                                    <th style="min-width: 120px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Resume Detail Modal -->
+<div class="modal fade" id="resumeDetailModal" tabindex="-1" aria-labelledby="resumeDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resumeDetailModalLabel">Resume Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Job Title</dt>
+                    <dd class="col-sm-9" id="modalJobTitle"></dd>
+
+                    <dt class="col-sm-3">Name</dt>
+                    <dd class="col-sm-9" id="modalName"></dd>
+
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9" id="modalEmail"></dd>
+
+                    <dt class="col-sm-3">Phone</dt>
+                    <dd class="col-sm-9" id="modalPhone"></dd>
+
+                    <dt class="col-sm-3">Match</dt>
+                    <dd class="col-sm-9" id="modalMatch"></dd>
+
+                    <dt class="col-sm-3">Short Description</dt>
+                    <dd class="col-sm-9" id="modalDesc"></dd>
+
+                    <dt class="col-sm-3">Date Run</dt>
+                    <dd class="col-sm-9" id="modalDate"></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+  
+        const storedResults = localStorage.getItem("ai_resume_results");
+
+        const table = $('#example').DataTable({
+            initComplete: function () {
+                $("#example").wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+            }
+        });
+
+        if (storedResults) {
+            try {
+                const resumeData = JSON.parse(storedResults);
+
+                let shortlistedEmails = [];
+                const shortlistedStored = localStorage.getItem("ai_resume_shortlisted");
+                if (shortlistedStored) {
+                    try {
+                        const parsedShortlisted = JSON.parse(shortlistedStored);
+                        if (Array.isArray(parsedShortlisted)) {
+                            shortlistedEmails = parsedShortlisted.map(item => item.email);
+                        }
+                    } catch (e) {
+                        console.warn("Failed to parse ai_resume_shortlisted", e);
+                    }
+                }
+
+                resumeData.forEach((item, index) => {
+                    const date = new Date(item.timestamp);
+                    const formattedDate = formatDate(date);
+                
+                    const isShortlisted = shortlistedEmails.includes(item.email);
+                
+                    const actionHtml = isShortlisted
+                        ? '' // Hide the button
+                        : `<div class="text-center">
+                               <button class="btn btn-success btn-sm shortlisted" title="Shortlisted">
+                                   <i class="fas fa-check "></i>
+                               </button>
+                           </div>`;
+
+                    const contactHtml = `
+                        <strong>${item.name}</strong><br/>
+                        <span>${item.email}</span><br/>
+                        <span>${item.phone_number}</span>
+                    `;
+
+                    const row = table.row.add([
+                        item.jobtitle || "-",
+                        contactHtml,
+                        `<div style="text-align:center;">${item.percentage_match}%</div>`,
+                        `<div class="text-wrap" style="min-width: 300px;">${item.short_description}</div>`,
+                        formattedDate,
+                        actionHtml
+                    ]).draw(false).node();
+
+                
+                    // Attach data to row for modal
+                    $(row).data("resume", item);
+                });
+
+            } catch (err) {
+                console.error("Error parsing localStorage resume data:", err);
+            }
+        }
+
+        function formatDate(date) {
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const day = pad(date.getDate());
+            const month = pad(date.getMonth() + 1);
+            const year = date.getFullYear();
+            const hours = date.getHours();
+            const minutes = pad(date.getMinutes());
+            const suffix = hours >= 12 ? 'PM' : 'AM';
+            const hour12 = hours % 12 || 12;
+
+           return `${day}/${month}/${year}<br/><small class="text-muted">${pad(hour12)}:${minutes} ${suffix}</small>`;
+
+        }
+
+         $('#example tbody').on('click', 'tr', function () {
+
+             // if ($(e.target).closest('button').length) return;
+
+             const data = $(this).data("resume");
+             if (!data) return;
+
+             $('#modalJobTitle').text(data.jobtitle || "-");
+             $('#modalName').text(data.name);
+             $('#modalEmail').text(data.email);
+             $('#modalPhone').text(data.phone_number);
+             $('#modalMatch').text(data.percentage_match + '%');
+             $('#modalDesc').text(data.short_description);
+             $('#modalDate').text(formatDate(new Date(data.timestamp)));
+
+             const modal = new bootstrap.Modal(document.getElementById('resumeDetailModal'));
+             modal.show();
+         });
+
+         $('#example tbody').on('click', '.shortlisted', function () {
+            const $btn = $(this);
+            const $row = $btn.closest('tr');
+
+            const data = $row.data("resume"); // <-- We previously stored full resume data using .data("resume", item);
+            console.log(data)
+            if (!data || !data.email) return;
+
+            // Retrieve existing shortlist from localStorage
+            let shortlisted = [];
+            const stored = localStorage.getItem("ai_resume_shortlisted");
+
+            if (stored) {
+                try {
+                    shortlisted = JSON.parse(stored);
+                    if (!Array.isArray(shortlisted)) shortlisted = [];
+                } catch (e) {
+                    shortlisted = [];
+                }
+            }
+
+            // Check if already shortlisted by email
+            const alreadyShortlisted = shortlisted.some(item => item.email === data.email);
+
+            if (!alreadyShortlisted) {
+                // Add to shortlist with short_listed = true
+                data.short_listed = true;
+                shortlisted.push(data);
+                localStorage.setItem("ai_resume_shortlisted", JSON.stringify(shortlisted));
+                console.log("Shortlisted resume saved:", data.email);
+            }
+
+            // Hide the button after clicking
+            $btn.closest('div.text-center').remove();
+        });
+
+    });
+
+</script>

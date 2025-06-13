@@ -1,0 +1,641 @@
+﻿@using Microsoft.Extensions.Configuration
+@model MaxSys.Models.AuthenticatorModel
+@inject IConfiguration Configuration
+@{
+    ViewBag.Title = Configuration["ProjectName"] + "| Main Page";
+    Layout = "~/Views/Shared/_Layout_Empty.cshtml";
+    var ProjectName = Configuration["ProjectName"];
+}
+<style>
+    .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    }
+
+    html {
+        position: relative;
+        min-height: 100%;
+        overflow: scroll;
+    }
+    body{
+        font-size:16px;
+    }
+
+    .bd-team3 {
+        background-color: bisque;
+    }
+
+    .bd-team5 {
+        background-color: rgb(19, 53, 139);
+    }
+
+    .bd-team2 {
+        background-color:aliceblue;
+    }
+    .core-activities {
+        text-align: center;
+    }
+
+  /*   .activity {
+        margin-bottom: 30px;
+    } */
+
+        .activity img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .activity h5 {
+            color: #0033cc;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .activity p {
+            color: #333;
+
+            line-height: 1.6;
+        }
+    /*Gambar Hero */
+    .hero-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4rem;
+        max-width: 1200px;
+        margin: 0 auto; /* Pusatkan */
+    }
+
+    .hero-text {
+        flex: 1;
+        max-width: 50%;
+        font-family: 'Stem Light', sans-serif;
+        padding-right: 2rem;
+    }
+
+        .hero-text h1 {
+          
+            font-weight: bolder;
+            margin-bottom: 20px;
+        }
+
+        .hero-text p {
+      
+            color: #333;
+        }
+
+    .hero-image {
+        flex: 1;
+        max-width: 50%;
+    }
+
+        .hero-image img {
+            flex: 10;
+            width: 170%;
+            max-width: 1200px;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+    .title {
+       
+        font-weight: bold;
+        color: #0033cc;
+        font-weight: bold;
+    }
+
+    .description {
+    
+        color: #333;
+        flex-grow: 1;
+    }
+
+    .testimonial-bg {
+        padding: 20px;
+        border-radius: 10px;
+        background-image: url('../Images/Testimonials_Header_Legal.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .navbar-nav .nav-link, .navbar-brand {
+        font-size: 16px !important;
+    }
+
+    .culture-box {
+        background: white;
+        border-radius: 26px;
+        border: 2px solid #ddd;
+        max-width: 400px;
+        margin: auto;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+      /*   .culture-box::before {
+            content: "";
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 120px;
+            height: 120px;
+            background: #f2f2f2;
+            border-radius: 50%;
+        } */
+    .code-box {
+        background-color: #6f42c1;
+        color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        font-family: monospace;
+        font-size: 1rem;
+        box-shadow: 0 4px 8px rgba(111, 66, 193, 0.4);
+    }
+</style>
+<header class="w-100">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="Images/Max_logo_2.png" alt="Max System Logo" style="height: 40px; margin-right: 10px;" loading="lazy"> @ProjectName
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home" id="link-landingPage">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about" id="link-about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#solution" id="link-solution">Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonial" id="link-solution">Testimonial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contactus" id="link-solution">Contact Us</a>
+                    </li>
+                </ul>
+                <a class="btn btn-outline-primary ms-3 mt-3 mt-md-0 d-block d-md-inline-block" href="#" role="button" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fa fa-key"></i>&nbsp;Login Employee
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+<body>
+    <div class="container-fluid" style="padding-left:0 !important; padding-right:0 !important">
+        <main role="main">
+            <div class="container-fluid  code-box position-relative p-0 m-0"
+                 style="height: 100vh; width: 100vw; overflow: hidden;">
+                @* <img src="Images/Homepage_Picture_Legal.jpg"
+                     class="w-100 h-100 position-absolute top-0 start-0"
+                     style="object-fit: cover; opacity: 0.6;" loading="lazy" />  *@
+
+               @*  <div id="home" class="container h-100 d-flex flex-column justify-content-center align-items-center text-center mt-5 position-relative">
+                    <div class="row w-100" id="searchInputSection"
+                         style="background-color: rgba(255, 255, 255, 0.8); padding: 10px 15px; border-radius: 10px;">
+                        <div class="col-md-12 d-flex flex-column justify-content-center">
+                            <h1 class="display-3 text-primary fw-bold mb-4">Max System Solution</h1>
+                            <p class="lead mb-4">Your IT Partner of Choice.</p>
+                        </div>
+                    </div>
+                </div> *@
+            </div>
+             <div id="activites" class="container-fluid w-100" style="padding: 10px;background-color:white;">
+                 <div class="container mt-5">
+                     <div class="row mt-5">
+                         <h2 class="col-sm-12 pb-4">Max System’s Core Activities</h2>
+                         <div class="row text-center">
+                             <!-- Business Solutions -->
+                             <div class="col-md-6 col-lg-3 activity">
+                                <img src="~/images/Homepage_BssSolution_Legal.jpg" alt="Business Solutions" loading="lazy">
+                                 <h5>Business Solutions</h5>
+                                 <p>We are able to provide you with the latest technologies while utilizing the best practices to deliver optimized solutions.</p>
+                             </div>
+
+                             <!-- Customized Software -->
+                            <div class="col-md-6 col-lg-3 activity">
+                                <img src="~/images/Homepage_Cust_pic_Legal.jpg" alt="Customized Software" loading="lazy">
+                                 <h5>Customized Software</h5>
+                                 <p>Our software solution includes application development, web application development, and mobile app development.</p>
+                             </div>
+
+                             <!-- Outsourcing Talents -->
+                            <div class="col-md-6 col-lg-3 activity">
+                                <img src="~/images/Homepage_Outsourcing_pic_Legal.jpg" alt="Outsourcing Talents" loading="lazy">
+                                 <h5>Outsourcing Talents</h5>
+                                 <p>With our IT outsourcing services, you can use specialized IT skills to grow your business to the next level.</p>
+                             </div>
+
+                             <!-- Corporation Maintenance -->
+                            <div class="col-md-6 col-lg-3 activity">
+                                <img src="~/images/Homepage_CorpMaint_pic_Legal.jpg" alt="Corporation Maintenance" loading="lazy">
+                                 <h5>Corporation Maintenance</h5>
+                                 <p>Our professional team can provide advisory and managerial services for your short or long-term IT objectives.</p>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+          
+            <div id="about" class="container-fluid bd-team2" style="padding: 10px; border-radius: 10px;">
+                <div class="container mt-5">
+                    <div class="row mt-5">
+                        <h1 class="mb-3">About Company</h1>
+                        <p class="lead">
+                            Max System Solution is one of Malaysia’s leading software specialist companies that develops and provides customized, high-quality
+                            software solutions, web application development, online marketing, and maintenance services for multinational corporations, huge businesses, as well as small and medium enterprises.
+                        </p>
+
+                        <div class="row mt-5">
+                            <!-- Vision -->
+                            <div class="col-md-6 text-center">
+                                <img src="~/images/CompanyProfile_Vision_icon.png" alt="Vision Icon" class="mb-3" loading="lazy">
+                                <h3 class="text-primary">Vision</h3>
+                                <p>
+                                    We aim to provide the best software and services by passionate talents that can improve work efficiency, save time, and serve our customers with the best quality.
+                                </p>
+                            </div>
+                            <!-- Mission -->
+                            <div class="col-md-6 text-center">
+                                <img src="~/images/CompanyProfile_Mission_icon.png" alt="Mission Icon" class="mb-3" loading="lazy">
+                                <h3 class="text-primary">Mission</h3>
+                                <p>
+                                    Provide custom software development designed to overcome common obstacles in web and software systems, enabling businesses to operate more efficiently and move forward without barriers.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-md-6 text-center">
+                                <div class="culture-box p-4 text-center shadow-lg">
+                                    <img src="~/images/CompanyProfile_OurCulture_pic.png" alt="Vision Icon" class="mb-3" loading="lazy" style="width:400px;">
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="culture-box p-4 text-center shadow-lg">
+                                    <h3 class="text-primary">Our Culture</h3>
+                                    <p>
+                                        At Max System Solution, we value
+                                        innovation, mutual respect and open
+                                        communication. We foster a supportive
+                                        environment and every voice matters.
+                                        <br />
+                                        <br />
+                                        Here, challenges are opportunities, and
+                                        success is obtained as a group effort.
+                                    </p>
+                                    <button class="btn btn-primary btn-lg">Join Us!</button>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+@*             <div id="about" class="container-fluid" style="padding: 20px; border-radius: 10px;">
+                <div class="container mt-5">
+                    <div class="row mt-5">
+
+                    </div>
+                </div>
+            </div> *@
+            <div id="testimonial" class="container-fluid" style="padding: 10px; border-radius: 10px;">
+@*                 <div class="testimonial-bg" style="height:150px;"></div> *@
+                <div class="container mt-5">
+                    <div class="row mt-5 text-center">
+                        <div class="col-sm-12">
+                            <div class="row text-center pb-6">
+                                <div class="col-sm-12">
+                                    <section class="career-session">
+                                        <center><h1>Why people choose us</h1></center>
+                                        <center><h4>Client testimonies</h4></center>
+                                        <p class="text-center">
+                                            Max System Solution has been instrumental in transforming our online presence. <br />
+                                            Their team is professional, skilled, and dedicated to delivering top-notch solutions tailored to our needs.
+                                        </p>
+                                    </section>
+                                </div>
+                            </div>
+
+                            <div class="row text-center align-items-center  pb-5">
+                                <div class="col-sm-12 col-md-4 col-lg-2">
+                                    <div class="title text-md-end"><div class="text-center">Business<br>Solutions</div></div>
+                                </div>
+                                <div class="col-sm-12 col-md-8 col-lg-10">
+                                    <div class="description text-md-start">
+                                        We deliver optimized business solutions to our customers <br>
+                                        using the latest technologies and the best practices in the <br>
+                                        market.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row text-center align-items-center pb-5">
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <div class="title text-md-end"><div class="text-center">Fully<br>Customizable<br>Software</div></div>
+                                </div>
+                                <div class="col-sm-12 col-md-8 col-lg-8">
+                                    <div class="description text-md-start">
+                                        Our software solution includes software application <br>
+                                        development, web application development, and mobile <br>
+                                        application development, fully customizable to the customer.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row text-center align-items-center pb-5">
+                                <div class="col-sm-12 col-md-4 col-lg-2">
+                                    <div class="title text-md-end"><div class="text-center">Excellent<br>Outsourced<br>Talents</div></div>
+                                </div>
+                                <div class="col-sm-12 col-md-8 col-lg-10">
+                                    <div class="description text-md-start">
+                                        With our IT outsourcing services, you can use specialized <br>
+                                        IT skills to grow your business and improve performance <br>
+                                        to the next level.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row text-center align-items-center pb-5">
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <div class="title text-md-end"><div class="text-center">Multinational<br>Corporation<br>Maintenance</div></div>
+                                </div>
+                                <div class="col-sm-12 col-md-8 col-lg-8">
+                                    <div class="description text-md-start">
+                                        Our professional team can provide advisory and managerial <br>
+                                        services that will meet any of your short- or long-term IT <br>
+                                        objectives at an affordable cost.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div id="solution" class="container-fluid bd-team2" style="padding: 20px; border-radius: 10px;">
+                <div class="container mt-5">
+                    <div class="row mt-5 text-center">
+                        <h1 class="mb-3">Solution - Max System’s Core Services</h1>
+                        <!-- Software Application Development -->
+                        <div class="col-md-6 col-sm-12 service-item text-center">
+                            <img src="~/images/Solutions_Software_icon.png" alt="Software Icon" loading="lazy">
+                            <h4>Software Application Development</h4>
+                            <p>
+                                Custom software solutions tailored to any business needs. We utilize the latest technologies to deliver scalable and secure applications.
+                            </p>
+                        </div>
+                        <!-- Mobile Application Development -->
+                        <div class="col-md-6 col-sm-12 service-item text-center">
+                            <img src="~/images/Solutions_MobileApp_icon.png" alt="Mobile Icon" loading="lazy">
+                            <h4>Mobile Application Development</h4>
+                            <p>
+                                Create engaging mobile applications with us, resulting in a user-friendly and portable application for your users.
+                            </p>
+                        </div>
+                        <!-- Web Application Development -->
+                        <div class="col-md-6 col-sm-12 service-item text-center">
+                            <img src="~/images/Solutions_WebApp_icon.png" alt="Web Icon" loading="lazy">
+                            <h4>Web Application Development</h4>
+                            <p>
+                                Establish your online presence by creating your own web application. We build responsive and interactive web applications from e-commerce to enterprise solutions.
+                            </p>
+                        </div>
+                        <!-- IT Outsourcing Services -->
+                        <div class="col-md-6 col-sm-12 service-item text-center">
+                            <img src="~/images/Solutions_Outsourcing_icon.png" alt="IT Icon" loading="lazy">
+                            <h4>IT Outsourcing Services</h4>
+                            <p>
+                                Streamline your operations and reduce costs with our IT outsourcing services. Our skilled professionals in a dynamic range will fit your needs, allowing you to focus on your core business objective.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="contactus" class="container-fluid p-0">
+                <div class="container mt-5  pb-5">
+                    <div class="row mt-5">
+                        <div class="text-center">
+                            <h1 class="mb-3">Let’s Connect</h1>
+                            <p>We are just one email away! Reach out to us and we’ll get back to you as soon as possible.</p>
+                        </div>
+                        <!-- Software Application Development -->
+                        <div class="col-md-6 col-sm-12 service-item text-center pb-5">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 p-5">
+                                    <img src="/Images/ContactUs_Phone_icon.png" alt="phone icon" loading="lazy" />
+                                    <h3 class="title">Phone</h3>
+                                    +60 4 3137612
+                                </div>
+                                <div class="col-sm-12 col-md-6 p-5">
+                                    <img src="/Images/ContactUs_Email_icon.png" alt="phone icon" loading="lazy" />
+                                    <h3 class="title">Email</h3>
+                                    hr@maxsys.com.my
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <img src="/Images/ContactUs_Address_icon.png" alt="phone icon" loading="lazy" />
+                                    <h3 class="title">Address</h3>
+                                   
+                                </div>
+                                <div class="col-sm-12 col-md-6 text-start">
+                                    No. 27, 1st Floor, Jalan Villa Tanjung, Villa
+                                    Tanjung, 12300 Butterworth, Pulau Pinang,
+                                    Malaysia
+                                </div>
+                            </div>
+                        </div>
+                        <!-- IT Outsourcing Services -->
+                        <div class="col-md-6 col-sm-12">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name :</label>
+                                    <input type="text" class="form-control border border-dark" id="name" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email :</label>
+                                    <input type="email" class="form-control border border-dark" id="email" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="topic" class="form-label">Topic :</label>
+                                    <input type="text" class="form-control border border-dark" id="topic" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Message :</label>
+                                    <textarea class="form-control border border-dark" id="message" rows="4" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100" style="font-size:22px !important">Send</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-12">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15954.516931059734!2d100.3862569!3d5.4272673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304ac5ed7013568f%3A0xdef060b81b4def67!2sMax%20System%20Solution%20Sdn%20Bhd!5e0!3m2!1sen!2smy!4v1710432394567!5m2!1sen!2smy"
+                                allowfullscreen=""
+                                loading="lazy" class="w-100" style="height:350px">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+</body>
+<footer id="footer" class="container-fluid bd-team5">
+    <div class="container">
+        <div class="row p-5">
+            <div class="col-md-4">
+                <h6 class="fw-bold text-white">Max System Solution Sdn Bhd</h6>
+                <p class="text-white">
+                    No. 27, 1st Floor, Jalan Villa Tanjung, Villa Tanjung,<br>
+                    12300 Butterworth, Pulau Pinang, Malaysia
+                </p>
+                <p><strong class="text-white">Tel:</strong> <a href="tel:+6043137612" class="fw-bold text-white">+60 4 3137612</a></p>
+            </div>
+            <div class="col-md-1 d-none d-md-block">
+                <div class="vr text-white"></div> <!-- Vertical line -->
+            </div>
+            <div class="col-md-7 text-md-start text-center">
+                <div class="d-flex flex-column flex-md-row gap-4 justify-content-md-end">
+                    <div>
+                        <h6 class="fw-bold text-white">About Max System Solution</h6>
+                        <p><a href="#about" class="text-white text-decoration-none">Company profile</a></p>
+                        <p><a href="#testimonial" class="text-white text-decoration-none">Testimonials</a></p>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-white"><a href="#solution" class="text-white text-decoration-none">Solutions</a></h6>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-white"><a href="#" class="text-white text-decoration-none">Careers</a></h6>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold text-white"><a href="#contactus" class="text-white  text-decoration-none">Contact Us</a></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm" method="post" action="/Home/Login">
+                    @Html.AntiForgeryToken() <!-- Add this line -->
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email address</label>
+                        @Html.TextBoxFor(a => a.LOGIN_ID, new { placeholder = "Enter email", id = "loginEmail", @class = "form-control remove-left-border login-txt textbox keyboard", @value = "", type = "email" })
+                        <span class="text-danger" id="emailError"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        @Html.TextBoxFor(a => a.PASSWORD, new { placeholder = "Password", id = "loginPassword", @class = "form-control remove-left-border login-txt textbox keyboard", @value = "", type = "password" })
+                        <span class="text-danger" id="passwordError"></span>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="/Account/ForgotPassword" id="forgotPasswordLink">Forgot Password?</a> <!-- Forgot Password link -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p class="text-center w-100">Don't have an account? <a href="/Home/RegisterUser">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+    $('#loginForm').on('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Clear previous error messages
+        $('#emailError').text('');
+        $('#passwordError').text('');
+
+        // Get form values
+        const email = $('#loginEmail').val().trim();
+        const password = $('#loginPassword').val().trim();
+
+        // Validation logic
+        let isValid = true;
+
+        if (!email) {
+            $('#emailError').text('Email is required.');
+            isValid = false;
+        } else if (!/\S+@@\S+\.\S+/.test(email)) {
+            $('#emailError').text('Email is invalid.');
+            isValid = false;
+        }
+
+        if (!password) {
+            $('#passwordError').text('Password is required.');
+            isValid = false;
+        }
+
+        // If form is valid, submit via AJAX
+        if (isValid) {
+            const token = $('input[name="__RequestVerificationToken"]').val(); // Get anti-forgery token
+
+            $.ajax({
+                url: '/Home/Login', // URL to submit the form
+                type: 'POST',
+                headers: {
+                    'RequestVerificationToken': token // Include anti-forgery token in headers
+                },
+                data: $(this).serialize(), // Serialize form data
+                success: function (response) {
+                    if (response.success) {
+                        $.ajax({
+                            type: "get",
+                            url: "/Home/GetSidebar",
+                            datatype: "json",
+                            traditional: true,
+                            success: function (data) {
+                                localStorage.setItem("Sidebar", data);
+                                window.location.href = response.redirectUrl; // Redirect on success
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Error:', error);
+                                alert('An error occurred while processing your request.');
+                            }
+                        });
+                       
+                    } else {
+                        // Display server-side validation errors
+                        console.log(response);
+                        $('#passwordError').text("Invalid email or password");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your request.');
+                }
+            });
+        }
+    });
+});
+</script>

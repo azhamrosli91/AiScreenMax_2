@@ -1,0 +1,27 @@
+﻿@page
+@{
+    Layout = "~/Views/Shared/_Layout_Empty.cshtml";
+}
+<style>
+    .title404{
+        font-size: 106px; /* Adjust size as needed */
+        color: grey;
+    }
+</style>
+<div class="container-fluid w-100 vh-100 d-flex align-items-center justify-content-center">
+    <div class="row gx-0 tr-body">
+        <div class="text-center">
+            <h1 class="title404">404</h1>
+            <p>We’re sorry, but we couldn’t find the page you were looking for.</p>
+
+            <a href="javascript:void(0);" id="backButton" class="btn btn-primary">Back To Previous Page</a>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#backButton').on('click', function () {
+            window.history.back();
+        });
+    });
+</script>

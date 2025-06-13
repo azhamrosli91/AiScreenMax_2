@@ -1,0 +1,642 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_new2.cshtml";
+}
+
+
+<div class="row g-0 mb-4 align-items-center">
+    <div class="col-5 col-md-6">
+        <h4 class="mb-0 text-body-emphasis fw-bold fs-md-6"><span class="calendar-day d-block d-md-inline mb-1"></span><span class="px-3 fw-thin text-body-quaternary d-none d-md-inline">|</span><span class="calendar-date"></span></h4>
+    </div>
+    <div class="col-7 col-md-6 d-flex justify-content-end">
+        <button class="btn btn-link text-body px-0 me-2 me-md-4"><span class="fa-solid fa-sync fs-10 me-2"></span><span class="d-none d-md-inline">Sync Now</span></button>
+        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addEventModal"> <span class="fas fa-plus pe-2 fs-10"></span>Add new task </button>
+    </div>
+</div>
+<div class="mx-n4 px-4 mx-lg-n6 px-lg-6 border-y border-translucent">
+    <div class="row py-3 gy-3 gx-0">
+        <div class="col-6 col-md-4 order-1 d-flex align-items-center">
+            <button class="btn btn-sm btn-phoenix-primary px-4" data-event="today">Today</button>
+        </div>
+        <div class="col-12 col-md-4 order-md-1 d-flex align-items-center justify-content-center">
+            <button class="btn icon-item icon-item-sm shadow-none text-body-emphasis p-0" type="button" data-event="prev" title="Previous"><span class="fas fa-chevron-left"></span></button>
+            <h3 class="px-3 text-body-emphasis fw-semibold calendar-title mb-0"> </h3>
+            <button class="btn icon-item icon-item-sm shadow-none text-body-emphasis p-0" type="button" data-event="next" title="Next"><span class="fas fa-chevron-right"></span></button>
+        </div>
+        <div class="col-6 col-md-4 ms-auto order-1 d-flex justify-content-end">
+            <div>
+                <div class="btn-group btn-group-sm" role="group">
+                    <button class="btn btn-phoenix-secondary active-view" data-fc-view="dayGridMonth">Month</button>
+                    <button class="btn btn-phoenix-secondary" data-fc-view="timeGridWeek">Week</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="calendar-outline mt-6 mb-9" id="appCalendar"></div>
+
+
+<!--MODAL-->
+<div class="modal fade" id="eventDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-translucent"></div>
+    </div>
+</div>
+<div class="modal fade" id="addEventModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content border border-translucent">
+            <form id="addEventForm" autocomplete="off">
+                <div class="modal-header px-card border-0">
+                    <div class="w-100 d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="mb-0 lh-sm text-body-highlight">Add new</h5>
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="inlineRadio1" type="radio" name="calendarTask" checked="checked" />
+                                    <label class="form-check-label" for="inlineRadio1">Event</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" id="inlineRadio2" type="radio" name="calendarTask" />
+                                    <label class="form-check-label" for="inlineRadio2">Task</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn p-1 fs-10 text-body" type="button" data-bs-dismiss="modal" aria-label="Close">DISCARD </button>
+                    </div>
+                </div>
+                <div class="modal-body p-card py-0">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="eventTitle" type="text" name="title" required="required" placeholder="Event title" />
+                        <label for="eventTitle">Title</label>
+                    </div>
+                    <div class="form-floating mb-5">
+                        <select class="form-select" id="eventLabel" name="label">
+                            <option value="primary" selected="selected">Business</option>
+                            <option value="secondary">Personal</option>
+                            <option value="success">Meeting</option>
+                            <option value="danger">Birthday</option>
+                            <option value="info">Report</option>
+                            <option value="warinng">Must attend</option>
+                        </select>
+                        <label for="eventLabel">Label</label>
+                    </div>
+                    <div class="flatpickr-input-container mb-3">
+                        <div class="form-floating">
+                            <input class="form-control datetimepicker" id="eventStartDate" type="text" name="startDate" placeholder="yyyy/mm/dd hh:mm" data-options='{"disableMobile":true,"enableTime":"true","dateFormat":"Y-m-d H:i"}' /><span class="uil uil-calendar-alt flatpickr-icon text-body-tertiary"></span>
+                            <label class="ps-6" for="eventStartDate">Starts at</label>
+                        </div>
+                    </div>
+                    <div class="flatpickr-input-container mb-3">
+                        <div class="form-floating">
+                            <input class="form-control datetimepicker" id="eventEndDate" type="text" name="endDate" placeholder="yyyy/mm/dd hh:mm" data-options='{"disableMobile":true,"enableTime":"true","dateFormat":"Y-m-d H:i"}' /><span class="uil uil-calendar-alt flatpickr-icon text-body-tertiary"></span>
+                            <label class="ps-6" for="eventEndDate">Ends at</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="eventAllDay" name="allDay" />
+                        <label class="form-check-label" for="eventAllDay">
+                            All day event
+                        </label>
+                    </div>
+                    <div class="form-floating my-5">
+                        <textarea class="form-control" id="eventDescription" placeholder="Leave a comment here" name="description" style="height: 128px"></textarea>
+                        <label for="eventDescription">Description</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="eventRepetition" name="repetition">
+                            <option value="" selected="selected">No Repeat</option>
+                            <option value="daily">Daily </option>
+                            <option value="deekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="dailyExceptHolidays">Daily (except holidays)</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <label for="eventRepetition">Repetition</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="eventReminder" name="reminder">
+                            <option value="" selected="selected">30 minutes earlier</option>
+                            <option value="">8 am on the day</option>
+                            <option value="">8 am on the day before</option>
+                            <option value="">2 days earlier</option>
+                            <option value="">a week earlier</option>
+                        </select>
+                        <label for="eventReminder">Reminder</label>
+                    </div>
+                    <button class="btn btn-link p-0 mb-3" type="button"> <span class="fa-solid fa-plus me-2"></span>Add Reminder</button>
+                </div>
+                <div class="modal-footer d-flex justify-content-between align-items-center border-0">
+                    <a class="me-3 fs-9 text-body" href="../apps/events/create-an-event.html">More options<span class="fas fa-angle-right ms-1 fs-10"></span></a>
+                    <button class="btn btn-primary px-4" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/vendor/fullcalendar/index.global.min.js"></script>
+
+    <script>
+        let ms_calendar;
+
+        //Sample Data
+         const { dayjs } = window;
+          const currentDay = dayjs && dayjs().format('DD');
+          const currentMonth = dayjs && dayjs().format('MM');
+          const prevMonth = dayjs && dayjs().subtract(1, 'month').format('MM');
+          const nextMonth = dayjs && dayjs().add(1, 'month').format('MM');
+          const currentYear = dayjs && dayjs().format('YYYY');
+
+          const sampleData = [
+            {
+              title: 'Boot Camp',
+              start: `${currentYear}-${currentMonth}-01 10:00:00`,
+              end: `${currentYear}-${currentMonth}-03 16:00:00`,
+              description:
+                "Boston Harbor Now in partnership with the Friends of Christopher Columbus Park, the Wharf District Council and the City of Boston is proud to announce the New Year's Eve Midnight Harbor Fireworks! This beloved nearly 40-year old tradition is made possible by the generous support of local waterfront organizations and businesses and the support of the City of Boston and the Office of Mayor Marty Walsh.",
+              className: 'text-success',
+              location:
+                'Boston Harborwalk, Christopher Columbus Park, <br /> Boston, MA 02109, United States',
+              organizer: 'Boston Harbor Now'
+            },
+            {
+              title: `Crain's New York Business `,
+              start: `${currentYear}-${currentMonth}-11`,
+              description:
+                "Crain's 2020 Hall of Fame. Sponsored Content By Crain's Content Studio. Crain's Content Studio Presents: New Jersey: Perfect for Business. Crain's Business Forum: Letitia James, New York State Attorney General. Crain's NYC Summit: Examining racial disparities during the pandemic",
+              className: 'text-primary'
+            },
+            {
+              title: 'Conference',
+              start: `${currentYear}-${currentMonth}-${currentDay}`,
+              description:
+                'The Milken Institute Global Conference gathered the best minds in the world to tackle some of its most stubborn challenges. It was a unique experience in which individuals with the power to enact change connected with experts who are reinventing health, technology, philanthropy, industry, and media.',
+              className: 'text-success',
+              // allDay: true,
+              schedules: [
+                {
+                  title: 'Reporting',
+                  start: `${currentYear}-${currentMonth}-${currentDay} 11:00:00`,
+                  description:
+                    'Time to start the conference and will briefly describe all information about the event.  ',
+                  className: 'text-success '
+                },
+                {
+                  title: 'Lunch',
+                  start: `${currentYear}-${currentMonth}-${currentDay} 14:00:00`,
+                  description: 'Lunch facility for all the attendance in the conference.',
+                  className: 'text-info'
+                },
+                {
+                  title: 'Contest',
+                  start: `${currentYear}-${currentMonth}-${currentDay} 16:00:00`,
+                  description: 'The starting of the programming contest',
+                  className: 'text-success'
+                },
+                {
+                  title: 'Dinner',
+                  start: `${currentYear}-${currentMonth}-${currentDay} 22:00:00`,
+                  description: 'Dinner facility for all the attendance in the conference',
+                  className: 'text-success'
+                }
+              ]
+            },
+            {
+              title: `ICT Expo ${currentYear} - Product Release`,
+              start: `${currentYear}-${currentMonth}-16 10:00:00`,
+              description: `ICT Expo ${currentYear} is the largest private-sector exposition aimed at showcasing IT and ITES products and services in Switzerland.`,
+              end: `${currentYear}-${currentMonth}-18 16:00:00`,
+              className: 'text-warning',
+              allDay: true
+            },
+            {
+              title: 'Meeting',
+              start: `${currentYear}-${currentMonth}-07 10:00:00`,
+              description:
+                'Discuss about the upcoming projects in current year and assign all tasks to the individuals',
+              className: 'text-info'
+            },
+            {
+              title: 'Contest',
+              start: `${currentYear}-${currentMonth}-14 10:00:00`,
+              className: 'text-info',
+              description:
+                'PeaceX is an international peace and amity organisation that aims at casting a pall at the striking issues surmounting the development of peoples and is committed to impacting the lives of young people all over the world.'
+            },
+            {
+              title: 'Event With Url',
+              start: `${currentYear}-${currentMonth}-23`,
+              description:
+                'Sample example of a event with url. Click the event, will redirect to the given link.',
+              className: 'text-success',
+              url: 'http://google.com'
+            },
+            {
+              title: 'Competition',
+              start: `${currentYear}-${currentMonth}-26`,
+              description:
+                'The Future of Zambia – Top 30 Under 30 is an annual award, ranking scheme, and recognition platform for young Zambian achievers under the age of 30, who are building brands, creating jobs, changing the game, and transforming the country.',
+              className: 'text-danger'
+            },
+            {
+              title: 'Birthday Party',
+              start: `${currentYear}-${nextMonth}-05`,
+              description: 'Will celebrate birthday party with my friends and family',
+              className: 'text-primary'
+            },
+            {
+              title: 'Click for Google',
+              url: 'http://google.com/',
+              start: `${currentYear}-${prevMonth}-10`,
+              description:
+                'Applications are open for the New Media Writing Prize 2020. The New Media Writing Prize (NMWP) showcases exciting and inventive stories and poetry that integrate a variety of formats, platforms, and digital media.',
+              className: 'text-primary'
+            }
+          ];
+
+
+          const eventList = sampleData.reduce(
+              (acc, val) =>
+                val.schedules ? acc.concat(val.schedules.concat(val)) : acc.concat(val),
+              []
+            );
+
+
+
+
+
+        (function (factory) {
+          typeof define === 'function' && define.amd ? define(factory) :
+          factory();
+        })((function () { 'use strict';
+
+          /* -------------------------------------------------------------------------- */
+
+          const camelize = str => {
+            const text = str.replace(/[-_\s.]+(.)?/g, (_, c) =>
+              c ? c.toUpperCase() : ''
+            );
+            return `${text.substr(0, 1).toLowerCase()}${text.substr(1)}`;
+          };
+
+          const getData = (el, data) => {
+            try {
+              return JSON.parse(el.dataset[camelize(data)]);
+            } catch (e) {
+              return el.dataset[camelize(data)];
+            }
+          };
+
+          /* -------------------------------------------------------------------------- */
+          /*                                   Calendar                                 */
+
+          /* -------------------------------------------------------------------------- */
+          const renderCalendar = (el, option) => {
+            const { merge } = window._;
+
+            const options = merge(
+              {
+                initialView: 'dayGridMonth',
+                editable: true,
+                direction: document.querySelector('html').getAttribute('dir'),
+                headerToolbar: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                buttonText: {
+                  month: 'Month',
+                  week: 'Week',
+                  day: 'Day'
+                }
+              },
+              option
+            );
+            const calendar = new window.FullCalendar.Calendar(el, options);
+            calendar.render();
+            document
+              .querySelector('.navbar-vertical-toggle')
+              ?.addEventListener('navbar.vertical.toggle', () => calendar.updateSize());
+            return calendar;
+          };
+
+          const fullCalendarInit = () => {
+            const { getData } = window.phoenix.utils;
+
+            const calendars = document.querySelectorAll('[data-calendar]');
+            calendars.forEach(item => {
+              const options = getData(item, 'calendar');
+              renderCalendar(item, options);
+            });
+          };
+
+          const fullCalendar = {
+            renderCalendar,
+            fullCalendarInit
+          };
+
+         
+
+          const getTemplate = event => `
+        <div class="modal-header ps-card border-bottom border-translucent justify-content-between">
+          <div>
+            <h4 class="modal-title text-1000 mb-0">${event.title}</h4>
+            ${
+              event.extendedProps.organizer
+                ? `<p class="mb-0 fs--1 mt-1">
+                by <a href="#!">${event.extendedProps.organizer}</a>
+              </p>`
+                : ''
+            }
+          </div>
+          <button type="button" class="btn p-1 fw-bolder" data-bs-dismiss="modal" aria-label="Close">
+            <span class='fas fa-times fs-0'></span>
+          </button>
+
+        </div>
+
+        <div class="modal-body px-card pb-card pt-1 fs--1">
+          ${
+            event.extendedProps.description
+              ? `
+              <div class="mt-3 border-bottom pb-3">
+                <h5 class='mb-0 text-800'>Description</h5>
+                <p class="mb-0 mt-2">
+                  ${event.extendedProps.description.split(' ').slice(0, 30).join(' ')}
+                </p>
+              </div>
+            `
+              : ''
+          }
+          <div class="mt-4 ${event.extendedProps.location ? 'border-bottom pb-3' : ''}">
+            <h5 class='mb-0 text-800'>Date and Time</h5>
+            <p class="mb-1 mt-2">
+            ${
+              window.dayjs &&
+              window.dayjs(event.start).format('dddd, MMMM D, YYYY, h:mm A')
+            }
+            ${
+              event.end
+                ? `– ${
+                    window.dayjs &&
+                    window
+                      .dayjs(event.end)
+                      .subtract(1, 'day')
+                      .format('dddd, MMMM D, YYYY, h:mm A')
+                  }`
+                : ''
+            }
+          </p>
+
+          </div>
+          ${
+            event.extendedProps.location
+              ? `
+                <div class="mt-4 ">
+                  <h5 class='mb-0 text-800'>Location</h5>
+                  <p class="mb-0 mt-2">${event.extendedProps.location}</p>
+                </div>
+              `
+              : ''
+          }
+          ${
+            event.schedules
+              ? `
+              <div class="mt-3">
+                <h5 class='mb-0 text-800'>Schedule</h5>
+                <ul class="list-unstyled timeline mt-2 mb-0">
+                  ${event.schedules
+                    .map(schedule => `<li>${schedule.title}</li>`)
+                    .join('')}
+                </ul>
+              </div>
+              `
+              : ''
+          }
+          </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-end px-card pt-0 border-top-0">
+          <a href="#!" class="btn btn-phoenix-secondary btn-sm">
+            <span class="fas fa-pencil-alt fs--2 mr-2"></span> Edit
+          </a>
+          <button class="btn btn-phoenix-danger btn-sm" data-calendar-event-remove >
+            <span class="fa-solid fa-trash fs--1 mr-2" data-fa-transform="shrink-2"></span> Delete
+          </button>
+          <a href='#!' class="btn btn-primary btn-sm">
+            See more details
+            <span class="fas fa-angle-right fs--2 ml-1"></span>
+          </a>
+        </div>
+        `;
+
+          /*-----------------------------------------------
+          |   Calendar
+          -----------------------------------------------*/
+          const appCalendarInit = () => {
+            const Selectors = {
+              ACTIVE: '.active',
+              ADD_EVENT_FORM: '#addEventForm',
+              ADD_EVENT_MODAL: '#addEventModal',
+              CALENDAR: '#appCalendar',
+              CALENDAR_TITLE: '.calendar-title',
+              CALENDAR_DAY: '.calendar-day',
+              CALENDAR_DATE: '.calendar-date',
+              DATA_CALENDAR_VIEW: '[data-fc-view]',
+              DATA_EVENT: '[data-event]',
+              DATA_VIEW_TITLE: '[data-view-title]',
+              EVENT_DETAILS_MODAL: '#eventDetailsModal',
+              EVENT_DETAILS_MODAL_CONTENT: '#eventDetailsModal .modal-content',
+              EVENT_START_DATE: '#addEventModal [name="startDate"]',
+              INPUT_TITLE: '[name="title"]'
+            };
+
+            const Events = {
+              CLICK: 'click',
+              SHOWN_BS_MODAL: 'shown.bs.modal',
+              SUBMIT: 'submit'
+            };
+
+            const DataKeys = {
+              EVENT: 'event',
+              FC_VIEW: 'fc-view'
+            };
+
+
+            const updateDay = day => {
+              const days = [
+                'Sunday',
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday'
+              ];
+              return days[day];
+            };
+
+            const setCurrentDate = () => {
+              const dateObj = new Date();
+              const month = dateObj.toLocaleString('en-US', { month: 'short' });
+              const date = dateObj.getDate(); // return date number
+              const day = dateObj.getDay(); // return week day number
+              const year = dateObj.getFullYear();
+              const newdate = `${date}  ${month},  ${year}`;
+              if (document.querySelector(Selectors.CALENDAR_DAY)) {
+                document.querySelector(Selectors.CALENDAR_DAY).textContent =
+                  updateDay(day);
+              }
+              if (document.querySelector(Selectors.CALENDAR_DATE)) {
+                document.querySelector(Selectors.CALENDAR_DATE).textContent = newdate;
+              }
+            };
+            setCurrentDate();
+
+            const updateTitle = currentData => {
+              const { currentViewType } = currentData;
+              // week view
+              if (currentViewType === 'timeGridWeek') {
+                const weekStartsDate = currentData.dateProfile.currentRange.start;
+                const startingMonth = weekStartsDate.toLocaleString('en-US', {
+                  month: 'short'
+                });
+                const startingDate = weekStartsDate.getDate();
+                const weekEndDate = currentData.dateProfile.currentRange.end;
+
+                const endingMonth = weekEndDate.toLocaleString('en-US', {
+                  month: 'short'
+                });
+                const endingDate = weekEndDate.getDate();
+
+                document.querySelector(
+                  Selectors.CALENDAR_TITLE
+                ).textContent = `${startingMonth} ${startingDate} - ${endingMonth} ${endingDate}`;
+              } else
+                document.querySelector(Selectors.CALENDAR_TITLE).textContent =
+                  currentData.viewTitle;
+            };
+
+            const appCalendar = document.querySelector(Selectors.CALENDAR);
+            const addEventForm = document.querySelector(Selectors.ADD_EVENT_FORM);
+            const addEventModal = document.querySelector(Selectors.ADD_EVENT_MODAL);
+            const eventDetailsModal = document.querySelector(
+              Selectors.EVENT_DETAILS_MODAL
+            );
+
+            if (appCalendar) {
+              ms_calendar = fullCalendar.renderCalendar(appCalendar, {
+                headerToolbar: false,
+                dayMaxEvents: 3,
+                height: 800,
+                stickyHeaderDates: false,
+                views: {
+                  week: {
+                    eventLimit: 3
+                  }
+                },
+                eventTimeFormat: {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  omitZeroMinute: true,
+                  meridiem: true
+                },
+                events: [],
+                eventClick: info => {
+                  if (info.event.url) {
+                    window.open(info.event.url, '_blank');
+                    info.jsEvent.preventDefault();
+                  } else {
+                    const template = getTemplate(info.event);
+                    document.querySelector(
+                      Selectors.EVENT_DETAILS_MODAL_CONTENT
+                    ).innerHTML = template;
+                    const modal = new window.bootstrap.Modal(eventDetailsModal);
+                    modal.show();
+                  }
+                },
+                dateClick(info) {
+                  const modal = new window.bootstrap.Modal(addEventModal);
+                  modal.show();
+                  /* eslint-disable-next-line */
+                  const flatpickr = document.querySelector(Selectors.EVENT_START_DATE)._flatpickr;
+                  flatpickr.setDate([info.dateStr]);
+                }
+              });
+
+              updateTitle(ms_calendar.currentData);
+
+              document.querySelectorAll(Selectors.DATA_EVENT).forEach(button => {
+                button.addEventListener(Events.CLICK, e => {
+                  const el = e.currentTarget;
+                  const type = getData(el, DataKeys.EVENT);
+                  switch (type) {
+                    case 'prev':
+                      ms_calendar.prev();
+                      updateTitle(ms_calendar.currentData);
+                      break;
+                    case 'next':
+                      ms_calendar.next();
+                      updateTitle(ms_calendar.currentData);
+                      break;
+                    case 'today':
+                      ms_calendar.today();
+                      updateTitle(ms_calendar.currentData);
+                      break;
+                    default:
+                      ms_calendar.today();
+                      updateTitle(ms_calendar.currentData);
+                      break;
+                  }
+                });
+              });
+
+              document.querySelectorAll(Selectors.DATA_CALENDAR_VIEW).forEach(link => {
+                link.addEventListener(Events.CLICK, e => {
+                  e.preventDefault();
+                  const el = e.currentTarget;
+                  ms_calendar.changeView(getData(el, DataKeys.FC_VIEW));
+                  updateTitle(ms_calendar.currentData);
+                });
+              });
+
+              if (addEventForm) {
+                addEventForm.addEventListener(Events.SUBMIT, e => {
+                  e.preventDefault();
+                  const { title, startDate, endDate, label, description, allDay } =
+                    e.target;
+                  ms_calendar.addEvent({
+                    title: title.value,
+                    start: startDate.value,
+                    end: endDate.value ? endDate.value : null,
+                    allDay: allDay.checked,
+                    className: `text-${label.value}`,
+                    description: description.value
+                  });
+                  e.target.reset();
+                  window.bootstrap.Modal.getInstance(addEventModal).hide();
+                });
+              }
+
+              if (addEventModal) {
+                addEventModal.addEventListener(
+                  Events.SHOWN_BS_MODAL,
+                  ({ currentTarget }) => {
+                    currentTarget.querySelector(Selectors.INPUT_TITLE)?.focus();
+                  }
+                );
+              }
+            }
+          };
+
+          const { docReady } = window.phoenix.utils;
+
+          docReady(appCalendarInit);
+
+        }));
+        //# sourceMappingURL=calendar.js.map
+
+    </script>
+}

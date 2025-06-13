@@ -1,0 +1,231 @@
+﻿@using BaseModel.Models.Component
+@model BaseModel.Models.Component.COM_TABLE_EDITOR
+@using Newtonsoft.Json
+<style>
+    .btn-keep-shink {
+        min-width: 20px !important;
+    }
+</style>
+<div class="row justify-content-between align-items-end">
+    <div class="col-6">
+        @if (Model.TITLE_VISIBLE)
+        {
+            <h6 class="text-muted" data-tableID="@Model.COM_TABLE_EDITOR_ID">@Model.TITLE</h6>
+        }
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+        @if (Model.IS_DRAGGABLE)
+        {
+            <button class="btn btn-sm btn-md btn-keep-shink s btn-info me-1" id="tbleditor-btnMoveDown" data-tableID="@Model.COM_TABLE_EDITOR_ID" title="Move Down"><i class="fa fa-angle-down gx-0"></i></button>
+            <button class="btn btn-sm btn-md btn-keep-shink s btn-info me-1" id="tbleditor-btnMoveUp" data-tableID="@Model.COM_TABLE_EDITOR_ID" title="Move Up"><i class="fa fa-angle-up gx-0"></i></button>
+        }
+        <button class="btn btn-sm btn-md btn-danger s me-2" id="tbleditor-btnRemove" data-tableID="@Model.COM_TABLE_EDITOR_ID" type="button" title="Remove select row">Remove</button>
+        <button class="btn btn-sm btn-md btn-primary s" id="tbleditor-btnAdd" data-tableID="@Model.COM_TABLE_EDITOR_ID" type="button" title="Add new row">Add</button>
+    </div>
+</div>
+<div class="row pt-2">
+    <div class="col-sm-12">
+        <table id="tbleditor-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID" name="@Model.NAME" class="table table-hover detailTable" style="width:100%">
+            <thead>
+                @if (Model.COM_TABLE_D != null && Model.COM_TABLE_D.Count > 0)
+                {
+                    <tr class="toolbar-row">
+                        <th width="30" class="text-center">
+                            <input id="trCheckbox" type="checkbox" data-tableID="@Model.COM_TABLE_EDITOR_ID" class="dt-checkboxes select-all form-check-input isEdit">
+                        </th>
+                        @foreach (COM_TABLE_EDITOR_D clm in Model.COM_TABLE_D.Where(cm => cm.COLUMN_NAME != "ID#19471" && cm.COLUMN_NAME != "").OrderBy(cm => cm.SEQ))
+                        {
+                            if (clm != null && clm.SEQ != 0)
+                            {
+                                <th clmIndex="@clm.SEQ.ToString()" width="@clm.WIDTH" columnField="@clm.COLUMN_NAME">
+                                    @clm.COLUMN_TITLE
+                                </th>
+                            }
+                        }
+                    </tr>
+                }
+            </thead>
+            <tbody id="tbleditor-tbody-@Model.COM_TABLE_EDITOR_ID" data-tableID="@Model.COM_TABLE_EDITOR_ID">
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    var tableData = @Html.Raw(JsonConvert.SerializeObject(Model.COM_TABLE_D.Where(cm => cm.COLUMN_NAME != "ID#19471" && cm.COLUMN_NAME != "").OrderBy(cm => cm.SEQ)));
+
+    // Function to create a new row dynamically for a specific table based on tableID
+    function addNewRow(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $(tbl + " tbody .no-rows").remove();
+
+        let rowNumber = $(tbl + " tbody tr").length + 1;
+
+        var newRow = `<tr class='text-center'>
+                          <td><input type='checkbox' id='tbleditor-${rowNumber}-tr-checked' data-rowindex='${rowNumber}' class='dt-checkboxes form-check-input'></td>`;
+        let multiselectExists = false;
+
+        tableData.forEach(function (clm) {
+            newRow += "<td>";
+            let columnName = clm.COLUMN_NAME || 'unknown';
+
+            let updatedObject = clm.COLUMN_OBJECT.replace(/id\s*=\s*['"]([^'"]+)['"]/, function (match, existingId) {
+                return `id="tbleditor-${rowNumber}-${columnName}-${existingId}"`;
+            });
+
+            if (!updatedObject.includes('id="')) {
+                updatedObject = updatedObject.replace(/(<\w+)/, `$1 id="tbleditor-${rowNumber}-${columnName}-new"`);
+            }
+
+            updatedObject = updatedObject.replace(/(<\w+)/, `$1 data-rowindex="${rowNumber}"`);
+            updatedObject = updatedObject.replace(/(<(input|select|textarea)\b[^>]*)(>)/i, `$1 name="${columnName}" $3`);
+            updatedObject = updatedObject.replace(/(<(input|select|textarea)\b[^>]*)(>)/i, `$1 onchange="onchangeTableEditor(this)" $3`);
+
+            if (updatedObject.includes('multiselect')) {
+                multiselectExists = true;
+            }
+
+            newRow += updatedObject;
+            newRow += "</td>";
+        });
+
+        newRow += "</tr>";
+
+        var $appendedRow = $(newRow);
+        $(tbl + " tbody").append($appendedRow);
+
+        toggleRemoveButtonVisibility(tableID);
+
+        if (multiselectExists) {
+            setTimeout(function () {
+                $appendedRow.find('.multiselect').multiselect({
+                    buttonClass: 'form-select form-control text-start',
+                    enableCaseInsensitiveFiltering: true,
+                    enableFiltering: true,
+                    numberDisplayed: 10,
+                    templates: {
+                        button: '<button type="button" class="multiselect dropdown-toggle" data-bs-toggle="dropdown"><span class="multiselect-selected-text"></span></button>',
+                        filter: '<div class="multiselect-filter"><div class="input-group input-group-sm p-1"><div class="input-group-prepend"></div><input class="form-control multiselect-search" type="text" /></div></div>'
+                    }
+                });
+
+                var multiselectDropdown = $appendedRow.find('.multiselect-container');
+                multiselectDropdown.css({
+                    'max-height': '200px',
+                    'overflow-y': 'auto'
+                });
+
+                $appendedRow.find('.multiselect-native-select > .btn-group').addClass("w-100");
+                $appendedRow.find('.multiselect-native-select > .btn-group > .multiselect').removeClass("text-center");
+                $appendedRow.find('.multiselect-native-select > .btn-group > .multiselect-container').addClass("w-100");
+            }, 0);
+        }
+    }
+
+    // Function to remove selected rows
+    function removeSelectedRows(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        var removedRows = [];
+
+        $(tbl + " tbody input[type='checkbox']:checked").each(function () {
+            var $row = $(this).closest('tr');
+            removedRows.push($row.clone());
+            $row.remove();
+        });
+
+        if ($(tbl + " tbody tr").length === 0) {
+            var colspan = $(tbl + " thead th").length;
+            var noRowsMessage = `<tr class="no-rows"><td colspan="${colspan}" class="text-center">No row(s) found</td></tr>`;
+            $(tbl + " tbody").append(noRowsMessage);
+        }
+
+        toggleRemoveButtonVisibility(tableID);
+    }
+
+    // Move selected rows up
+    function moveRowUp(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $(tbl + " tbody tr").each(function () {
+            var $row = $(this);
+            if ($row.find("input[type='checkbox']").is(":checked")) {
+                var $prev = $row.prev("tr:not(.no-rows)");
+                if ($prev.length) {
+                    $row.insertBefore($prev);
+                }
+            }
+        });
+        updateRowSequence(tableID);
+    }
+
+    // Move selected rows down
+    function moveRowDown(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $($(tbl + " tbody tr").get().reverse()).each(function () {
+            var $row = $(this);
+            if ($row.find("input[type='checkbox']").is(":checked")) {
+                var $next = $row.next("tr:not(.no-rows)");
+                if ($next.length) {
+                    $row.insertAfter($next);
+                }
+            }
+        });
+        updateRowSequence(tableID);
+    }
+
+    // Toggle the visibility of the remove button
+    function toggleRemoveButtonVisibility(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        var rowCount = $(tbl + " tbody tr").not('.no-rows').length;
+        if (rowCount > 0) {
+            $(`#tbleditor-btnRemove[data-tableid="${tableID}"]`).show();
+            $(`#trCheckbox[data-tableid="${tableID}"]`).show();
+        } else {
+            $(`#tbleditor-btnRemove[data-tableid="${tableID}"]`).hide();
+            $(`#trCheckbox[data-tableid="${tableID}"]`).hide();
+        }
+    }
+
+    // Update row sequence after reordering
+    function updateRowSequence(tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $(tbl + " tbody tr").each(function (index) {
+            $(this).find("input, select, textarea").each(function () {
+                var columnName = $(this).attr("name");
+                if (columnName === "SEQ") {
+                    $(this).val(index + 1);
+                }
+            });
+        });
+    }
+
+    // Check/uncheck all rows when header checkbox is clicked
+    function toggleAllRows(checked, tableID) {
+        var tbl = "#tbleditor-" + tableID;
+        $(tbl + " tbody input[type='checkbox']").prop('checked', checked);
+    }
+
+    // Event bindings
+    $(document).off('click', "#tbleditor-btnAdd").on('click', "#tbleditor-btnAdd", function () {
+        var tableID = $(this).data('tableid');
+        addNewRow(tableID);
+    });
+
+    $(document).off('click', "#tbleditor-btnRemove").on('click', "#tbleditor-btnRemove", function () {
+        var tableID = $(this).data('tableid');
+        removeSelectedRows(tableID);
+    });
+
+    $(document).off('click', "#tbleditor-btnMoveUp").on('click', "#tbleditor-btnMoveUp", function () {
+        var tableID = $(this).data('tableid');
+        moveRowUp(tableID);
+    });
+
+    $(document).off('click', "#tbleditor-btnMoveDown").on('click', "#tbleditor-btnMoveDown", function () {
+        var tableID = $(this).data('tableid');
+        moveRowDown(tableID);
+    });
+
+    $(document).off('change', "#trCheckbox").on('change', "#trCheckbox", function () {
+        var tableID = $(this).data('tableid');
+        toggleAllRows(this.checked, tableID);
+    });
+</script>

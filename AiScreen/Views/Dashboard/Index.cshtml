@@ -1,0 +1,88 @@
+﻿<div class="container-fluid bg-white shadow-lg border-bottom p-1">
+    <div class="w-100 d-flex justify-content-between align-items-center flex-wrap">
+        <h5 class="mb-0 ps-2">User Profile</h5>
+
+        <div class="d-flex gap-2 mt-2 mt-md-0 w-auto">
+            <button class="btn btn-light" title="Delete">
+                <i class="fa fa-trash text-danger"></i>
+            </button>
+            <button class="btn btn-light" title="Import">
+                <i class="fa fa-download text-dark"></i>
+            </button>
+            <button class="btn btn-light" title="Export">
+                <i class="fa fa-upload text-dark"></i>
+            </button>
+            <button class="btn btn-light" title="Save">
+                <i class="fa fa-save text-success"></i>
+            </button>
+            <button class="btn btn-light" title="Create">
+                <i class="fa fa-plus-circle text-primary"></i>
+            </button>
+        </div>
+    </div>
+   
+</div>
+<div class="container-fluid py-5">
+    <div class="row w-100">
+        <div class="col-12">
+            <form>
+                <div class="row g-4">
+                    <!-- Profile Image Upload -->
+                    <div class="col-12 col-lg-3 text-center">
+                        <img src="https://via.placeholder.com/150" alt="User Image" class="rounded-circle img-thumbnail mb-3" id="profilePreview" style="width: 150px; height: 150px; object-fit: cover;">
+                        <input type="file" class="form-control" id="profileImageInput" accept="image/*">
+                    </div>
+
+                    <!-- Form Fields -->
+                    <div class="col-12 col-lg-9">
+                        <div class="row g-3">
+                            <div class="col-lg-12 col-xl-6">
+                                <label for="nameInput" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="nameInput" placeholder="Enter full name">
+                            </div>
+                            <div class="col-lg-12 col-xl-6">
+                                <label for="emailInput" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="emailInput" placeholder="Enter email">
+                            </div>
+                            <div class="col-lg-12 col-xl-6">
+                                <label for="phoneInput" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phoneInput" placeholder="Enter phone number">
+                            </div>
+                            <div class="col-lg-12 col-xl-6">
+                                <label for="addressInput" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="addressInput" placeholder="Enter address">
+                            </div>
+                            <div class="col-lg-12 col-xl-6">
+                                <label for="countryInput" class="form-label">Country</label>
+                                <input type="text" class="form-control" id="countryInput" placeholder="Enter country">
+                            </div>
+                            <div class="col-lg-12 col-xl-6">
+                                <label for="cityInput" class="form-label">City</label>
+                                <input type="text" class="form-control" id="cityInput" placeholder="Enter city">
+                            </div>
+                            <div class="col-lg-12 col-xl-6">
+                                <label for="postcodeInput" class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" id="postcodeInput" placeholder="Enter postal code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#profileImageInput').on('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#profilePreview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>

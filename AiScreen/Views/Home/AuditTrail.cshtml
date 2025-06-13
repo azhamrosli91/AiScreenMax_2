@@ -1,0 +1,443 @@
+﻿@{
+    ViewBag.Title = "Audit Trail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model System.Data.DataTable
+@using System.Data;
+@using Newtonsoft.Json;
+
+<input type="hidden" id="customInputKeyName" data-value="@ViewBag.KeyNames" />
+<input type="hidden" id="customInput" data-value="@ViewBag.JSONresult" />
+
+<div class="row g-0 px-3 tr-listing-header">
+    <div class="col-6 align-self-center">
+        <p class="text-muted m-0 tr-listing-header-title">Audit Trail</p>
+    </div>
+    <div class="col-6 text-end align-self-center">
+        <div class="d-flex justify-content-end">
+            <div id="customDTButton"></div>
+        </div>
+    </div>
+</div>
+
+<div class="page-container pt-0">
+
+    <div class="row">
+        <table id="tr-datatable" class="table table-hover table-bordered compact tr-responsive-table" style="width:100%; margin-top: 0px !important;">
+            <thead>
+                <tr style="background-color: #FCFCFC">
+                    @if (ViewBag.KeyNames != null)
+                    {
+                        foreach (var keyName in ViewBag.KeyNames)
+                        {
+                            switch (keyName)
+                            {
+                                case "SQ_ID":
+                                    <th class="mv-d-none">Log ID</th>
+                                    break;
+                                case "KEY_FIELD":
+                                    <th class="mv-d-none">Key Field</th>
+                                    break;
+                                case "KEY_VALUE":
+                                    <th class="mv-d-none">Key Value</th>
+                                    break;
+                                case "FIELD_NAME":
+                                    <th>Field Name</th>
+                                    break;
+                                case "B4_UPDATE":
+                                    <th>Old Value</th>
+                                    break;
+                                case "AF_UPDATE":
+                                    <th>New Value</th>
+                                    break;
+                                case "UPDATED_BY":
+                                    <th>Username</th>
+                                    break;
+                                case "UPDATED_DATE":
+                                    <th>Updated Date</th>
+                                    break;
+                                case "UPDATED_LOC":
+                                    <th class="mv-d-none">Updated Loc</th>
+                                    break;
+                                default:
+                                    <th>@keyName</th>
+                                    break;
+                            }
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="row g-0 px-3 tr-btm-btn-area">
+    <div class="col-12 col-sm-6">
+        <div class="aud customDTButton"></div>
+    </div>
+    <div class="col-12 col-sm-6">
+        <div class="aud customDTButtonBack d-flex justify-content-end"></div>
+    </div>
+</div>
+
+
+<!--ADV SEARCH MODAL-->
+<div class="modal fade" id="advance-search-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header mb-0">
+                <h5 class="tr-listing-header-title mb-0 mx-2">Advanced Search</h5>
+            </div>
+            <hr />
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Log ID<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD1" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Key Field<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD2" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Key Value<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD3" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Field Name<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD4" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Old Value<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD5" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">New Value<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD6" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Username<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD7" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Updated Date<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD8" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="row align-items-baseline mb-2">
+                                <div class="col-sm-4"><p class="text-muted">Updated Loc<span style="float:right">:</span></p></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="AS_FIELD9" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="reset" id="btnReset" class="btn btn-sm btn-secondary" style="margin-right: auto;">Reset</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Back</button>
+                <button type="button" class="btn btn-sm btn-primary" id="btnSearchAS" data-bs-dismiss="modal">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script>
+        var keyNames = [];
+        var jsonData = [];
+    </script>
+    @if (ViewBag.KeyNames != null)
+    {
+        <script>
+            keyNames = @Html.Raw(@JsonConvert.SerializeObject(ViewBag.KeyNames));
+        </script>
+    }
+    @if (@ViewBag.JSONresult != null)
+    {
+        <script>
+            jsonData = @Html.Raw(ViewBag.JSONresult);
+        </script>
+    }
+
+    <script type="text/javascript">
+        var urlid = '@TempData["SQ_ID"]';
+        var table;
+
+        $(document).ready(function () {
+
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
+
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+
+            loadDataTable();
+
+            $(document).on('click', '#btnSearch', function (e) {
+                e.preventDefault();
+                as_exclude();
+                table.search($('#txtSearch').val()).draw();
+            });
+            $(document).on('keyup', '#txtSearch', function (e) {
+                as_exclude();
+                table.search($(this).val()).draw();
+            });
+
+            $('#btnSearchAS').on('click', function (e) {
+                as_search();
+            });
+
+            $('#btnReset').on('click', function (e) {
+                e.preventDefault();
+                $(':input').val('');
+                as_search();
+            });
+
+            function as_search() {
+                table.search("");
+                table.columns(0).search($('#AS_FIELD1').val().trim());
+                table.columns(1).search($('#AS_FIELD2').val().trim());
+                table.columns(2).search($('#AS_FIELD3').val().trim());
+                table.columns(3).search($('#AS_FIELD4').val().trim());
+                table.columns(4).search($('#AS_FIELD5').val().trim());
+                table.columns(5).search($('#AS_FIELD6').val().trim());
+                table.columns(6).search($('#AS_FIELD7').val().trim());
+                table.columns(7).search($('#AS_FIELD8').val().trim());
+                table.columns(8).search($('#AS_FIELD9').val().trim());
+                table.draw();
+            }
+            function as_exclude() {
+                table.columns(0).search("");
+                table.columns(1).search("");
+                table.columns(2).search("");
+                table.columns(3).search("");
+                table.columns(4).search("");
+                table.columns(5).search("");
+                table.columns(6).search("");
+                table.columns(7).search("");
+                table.columns(8).search("");
+            }
+
+        });
+
+        function getColumnConfig() {
+
+            var dynamicColumns = [];
+
+            var columns = keyNames;
+
+            columns.forEach(function (value, index) {
+                var columnConfig = {
+                    data: value
+                };
+                dynamicColumns.push(columnConfig);
+            });
+
+            return dynamicColumns;
+        }
+
+        function loadDataTable() {
+
+            var data = jsonData;
+            console.log(data[0]);
+
+            table = $('#tr-datatable').DataTable({
+                data: data,
+                pagingType: 'simple_numbers',
+                columns: getColumnConfig(),
+                order: [[0, 'asc']],
+                dom: "<'row'<'col'<'d-flex justify-content-start py-2'<'toolbar row align-items-baseline g-0'>>>>" +
+                    "<'card'<'card-body'" +
+                    "<'row'<'col'<'audit-info'>>>" +
+                    "<'row'<'col-sm-12'<'toolbar-row'l>>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    ">>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'<'d-flex justify-content-center justify-content-end-sm'p<'go-to align-self-center mx-2'>>>>",
+                initComplete: function () {
+                    $("div.audit-info").html('<h5 class="card-title text-muted">History of ID: ' + urlid + '</h5>');
+                    $("div.toolbar").html(
+                        '<div class="col">' +
+                        '<div class="input-group input-group-sm">' +
+                        '<input type="text" id="txtSearch" class="form-control remove-right-border" placeholder="Search" aria-label="Search" aria-describedby="btnAdvanceSearch">' +
+                        '<div class="input-group-text listing-search-icon">' +
+                        '    <a href="" class="text-reset" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></a>' +
+                        '</div>' +
+                        '<button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#advance-search-modal" id="btnAdvanceSearch" style="min-width: 30px; background-color: #057FE5; border: #057FE5;"><i class="fa-solid fa-sliders" style="transform: rotate(90deg);"></i></button>' +
+                        '</div>');
+
+                    var customHeight = calcDataTableHeight();
+                    $('#tr-datatable').wrap(`<div class="tr-scrolledDataTable" style="max-height:${customHeight}px"></div>`);
+                },
+                columnDefs: [{
+                    targets: 7,
+                    render: function (data, type, row, meta) {
+                        if (type === 'display') {
+                            data = data == "" ? "" : convertTime(data);
+                        }
+                        return data;
+                    }
+                }, {
+                    targets: "_all", // Apply to all columns
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        // Add the data-title attribute with the column header text
+                        if ($('#tr-datatable thead tr:nth-child(1) th').eq(col).hasClass('mv-d-none')) {
+                            $(td).addClass('mv-d-none');
+                        }
+                        $(td).attr('data-title', $('#tr-datatable thead th').eq(col).text());
+                    }
+                }],
+                drawCallback: function (settings) {
+                    var api = this.api();
+                    $("#txtGoTo").val(api.page() + 1);
+                }
+            });
+
+            $("div.go-to").html('<div class="d-flex align-items-center p-0"><input class="form-control" type="text" id="txtGoTo" style="width:75px" value=1> &nbsp; <div class="page-info">of ' + table.page.info().pages + '</div></div>');
+            $("#txtGoTo").on('keyup', function (e) {
+                try {
+                    var page = e.target.value;
+                    if ($.isNumeric(page) && page > 0 && page <= table.page.info().pages) {
+                        table.page(page - 1).draw('page');
+                    } else if (e.target.value.trim() == '') {
+
+                    } else {
+                        e.target.value = table.page() + 1;
+                    }
+
+                } catch (ex) {
+                    console.log(ex.toString());
+                    e.target.value = 1;
+                }
+            });
+            $("#txtGoTo").on('blur', function (e) {
+                try {
+                    var page = e.target.value;
+                    if (page.trim() == '') {
+                        $("#txtGoTo").val(1);
+                        table.page(0).draw('page');
+                        $("#txtGoTo").focus();
+                    }
+                } catch (ex) {
+                    console.warn(ex.toString());
+                    e.target.value = 1;
+                }
+            });
+
+            $(".dataTables_length .form-select").on('change', function () {
+                $("#txtGoTo").val(table.page() + 1);
+                $("div.page-info").html('of ' + table.page.info().pages + '</div>');
+            });
+
+            table.on('select deselect', function (e, dt, type, indexes) {
+                var rowCnt = table.rows({ selected: true }).count();
+
+                // do something with the number of selected rows
+                if (rowCnt > 0) {
+                    $("#btnDelete").prop('disabled', false);
+                    $("#btnExport").prop('disabled', false);
+                } else {
+                    $("#btnDelete").prop('disabled', true);
+                    $("#btnExport").prop('disabled', true);
+                }
+            });
+
+            $("#btnExport").on("click", function () {
+                table.buttons.exportData({
+                    modifier: {
+                        selected: true
+                    }
+                });
+            });
+
+            addTableButtons();
+        }
+
+        function addTableButtons() {
+            new $.fn.dataTable.Buttons(table, {
+                name: "export",
+                buttons: [
+                    {
+                        text: 'Export to Excel',
+                        extend: 'excel',
+                        className: 'btn-sm btn-primary mx-1',
+                        init: function (api, node, config) {
+                            $(node).removeClass('btn-secondary')
+                        }
+                    }
+                ]
+            });
+
+            table.buttons("export", null).containers().appendTo('.customDTButton');
+
+            new $.fn.dataTable.Buttons(table, {
+                name: "back",
+                buttons: [
+                    {
+                        text: 'Back',
+                        className: 'btn-sm mx-1',
+                        init: function (api, node, config) {
+                            //$(node).removeClass('btn-secondary')
+                        },
+                        action: function (e, dt, node, config) {
+                            window.history.back();
+                        }
+                    }
+                ]
+            });
+
+            table.buttons("back", null).containers().appendTo('.customDTButtonBack');
+        }
+    </script>
+
+}

@@ -1,0 +1,459 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@Configuration["ProjectName"]</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true"/>
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/common.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/sidebar.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/spinthatshit.css" rel="stylesheet" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/solid.min.css" />
+    <link rel="stylesheet" href="~/Plugins/fontawesome/css/regular.min.css" />
+    <link href="~/lib/select2-4.1.0/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <link href="~/lib/select2-4.1.0/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.bootstrap5.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/datatables.checkboxes.css" rel="stylesheet" />
+    <link href="~/css/mobilecss.css" rel="stylesheet" />
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    
+    @* This code is ASP.NET Core CSS Isolation*@
+   @*  <link href="~/MaxSys.styles.css" rel="stylesheet" asp-append-version="true" /> *@
+
+    @* This is script *@
+    @* Comment1 *@
+    @* Comment JY *@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    
+@*     <script src="~/js/jquery-ui-1.12.1.min.js"></script> *@
+    <script src="~/js/jquery-ui-1.12.1.js"></script>
+  @*   <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/js/jquery.validate-vsdoc.js"></script>
+    <script src="~/js/jquery.validate.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>   
+    <script src="~/js/jquery.cookie.min.js"></script>
+    <script src="~/js/attrchange.js"></script>  
+    <script src="~/js/modernizr-2.8.3.js"></script>
+    <script src="~/js/mainJS.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/views/shared/_Layout.js"></script>
+    <script src="~/lib/select2-4.1.0/js/select2.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap.js"></script>
+    <script src="~/lib/datatables/js/datatables.select.js"></script>
+    <script src="~/lib/datatables/js/datatables.bootstrap5.min.js"></script>
+    <script src="~/lib/datatables/js/datatables.checkboxes.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+</head>
+@{
+    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"];
+    var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
+    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+    // var employeeID = HttpContextAccessor.HttpContext.Request.Cookies["ID_MM_COMPANY"];
+    // var companyName = HttpContextAccessor.HttpContext.Request.Cookies["MM_COMPANY_NAME"];
+    // var workNO = HttpContextAccessor.HttpContext.Request.Cookies["WORK_NO"];
+    // var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
+    // var solat_zone = HttpContextAccessor.HttpContext.Request.Cookies["SOLAT_ZONE"];   
+    // var code = HttpContextAccessor.HttpContext.Request.Cookies["COMPANY_CODE"];
+    // var level = HttpContextAccessor.HttpContext.Request.Cookies["ACCESS_LEVEL"];
+}
+
+<body>
+    <style>
+        .b-example-divider {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            pointer-events: none;
+            fill: currentColor;
+        }
+
+        .dropdown-toggle {
+            outline: 0;
+        }
+
+        .nav-flush .nav-link {
+            border-radius: 0;
+        }
+
+        .btn-toggle {
+            display: inline-flex;
+            align-items: center;
+            padding: .25rem .5rem;
+            font-weight: 600;
+            color: rgba(0, 0, 0, .65);
+            background-color: transparent;
+            border: 0;
+        }
+
+            .btn-toggle:hover,
+            .btn-toggle:focus {
+                color: rgba(0, 0, 0, .85);
+                background-color: #d2f4ea;
+            }
+
+            .btn-toggle::before {
+                width: 1.25em;
+                line-height: 0;
+                content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+                transition: transform .35s ease;
+                transform-origin: .5em 50%;
+            }
+
+            .btn-toggle[aria-expanded="true"] {
+                color: rgba(0, 0, 0, .85);
+            }
+
+                .btn-toggle[aria-expanded="true"]::before {
+                    transform: rotate(90deg);
+                }
+
+        .btn-toggle-nav a {
+            display: inline-flex;
+            padding: .1875rem .5rem;
+            margin-top: .125rem;
+            margin-left: 1.25rem;
+            text-decoration: none;
+        }
+
+            .btn-toggle-nav a:hover,
+            .btn-toggle-nav a:focus {
+                background-color: #d2f4ea;
+            }
+
+        .scrollarea {
+            overflow-y: auto;
+        }
+
+        .fw-semibold {
+            font-weight: 600;
+        }
+
+        .lh-tight {
+            line-height: 1.25;
+        }
+
+    </style>
+    @* resizable-container *@
+    <style>
+        :root {
+            --resizable-container-width: 450px;
+            --sidebar-width: 4.5rem;
+        }
+
+        .row.flex-nowrap {
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar-icons {
+            width: 4.5rem;
+            background-color: #f8f9fa;
+            height: 100vh;
+        }
+
+        .resizable-container {
+            display: flex;
+            width: var(--resizable-container-width);
+            min-width: 300px;
+            max-width: var(--resizable-container-width);
+            overflow: hidden;
+            flex-shrink: 0;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .resizable-menu {
+            width: 180px;
+            overflow-y: auto;
+            background-color: #fff;
+            padding: 1rem;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .resizable-listing {
+           /*  overflow-y: auto; */
+            background-color: #fff;
+            flex: 1 1 auto;
+           /*  min-width: 0; */
+            padding: 0;
+        }
+
+        .resizer {
+            width: 5px;
+            cursor: ew-resize;
+            background: #ccc;
+        }
+
+
+        .detail-frame {
+            flex-grow: 1;
+            min-width: 0;
+            overflow-y: auto;
+            width: calc(100% - var(--sidebar-width) - var(--resizable-container-width));
+        }
+
+        .spanner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+    </style>
+    <header class="navbar navbar-dark navbar-expand-lg shadow-sm tr-navbar mb-1">
+        <div class="container-fluid ">
+            <a href="" class="col" style="color:unset;text-decoration:none;">
+                <img class="p-0 text-decoration-none" src="~/Images/Max_logo_2.png" style="width:35px; object-fit: contain;" /> <span class="text-decoration-none">@Configuration["ProjectName"].ToString().ToUpper()</span>
+                @* 
+                <input type="hidden" value="@useremail" id="txtUserEmail" />
+                <input type="hidden" value="@userID" id="txtUserID" /> *@
+              @*   <input type="hidden" value="@employeeID" id="txtUserEmployeeID" />
+                <input type="hidden" value="@workNO" id="txtUserWorkNO" />
+                <input type="hidden" value="@username" id="txtUserName" /> *@
+                @* <input type="hidden" value="@solat_zone" id="txtsolatZone" />
+                <input type="hidden" value="@code" id="txtComCodeTMP" />
+                <input type="hidden" value="@level" id="txtLvl" /> *@
+            </a>
+           
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-lg-none" id="sidebar-list-mobile">
+                    @*
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                    *@
+                </ul>
+                <div class="d-flex ms-auto align-items-center">
+                    <!-- Profile Dropdown -->
+                    <a href="#" class="m-0 px-1 text-reset tr-navbar-logout dropdown-toggle d-flex align-items-center" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if (profileImage == null || string.IsNullOrEmpty(profileImage))
+                        {
+                            <img src="~/Images/user-avatar.png" id="img-userprofile" alt="user profile" class="rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
+                            <span class="ms-2">@username.ToUpper()</span>
+                        }
+                        else
+                        {
+                            <img src="@profileImage" id="img-userprofile" alt="user profile" class="rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
+                            <span class="ms-2">@username.ToUpper()</span>
+                        }
+                    </a>
+
+                    <!-- Logout Form -->
+                    <form method="post" asp-controller="Home" asp-action="Logout" class="d-flex align-items-center ms-3">
+                        <button type="submit" class="btn btn-link nav-link">
+                            <i class="fa fa-sign-out"></i> LOG OUT
+                        </button>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </header>
+    <div class="container-fluid d-flex flex-column">
+        <div class="row flex-nowrap">
+            <!-- Vertical Icon Sidebar -->
+            <div class="d-flex flex-column sidebar-icons align-items-center border-end">
+                <a href="#" class="p-3 link-dark text-decoration-none" title="Home">
+                    <i class="fa fa-home"></i>
+                </a>
+                <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active py-3 border-bottom" title="User Profile"><i class="fa fa-user"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link py-3 border-bottom" title="Leave Application"><i class="fa fa-calendar"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Resizable Panel: Menu + Table (Side-by-side inside a fixed-width box) -->
+            <div class="resizable-container">
+                <!-- Left: Sidebar Menu -->
+                <div class="resizable-menu">
+                    <ul class="list-unstyled ps-0">
+                        <li class="mb-1">
+                            <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                                Home
+                            </button>
+                            <div class="collapse show" id="home-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a href="#" class="link-dark rounded">Overview Overview Overview</a></li>
+                                    <li><a href="#" class="link-dark rounded">Updates</a></li>
+                                    <li><a href="#" class="link-dark rounded">Reports</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Drag Resizer -->
+                <div class="resizer"></div>
+                <!-- Right: Listing Table -->
+                <div class="resizable-listing">
+                    <table class="table mb-0">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th scope="col"><input type="checkbox" /></th>
+                                <th scope="col">Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><input type="checkbox" /></td><td>Hello World</td></tr>
+                            <tr><td><input type="checkbox" /></td><td>Hello Everyone</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+              
+            </div>
+
+            <!-- Main Content Area -->
+            <main class="detail-frame">
+                @RenderBody()
+
+                <!-- Loading Spinner -->
+                <div class="spanner">
+                    <img src="~/Images/loading12.gif" alt="Loading" style="width: 85px; height: auto" />
+                </div>
+            </main>
+        </div>
+    </div>
+    <!--TOAST-->
+    <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+        <div id="errorToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #B1003C">
+            <div class="toast-header" style="background-color: #FFF0EE">
+                <strong class="me-auto text-danger title">Warning!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-muted message" style="background-color: #FFF0EE; border-top: 1px solid #FFF0EE; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                This is an error message.
+            </div>
+        </div>
+    </div>
+    <div class="position-fixed translate-middle-x p-3 tr-toast-alert">
+        <div id="successToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" style="border: 1px solid #00A251">
+            <div class="toast-header" style="background-color: #E9FFF8">
+                <strong class="me-auto title" style="color: #00A251">Successful!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-muted message" style="background-color: #E9FFF8; border-top: 1px solid #E9FFF8; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit">
+                This is a successful message.
+            </div>
+        </div>
+    </div>
+    <div class="tr-footer d-flex flex-row  d-none d-sm-block" id="footer" style="z-index:999;">
+        <div class="flex-column flex-grow-1 text-center text-black-50 tr-footer-text">
+            <span>@Configuration["VersionText"] | @Configuration["CopyRightText"].Replace("[YEAR]", DateTime.Now.Year.ToString())</span>
+        </div>
+    </div>
+    <!--GENERAL MODAL-->
+    <!--Confirmation Modal-->
+    <div class="modal fade" id="submit-confirmation-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <h5 class="modal-title">Confirmation</h5>
+            </div>
+            <hr />
+            <div class="modal-body">
+                <h6 class="modal-text">Are you sure to submit this record?</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <button type="button" class="btn btn-sm btn-primary modal-submit-btn" data-bs-dismiss="modal">Ya</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="modelIframe" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content h-100">
+                <div class="modal-body h-100" id="modelIframe-body">
+                    <iframe src="" id="modelIframe-body-iframe" class="h-100"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("Scripts", required: false)
+    <script>
+        $(function () {
+            const $resizer = $('.resizer');
+            const $left = $('.resizable-menu');
+            const $right = $('.resizable-listing');
+            let isDragging = false;
+
+            $resizer.on('mousedown', function (e) {
+                isDragging = true;
+                $('body').css('cursor', 'ew-resize');
+            });
+
+            $(document).on('mousemove', function (e) {
+                if (!isDragging) return;
+
+                const containerOffsetLeft = $('.resizable-container').offset().left;
+                const newWidth = e.pageX - containerOffsetLeft;
+
+                // Clamp width between 150px and 400px
+                if (newWidth > 150 && newWidth < 400) {
+                    $left.css('width', newWidth);
+                }
+            });
+
+            $(document).on('mouseup', function () {
+                isDragging = false;
+                $('body').css('cursor', 'default');
+            });
+        });
+    </script>
+</body>
+</html>

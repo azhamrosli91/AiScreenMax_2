@@ -1,0 +1,314 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_new.cshtml";
+}
+<style>
+    .page-align-top {
+        align-self: flex-start !important;
+        width: 100%;
+    }
+</style>
+<div class="page-align-top w-100">
+    <div class="w-100">
+        <div class="row align-items-center justify-content-between g-3 mt-3">
+            <div class="col-auto">
+                <h2 class="mb-0">Ai Resume Screening - Shortlisted</h2>
+            </div>
+            <div class="col-auto">
+                <div class="row g-3">
+                    <div class="col-auto">
+                        <a class="btn btn-phoenix-secondary" href="../AiResume/History"><span class="fas fa-history me-2"></span>History</a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-primary" href="../AiResume/Index"><span class="fas fa-plus me-2"></span>New Screening</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-2">
+            <div class="col-12 col-xl-10 order-1 order-xl-0 w-100">
+                <div class="card shadow-none border my-4 w-100" data-component-card="data-component-card">
+                    <div class="card-body p-3 w-100">
+                        <table id="example" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 150px;">Title</th>
+                                    <th style="min-width: 250px;">Contact</th>
+                                    <th text-align: center;">Match %</th>
+                                    <th style="min-width: 300px;">Short Description</th>
+                                    <th>Date Run</th>
+                                    <th style="min-width: 120px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Resume Detail Modal -->
+<div class="modal fade" id="resumeDetailModal" tabindex="-1" aria-labelledby="resumeDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resumeDetailModalLabel">Resume Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Job Title</dt>
+                    <dd class="col-sm-9" id="modalJobTitle"></dd>
+
+                    <dt class="col-sm-3">Name</dt>
+                    <dd class="col-sm-9" id="modalName"></dd>
+
+                    <dt class="col-sm-3">Email</dt>
+                    <dd class="col-sm-9" id="modalEmail"></dd>
+
+                    <dt class="col-sm-3">Phone</dt>
+                    <dd class="col-sm-9" id="modalPhone"></dd>
+
+                    <dt class="col-sm-3">Match</dt>
+                    <dd class="col-sm-9" id="modalMatch"></dd>
+
+                    <dt class="col-sm-3">Short Description</dt>
+                    <dd class="col-sm-9" id="modalDesc"></dd>
+
+                    <dt class="col-sm-3">Date Run</dt>
+                    <dd class="col-sm-9" id="modalDate"></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Proceed Interview Modal -->
+<div class="modal fade" id="interviewModal" tabindex="-1" aria-labelledby="interviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Interview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="interviewForm">
+                    <div class="mb-3">
+                        <label class="form-label">Candidate</label>
+                        <input type="text" class="form-control" id="candidateName" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Interview Date & Time</label>
+                        <input class="form-control datetimepicker" id="interviewDateTime" type="text" placeholder="dd/mm/yyyy hour : minute" data-options='{"enableTime":true,"dateFormat":"d/m/y H:i","disableMobile":true}' required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" id="interviewLocation" value="Online">
+                    </div>
+                    <div id="interviewersContainer">
+                        <label class="form-label">Interviewers</label>
+                        <div class="row mb-2 interviewer">
+                            <div class="col-md-5 mb-2 mb-md-0">
+                                <input type="text" class="form-control" placeholder="Interviewer Name" name="interviewerName[]">
+                            </div>
+                            <div class="col-md-5 mb-2 mb-md-0">
+                                <input type="email" class="form-control" placeholder="Interviewer Email" name="interviewerEmail[]">
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <button type="button" class="btn btn-danger btn-sm remove-interviewer">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm mt-2" id="addInterviewer">+ Add Interviewer</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="interviewForm" class="btn btn-primary">Confirm Interview</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        const shortlistedStored = localStorage.getItem("ai_resume_shortlisted");
+
+        const table = $('#example').DataTable({
+            initComplete: function () {
+                $("#example").wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+            }
+        });
+
+        if (shortlistedStored) {
+            try {
+                const resumeData = JSON.parse(shortlistedStored);
+
+                resumeData.forEach((item, index) => {
+                    const date = new Date(item.timestamp);
+                    const formattedDate = formatDate(date);
+
+                    const actionHtml = `<div class="text-center">
+                        <button class="btn btn-primary btn-sm proceed-interview" title="Proceed Interview">
+                            Proceed Interview
+                        </button>
+                    </div>`;
+
+                    const contactHtml = `
+                        <strong>${item.name}</strong><br/>
+                        <span>${item.email}</span><br/>
+                        <span>${item.phone_number}</span>
+                    `;
+
+                    const row = table.row.add([
+                        item.jobtitle || "-",
+                        contactHtml,
+                        `<div style="text-align:center;">${item.percentage_match}%</div>`,
+                        `<div class="text-wrap" style="min-width: 300px;">${item.short_description}</div>`,
+                        formattedDate,
+                        actionHtml
+                    ]).draw(false).node();
+
+
+                    // Attach data to row for modal
+                    $(row).data("resume", item);
+                });
+
+            } catch (err) {
+                console.error("Error parsing localStorage resume data:", err);
+            }
+        }
+
+        function formatDate(date) {
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const day = pad(date.getDate());
+            const month = pad(date.getMonth() + 1);
+            const year = date.getFullYear();
+            const hours = date.getHours();
+            const minutes = pad(date.getMinutes());
+            const suffix = hours >= 12 ? 'PM' : 'AM';
+            const hour12 = hours % 12 || 12;
+
+           return `${day}/${month}/${year}<br/><small class="text-muted">${pad(hour12)}:${minutes} ${suffix}</small>`;
+
+        }
+
+         $('#example tbody').on('click', 'tr', function () {
+             const data = $(this).data("resume");
+             if (!data) return;
+
+             $('#modalJobTitle').text(data.jobtitle || "-");
+             $('#modalName').text(data.name);
+             $('#modalEmail').text(data.email);
+             $('#modalPhone').text(data.phone_number);
+             $('#modalMatch').text(data.percentage_match + '%');
+             $('#modalDesc').text(data.short_description);
+             $('#modalDate').text(formatDate(new Date(data.timestamp)));
+
+             const modal = new bootstrap.Modal(document.getElementById('resumeDetailModal'));
+             modal.show();
+         });
+
+        //  $('#example tbody').on('click', '.proceed-interview', function (e) {
+        //     e.stopPropagation(); // Prevent modal from showing
+
+        //     const $row = $(this).closest('tr');
+        //     const data = $row.data("resume");
+        //     if (!data || !data.email) return;
+
+        //     // Example action — show alert or redirect
+        //     alert(`Proceeding to interview: ${data.name} (${data.email})`);
+
+        //     // You can also store this in localStorage or mark it differently
+        // });
+
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        let selectedCandidate = null;
+
+        // Open modal on Proceed Interview click
+        $('#example tbody').on('click', '.proceed-interview', function (e) {
+            e.stopPropagation(); // Prevent row modal
+            const $row = $(this).closest('tr');
+            const data = $row.data("resume");
+            if (!data || !data.email) return;
+
+            selectedCandidate = data;
+            $('#candidateName').val(`${data.name} (${data.email})`);
+            $('#interviewDateTime').val('');
+            $('#interviewLocation').val('Online');
+            $('#interviewersContainer').find('.interviewer:not(:first)').remove(); // Keep 1 row
+            $('#interviewersContainer input').val('');
+
+            const modal = new bootstrap.Modal(document.getElementById('interviewModal'));
+            modal.show();
+        });
+
+        // Add interviewer row
+        $('#addInterviewer').on('click', function () {
+            const newRow = `
+              <div class="row mb-2 interviewer">
+                <div class="col-md-5 mb-2 mb-md-0">
+                  <input type="text" class="form-control" placeholder="Interviewer Name" name="interviewerName[]">
+                </div>
+                <div class="col-md-5 mb-2 mb-md-0">
+                  <input type="email" class="form-control" placeholder="Interviewer Email" name="interviewerEmail[]">
+                </div>
+                <div class="col-md-2 text-end">
+                  <button type="button" class="btn btn-danger btn-sm remove-interviewer">Remove</button>
+                </div>
+              </div>`;
+            $('#interviewersContainer').append(newRow);
+        });
+
+        // Remove interviewer row
+        $(document).on('click', '.remove-interviewer', function () {
+            $(this).closest('.interviewer').remove();
+        });
+
+        // Submit form
+        $('#interviewForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const interviewData = {
+                candidate: selectedCandidate,
+                datetime: $('#interviewDateTime').val(),
+                location: $('#interviewLocation').val(),
+                interviewers: []
+            };
+
+            $('#interviewersContainer .interviewer').each(function () {
+                const name = $(this).find('input[name="interviewerName[]"]').val();
+                const email = $(this).find('input[name="interviewerEmail[]"]').val();
+                if (name && email) {
+                    interviewData.interviewers.push({ name, email });
+                }
+            });
+
+            console.log("✅ Interview Scheduled:", interviewData);
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('interviewModal'));
+            modal.hide();
+
+               $.ajax({
+        url: '/AiResume/SendInterviewEmail',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(interviewData),
+            success: function (response) {
+        alert(`✅ Email sent to ${response.sentTo} for ${interviewData.candidate.name}`);
+    },
+        error: function (xhr) {
+            alert(`❌ Failed to send email: ${xhr.responseText}`);
+        }
+    });
+        });
+
+    });
+</script>
