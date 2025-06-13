@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AiScreen")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4da815d3b23de984525d0b8238beac30edacf812")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d205c7e23522706321d11dc6f4532a312be48ab")]
 [assembly: System.Reflection.AssemblyProductAttribute("AiScreen")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AiScreen")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

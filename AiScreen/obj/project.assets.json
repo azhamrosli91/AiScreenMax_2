@@ -9099,11 +9099,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\AIScreenMax\\MaxSystemWebSite-main\\AiScreen\\AiScreen.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\AiScreenMax_2\\AiScreen\\AiScreen.csproj",
       "projectName": "AiScreen",
-      "projectPath": "C:\\Users\\User\\Documents\\GitHub\\AIScreenMax\\MaxSystemWebSite-main\\AiScreen\\AiScreen.csproj",
+      "projectPath": "C:\\Users\\User\\Documents\\GitHub\\AiScreenMax_2\\AiScreen\\AiScreen.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Documents\\GitHub\\AIScreenMax\\MaxSystemWebSite-main\\AiScreen\\obj\\",
+      "outputPath": "C:\\Users\\User\\Documents\\GitHub\\AiScreenMax_2\\AiScreen\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -9,217 +9,221 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = AiScreen
 build_property.RootNamespace = AiScreen
-build_property.ProjectDir = C:\Users\User\Documents\GitHub\AIScreenMax\MaxSystemWebSite-main\AiScreen\
+build_property.ProjectDir = C:\Users\User\Documents\GitHub\AiScreenMax_2\AiScreen\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\User\Documents\GitHub\AIScreenMax\MaxSystemWebSite-main\AiScreen
+build_property.MSBuildProjectDirectory = C:\Users\User\Documents\GitHub\AiScreenMax_2\AiScreen
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/AiResume/History.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/AiResume/Guide.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWlSZXN1bWVcR3VpZGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/AiResume/History.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWlSZXN1bWVcSGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/AiResume/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/AiResume/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWlSZXN1bWVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/AiResume/ShortListed.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/AiResume/ShortListed.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWlSZXN1bWVcU2hvcnRMaXN0ZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Dashboard/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/DE_Employee/Calendar.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/DE_Employee/Calendar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcREVfRW1wbG95ZWVcQ2FsZW5kYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/DE_Employee/Detail.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/DE_Employee/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcREVfRW1wbG95ZWVcRGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/DE_Employee/Detail2.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/DE_Employee/Detail2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcREVfRW1wbG95ZWVcRGV0YWlsMi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/DE_Employee/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/DE_Employee/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcREVfRW1wbG95ZWVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/DE_Employee/SampleListing.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/DE_Employee/SampleListing.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcREVfRW1wbG95ZWVcU2FtcGxlTGlzdGluZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Email/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Email/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Errors/NotFound.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Errors/NotFound.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXJyb3JzXE5vdEZvdW5kLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Errors/Unauthorize.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Errors/Unauthorize.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXJyb3JzXFVuYXV0aG9yaXplLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/AuditTrail.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/AuditTrail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBdWRpdFRyYWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/Dashboard.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/EmailSummarize.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/EmailSummarize.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFbWFpbFN1bW1hcml6ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/Functions.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/Functions.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxGdW5jdGlvbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/Index - Copy.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/Index - Copy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleCAtIENvcHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/Login.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/Sidebar.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/Sidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaWRlYmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Home/TestPage.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Home/TestPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZXN0UGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/MM_Leave/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/MM_Leave/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTU1fTGVhdmVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/MM_Sample/Detail.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/MM_Sample/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTU1fU2FtcGxlXERldGFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/MM_Sample/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/MM_Sample/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTU1fU2FtcGxlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/MM_UserProfile/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/MM_UserProfile/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTU1fVXNlclByb2ZpbGVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/OCR_CarPlate/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/OCR_CarPlate/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT0NSX0NhclBsYXRlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/PMO/TaskUpdate.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/PMO/TaskUpdate.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUE1PXFRhc2tVcGRhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ComponentBottomPanel/ComponentBottomPanel.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ComponentBottomPanel/ComponentBottomPanel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ29tcG9uZW50Qm90dG9tUGFuZWxcQ29tcG9uZW50Qm90dG9tUGFuZWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ComponentTableCard/ComponentTableCard.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ComponentTableCard/ComponentTableCard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ29tcG9uZW50VGFibGVDYXJkXENvbXBvbmVudFRhYmxlQ2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ComponentTableEditor/ComponentTableEditor - Copy.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ComponentTableEditor/ComponentTableEditor - Copy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ29tcG9uZW50VGFibGVFZGl0b3JcQ29tcG9uZW50VGFibGVFZGl0b3IgLSBDb3B5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ComponentTableEditor/ComponentTableEditor.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ComponentTableEditor/ComponentTableEditor.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ29tcG9uZW50VGFibGVFZGl0b3JcQ29tcG9uZW50VGFibGVFZGl0b3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ComponentTableV1/ComponentTableV1.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ComponentTableV1/ComponentTableV1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ29tcG9uZW50VGFibGVWMVxDb21wb25lbnRUYWJsZVYxLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ComponentTableV1/error.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ComponentTableV1/error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ29tcG9uZW50VGFibGVWMVxlcnJvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ComponentTopPanel/ComponentTopPanel.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ComponentTopPanel/ComponentTopPanel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQ29tcG9uZW50VG9wUGFuZWxcQ29tcG9uZW50VG9wUGFuZWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/FirstTimeLogin/FirstTimeLogin.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/FirstTimeLogin/FirstTimeLogin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRmlyc3RUaW1lTG9naW5cRmlyc3RUaW1lTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ForgotPasswordVerify/ForgotPasswordVerify.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ForgotPasswordVerify/ForgotPasswordVerify.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRm9yZ290UGFzc3dvcmRWZXJpZnlcRm9yZ290UGFzc3dvcmRWZXJpZnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Components/ForgotPassword/ForgotPassword.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Components/ForgotPassword/ForgotPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcRm9yZ290UGFzc3dvcmRcRm9yZ290UGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/Error.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout - Copy.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout - Copy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQgLSBDb3B5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout2.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout3.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout3.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout_Empty.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout_Empty.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRfRW1wdHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout_new.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout_new.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRfbmV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout_new2.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout_new2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRfbmV3Mi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_Layout_Partial.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_Layout_Partial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRfUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Snippai/Index - Copy.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Snippai/Index - Copy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU25pcHBhaVxJbmRleCAtIENvcHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/Snippai/Index.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/Snippai/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU25pcHBhaVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/_ViewImports.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Documents/GitHub/AIScreenMax/MaxSystemWebSite-main/AiScreen/Views/_ViewStart.cshtml]
+[C:/Users/User/Documents/GitHub/AiScreenMax_2/AiScreen/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

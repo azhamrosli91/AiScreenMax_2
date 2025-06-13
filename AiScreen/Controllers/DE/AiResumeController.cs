@@ -44,6 +44,11 @@ namespace MaxSystemWebSite.Controllers.DE
 
             return View();
         }
+
+        public IActionResult Guide()
+        {
+            return View();
+        }
         public IActionResult History()
         {
             return View();
