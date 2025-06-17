@@ -150,11 +150,22 @@
                     const date = new Date(item.timestamp);
                     const formattedDate = formatDate(date);
 
-                    const actionHtml = `<div class="text-center">
-                        <button class="btn btn-primary btn-sm proceed-interview" title="Proceed Interview">
-                            Proceed Interview
-                        </button>
-                    </div>`;
+                      let interviewStatus = JSON.parse(localStorage.getItem("interview_status") || "{}");
+    let buttonClass = "btn-primary proceed-interview";
+    let buttonText = "Proceed Interview";
+    let buttonDisabled = "";
+
+    if (interviewStatus[item.email] === "pending") {
+        buttonClass = "btn-secondary";
+        buttonText = "Pending Acceptance";
+        buttonDisabled = "disabled";
+    }
+
+    const actionHtml = `<div class="text-center">
+        <button class="btn ${buttonClass} btn-sm" ${buttonDisabled} title="${buttonText}">
+            ${buttonText}
+        </button>
+    </div>`;
 
                     const contactHtml = `
                         <strong>${item.name}</strong><br/>
@@ -303,6 +314,22 @@
         data: JSON.stringify(interviewData),
             success: function (response) {
         alert(`✅ Email sent to ${response.sentTo} for ${interviewData.candidate.name}`);
+        // Find the row and button, change to "Pending Acceptance"
+    const $row = $('#example tbody tr').filter(function () {
+        return $(this).data("resume")?.email === interviewData.candidate.email;
+    });
+
+       // Save to localStorage
+    let interviewStatus = JSON.parse(localStorage.getItem("interview_status") || "{}");
+    interviewStatus[interviewData.candidate.email] = "pending";
+    localStorage.setItem("interview_status", JSON.stringify(interviewStatus));
+
+    // Update button UI
+    $row.find('.proceed-interview')
+        .removeClass('btn-primary proceed-interview')
+        .addClass('btn-secondary')
+        .prop('disabled', true)
+        .text('Pending Acceptance');
     },
         error: function (xhr) {
             alert(`❌ Failed to send email: ${xhr.responseText}`);

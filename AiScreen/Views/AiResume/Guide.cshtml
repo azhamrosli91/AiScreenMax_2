@@ -4,29 +4,36 @@
     Layout = "~/Views/Shared/_Layout_new.cshtml";
 }
 
-
 <div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">AI Screen Max - User Guide</h4>
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 text-white">🧠 AI Screen Max - User Guide</h4>
         </div>
         <div class="card-body">
-            <p class="lead">Welcome to the AI Screen Max Guide. Follow these simple steps to get started:</p>
-            <ol class="list-group list-group-numbered">
-                <li class="list-group-item">
-                    <strong>Step 1:</strong> Upload your resume via the <a href="/AiResume/Index">Screening Resume</a> page.
-                </li>
-                <li class="list-group-item">
-                    <strong>Step 2:</strong> View the results under the <a href="/AiResume/History">History</a> tab.
-                </li>
-                <li class="list-group-item">
-                    <strong>Step 3:</strong> Manage shortlisted candidates on the <a href="/AiResume/ShortListed">Shortlisted</a> page.
-                </li>
-                <li class="list-group-item">
-                    <strong>Step 4:</strong> For help, check the <a href="/AiResume/HelpCenter">Help Center</a>.
-                </li>
-            </ol>
-            <p class="mt-4">If you need further assistance, contact <strong>hr@maxsys.com.my</strong>.</p>
+            <p class="fs-6 fw-semi-bold mb-4">
+                Welcome to the AI Screen Max Guide. Follow these simple steps to get started:
+            </p>
+
+            <div class="border-start border-3 border-primary ps-3">
+                <ul class="list-group list-group-numbered mb-3">
+                    <li class="list-group-item">
+                        <strong>Step 1:</strong> Upload your resume via the <a href="/AiResume/Index">Screening Resume</a> page.
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Step 2:</strong> View the results under the <a href="/AiResume/History">History</a> tab.
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Step 3:</strong> Manage shortlisted candidates on the <a href="/AiResume/ShortListed">Shortlisted</a> page.
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Step 4:</strong> For help, check the <a href="/AiResume/HelpCenter">Help Center</a>.
+                    </li>
+                </ul>
+            </div>
+
+            <p class="mt-4 mb-0 text-700">
+                For further assistance, please contact <a href="mailto:hr@maxsys.com.my"><strong>hr@maxsys.com.my</strong></a>.
+            </p>
         </div>
     </div>
 </div>
