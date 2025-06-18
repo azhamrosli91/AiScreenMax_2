@@ -72,6 +72,7 @@ namespace MaxSystemWebSite.Controllers.DE
 
             // ✅ Correct field name for API
             content.Add(new StringContent(jobDesc), "job_desc");
+            content.Add(new StringContent(EMAIL), "user_id");
 
             var fileContent = new StreamContent(file.OpenReadStream());
             fileContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")

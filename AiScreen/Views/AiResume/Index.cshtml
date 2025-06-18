@@ -144,16 +144,16 @@
 
 <script>
     let myDropzone;
-
+  
     $(document).ready(function () {
 
-          const isLoggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+        const guideCookie = getCookie("ai_resume_guide_shown");
 
-        // 👉 Show welcome guide if user not logged in and first visit
-        if (!isLoggedIn && !localStorage.getItem("ai_resume_guide_shown")) {
-            $('#welcomeGuideModal').modal('show');
-            localStorage.setItem("ai_resume_guide_shown", "true");
-        }
+    console.log("Cookie =", guideCookie);
+
+    if (!guideCookie) {
+        $('#welcomeGuideModal').modal('show');
+    }
 
         // Prefill Job Title & Description from localStorage
         const storedTitle = localStorage.getItem("ai_job_title");
@@ -208,16 +208,25 @@
             }
         });
 
-        // Submit handler
-        $('#button-addon2').on('click', async function (e) {
-     e.preventDefault();
+       $('#button-addon2').on('click', async function (e) {
+    e.preventDefault();
 
-  
-    const isLoggedIn = @User.Identity.IsAuthenticated.ToString().ToLower();
+    const isLoggedIn = @User.Identity.IsAuthenticated.ToString().ToLower(); // server-side
 
+    // 1️⃣ Not logged in → show login modal
     if (!isLoggedIn) {
-        $('#loginModal').modal('show'); // Show login modal
-        return; // Stop execution
+        $('#loginModal').modal('show');
+        return;
+    }
+
+    // 2️⃣ Guide modal is visible and privacy not acknowledged → show alert and stop
+    const guideShown = getCookie("ai_resume_guide_shown");
+    const isGuideStep2Visible = !$('#welcome-step-2').hasClass('d-none');
+    const acknowledged = $('#ackPrivacy').is(':checked');
+
+        if (!guideShown && isGuideStep2Visible && !acknowledged) {
+        $('#ackModal').modal('show');
+        return;
     }
 
             const $btn = $(this);
@@ -452,30 +461,203 @@
 <div class="modal fade" id="welcomeGuideModal" tabindex="-1" aria-labelledby="welcomeGuideModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-4">
-            <div class="modal-header bg-gradient-primary text-white rounded-top-4">
-                <h5 class="modal-title" id="welcomeGuideModalLabel">
-                    <i class="fas fa-lightbulb me-2"></i>Welcome to AI Resume Screening
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <div class="modal-body px-4 py-3">
-                <p class="fs-6">Follow the steps below to get started:</p>
-                <ol class="list-group list-group-numbered mb-3">
-                    <li class="list-group-item border-0 ps-0">Enter a job title and job description.</li>
-                    <li class="list-group-item border-0 ps-0">Upload one or more resumes (PDF, Word, or image).</li>
-                    <li class="list-group-item border-0 ps-0">Click "Submit" to see AI-screened results.</li>
-                    <li class="list-group-item border-0 ps-0">Shortlist top candidates and schedule interviews.</li>
-                </ol>
-                <div class="alert alert-info small mb-0" role="alert">
-                    <i class="fas fa-info-circle me-1"></i> You can access this guide again anytime by resetting in your browser console.
+
+                <!-- Step 1: Welcome -->
+                <div id="welcome-step-1">
+                    <div class="text-center mb-3">
+                        <img src="/images/welcome starter.jpg" alt="Welcome" class="img-fluid rounded" style="max-height: 220px;">
+                    </div>
+                    <h4 class="text-center fw-bold mb-2">Welcome to AI Screen Max</h4>
+                    <p class="text-center text-muted">Your smart assistant for resume screening.</p>
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="button" class="btn btn-primary px-4" onclick="showWelcomeStep2()">Get Started</button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-end border-0">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got It!</button>
+
+                <!-- Step 2: Guide with steps -->
+                <div id="welcome-step-2" class="d-none">
+                    <h5 class="mb-3"><i class="fas fa-lightbulb me-2"></i>How to Use</h5>
+
+
+                    <ol class="list-group list-group-numbered mb-3">
+                        <li class="list-group-item border-0 ps-0">Enter a job title.</li>
+                        <li class="list-group-item border-0 ps-0">Enter a job description.</li>
+                        <li class="list-group-item border-0 ps-0">Upload one or more resumes (PDF, Word, or image).</li>
+                        <li class="list-group-item border-0 ps-0">Click "Submit" to see AI-screened results.</li>
+                        <li class="list-group-item border-0 ps-0">Shortlist top candidates and schedule interviews.</li>
+                    </ol>
+
+
+                    <div id="guideGallery" class="carousel slide mb-4" data-bs-ride="carousel" style="position: relative;">
+                        <div class="carousel-inner rounded shadow-sm" style="min-height: 300px;">
+                            <div class="carousel-item active">
+                                <img src="~/Images/guide1.png" class="d-block w-100" alt="Guide Step 1" style="max-height: 300px; object-fit: contain;">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/Images/guide2.png" class="d-block w-100" alt="Guide Step 2" style="max-height: 300px; object-fit: contain;">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="~/Images/guide3.png" class="d-block w-100" alt="Guide Step 3" style="max-height: 300px; object-fit: contain;">
+                            </div>
+                        </div>
+
+                        <!-- Prev Button (left) -->
+                        <button class="carousel-control-prev"
+                                type="button"
+                                data-bs-target="#guideGallery"
+                                data-bs-slide="prev"
+                                style="top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background-color: rgba(108, 117, 125, 0.7); border-radius: 50%;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <!-- Next Button (right) -->
+                        <button class="carousel-control-next"
+                                type="button"
+                                data-bs-target="#guideGallery"
+                                data-bs-slide="next"
+                                style="top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background-color: rgba(108, 117, 125, 0.7); border-radius: 50%;">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+
+                    <div class="border rounded-3 p-3 bg-light mb-3 small text-muted">
+                        <strong>Disclaimer:</strong><br />
+                        By using this free resume screening tool, you agree that:
+                        <ul class="mb-2 ps-3">
+                            <li>Your submitted resumes and job descriptions may be used anonymously to improve the AI screening model.</li>
+                            <li>No personal data will be sold or shared with third parties without your consent.</li>
+                            <li>This platform does not guarantee job placement or recruitment outcomes.</li>
+                            <li>Use of this system is at your discretion and risk; the company is not liable for any decisions made based on results.</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="ackPrivacy">
+                        <label class="form-check-label small text-muted" for="ackPrivacy">
+                            I acknowledge and accept the terms and data usage policy above.
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="dontShowAgain">
+                        <label class="form-check-label small text-muted" for="dontShowAgain">
+                            Don't show this again
+                        </label>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary" id="btnWelcomeDone" disabled>Got It!</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="ackModal" tabindex="-1" aria-labelledby="ackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-warning text-dark rounded-top-4">
+                <h5 class="modal-title" id="ackModalLabel">
+                    <i class="fa-solid fa-shield-halved me-2"></i> Privacy Acknowledgement Required
+                </h5>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-4 py-3">
+                <p class="mb-3 small">
+                    By submitting your resume and job description to this platform, you agree and acknowledge the following:
+                </p>
+                <ul class="small text-muted mb-3 ps-3">
+                    <li>This service is provided free of charge as a public tool for AI-powered resume screening.</li>
+                    <li>Your uploaded resume files and job descriptions may be used anonymously to improve the system’s performance, including AI model training and algorithm refinement.</li>
+                    <li>No personally identifiable information (PII) will be shared with third parties for commercial purposes without your explicit consent.</li>
+                    <li>This tool does not guarantee employment outcomes or recruitment success and is intended as a supporting reference tool only.</li>
+                    <li>We may store your submission data temporarily in local browser storage or internal databases for session continuity and performance tracking.</li>
+                    <li>By continuing, you agree that the company is not liable for any misuse of information caused by user-side actions, nor for decisions made based on AI-generated match results.</li>
+                    <li>You retain all rights to your uploaded content, and may request removal by contacting the system administrator if any concerns arise.</li>
+                </ul>
+                <p class="mb-0 small">
+                    Please proceed only if you understand and accept these terms of use and data handling practices.
+                </p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="ackPrivacyModal" />
+                    <label class="form-check-label" for="ackPrivacyModal">
+                        I acknowledge the privacy policy.
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-end">
+                <button type="button" class="btn btn-primary" id="ackConfirmBtn" disabled>Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Enable confirm button if checkbox ticked
+    $('#ackPrivacyModal').on('change', function () {
+        $('#ackConfirmBtn').prop('disabled', !this.checked);
+    });
+
+    // When confirm clicked → check the box in welcome guide too + continue submit
+    $('#ackConfirmBtn').on('click', function () {
+        $('#ackPrivacy').prop('checked', true); // Tick original checkbox
+        $('#ackModal').modal('hide');
+        $('#button-addon2').trigger('click'); // Re-trigger submit
+    });
+</script>
+
+<script>
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+</script>
+
+    <script>
+           $('#btnWelcomeDone').on('click', function () {
+        const acknowledged = $('#ackPrivacy').is(':checked');
+        const dontShow = $('#dontShowAgain').is(':checked');
+
+        if (acknowledged) {
+            $('#welcomeGuideModal').modal('hide');
+
+            if (dontShow) {
+                setCookie("ai_resume_guide_shown", "true", 365); // Save cookie only if don't show is checked
+            }
+        }
+    });
+    </script>
+<script>
+    function showWelcomeStep2() {
+        document.getElementById('welcome-step-1').classList.add('d-none');
+        document.getElementById('welcome-step-2').classList.remove('d-none');
+    }
+
+    // Enable button only if checkbox is checked
+    $(document).on('change', '#ackPrivacy', function () {
+        $('#btnWelcomeDone').prop('disabled', !this.checked);
+    });
+</script>
 
 <script>
     if (window.location.search.includes("refresh=1")) {
