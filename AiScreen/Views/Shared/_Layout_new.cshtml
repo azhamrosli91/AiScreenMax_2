@@ -109,90 +109,111 @@
     </div>
 
     <main class="main" id="top">
-        <header class="navbar-container">
-            <nav class="navbar navbar-top fixed-top navbar-expand" id="navbarDefault">
-                <div class="collapse navbar-collapse justify-content-between">
-                    <div class="navbar-logo">
+        <nav class="navbar navbar-top fixed-top navbar-expand-lg" id="navbarTop">
+            <div class="navbar-logo">
 
-                    <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
-                        <a class="navbar-brand me-1 me-sm-3">@* href="../MM_UserProfile/Index" *@
+                <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTopCollapse" aria-controls="navbarTopCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+                <a class="navbar-brand me-1 me-sm-3" href="/AiResume/Index">
+                    <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center">
-                            <div class="d-flex align-items-center">
-                                    <img src="~/Images/AIScreenMaxLogo1.png" alt="MaxSystem" width="47"style="background-color: transparent; />
-                                    <h5 class="logo-text ms-2 d-none d-sm-block">AI Screen Max</h5>
-                            </div>
+                            <img src="~/Images/AIScreenMaxLogo1.png" alt="MaxSystem" width="60" style="background-color: transparent" />
+                           
+                            <h5 class="logo-text ms-2 d-none d-sm-block">AI Screen Max</h5>
+                            
                         </div>
-                    </a>
-                </div>
-
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/AiResume/Index">Screening Resume</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/AiResume/History">History</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/AiResume/ShortListed">Shortlisted</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/AiResume/Guide">Guide</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Resume/Subscription">Pricing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/AiResume/HelpCenter">Help Center</a>
-                        </li>
-                    </ul>
-                <ul class="navbar-nav navbar-nav-icons flex-row">
+                    </div>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center" id="navbarTopCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <div class="theme-control-toggle fa-icon-wait px-2">
-                            <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
-                            <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style="height:32px;width:32px;"><span class="icon" data-feather="moon"></span></label>
-                            <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style="height:32px;width:32px;"><span class="icon" data-feather="sun"></span></label>
-                        </div>
+                        <a class="nav-link" href="/AiResume/Index">Screening Resume</a>
                     </li>
-                    <li class="nav-item d-lg-none"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchBoxModal"><span data-feather="search" style="height:19px;width:19px;margin-bottom: 2px;"></span></a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" style="min-width: 2.25rem" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span class="d-block" style="height:20px;width:20px;"><span data-feather="bell" style="height:20px;width:20px;"></span></span></a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/History">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/ShortListed">Shortlisted</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/Guide">Guide</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Resume/Subscription">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/HelpCenter">Help Center</a>
+                    </li>
+                </ul>
+            </div>
 
-                        <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
-                            <div class="card position-relative border-0">
-                                <div class="card-header p-2">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="text-body-emphasis mb-0">Notifications</h5>
-                                        <button class="btn btn-link p-0 fs-9 fw-normal" type="button">Mark all as read</button>
-                                    </div>
+            <ul class="navbar-nav navbar-nav-icons flex-row align-items-center mb-0">
+
+                <!-- Theme Toggle -->
+                <li class="nav-item d-flex align-items-center">
+                    <div class="theme-control-toggle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                        <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox"
+                               data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
+                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle"
+                               title="Switch theme">
+                            <span class="icon" data-feather="moon"></span>
+                        </label>
+                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle"
+                               title="Switch theme">
+                            <span class="icon" data-feather="sun"></span>
+                        </label>
+                    </div>
+                </li>
+
+                <!-- Notification Bell -->
+                <li class="nav-item dropdown d-flex align-items-center justify-content-center mx-2">
+                    <a class="nav-link p-0 d-flex align-items-center justify-content-center"
+                       href="#" id="notificationDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                       style="width: 32px; height: 32px;">
+                        <span class="d-block"><span class="icon" data-feather="bell" style="height:20px;width:20px;"></span></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret"
+                         style="left: auto; right: 0; transform: none; min-width: 280px; max-width: 90vw;">
+                        <div class="card position-relative border-0">
+                            <div class="card-header p-2">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="text-body-emphasis mb-0">Notifications</h5>
+                                    <button class="btn btn-link p-0 fs-9 fw-normal" type="button">Mark all as read</button>
                                 </div>
-                                <div class="card-body p-0">
-                                    <div class="scrollbar-overlay">
-                                        <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
-                                            <div class="d-flex align-items-center justify-content-between position-relative">
-                                                No Notification
-                                            </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="scrollbar-overlay">
+                                    <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
+                                        <div class="d-flex align-items-center justify-content-between position-relative">
+                                            No Notification
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer p-0 border-top border-translucent border-0">
-                                    <div class="my-2 text-center fw-bold fs-10 text-body-tertiary text-opactity-85"><a class="fw-bolder" href="#">Notification history</a></div>
+                            </div>
+                            <div class="card-footer p-0 border-top border-translucent border-0">
+                                <div class="my-2 text-center fw-bold fs-10 text-body-tertiary text-opacity-85">
+                                    <a class="fw-bolder" href="#">Notification history</a>
                                 </div>
                             </div>
                         </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                            <div class="avatar avatar-l ">
-                                    <img class="rounded-circle img-userprofile"
-                                         src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
-                                         alt="user image"
-                                         title="@username"
-                                         style="height:32px;width:32px;object-fit:cover;" />
-                                    <input type="hidden" value="@useremail" id="txtuseremail" />
-                                    <input type="hidden" value="@userID" id="txtUserID" />
-                            </div>
+                    </div>
+                </li>
 
-                        </a>
+                <!-- Profile Dropdown -->
+                <li class="nav-item dropdown d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                    <a class="nav-link p-0 d-flex align-items-center justify-content-center"
+                       href="#" id="navbarDropdownUser"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                       style="width: 32px; height: 32px;">
+                        <img class="rounded-circle"
+                             src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
+                             alt="User image" title="@username"
+                             style="width: 100%; height: 100%; object-fit: cover;" />
+                    </a>
+                    <input type="hidden" value="@useremail" id="txtuseremail" />
+                    <input type="hidden" value="@userID" id="txtUserID" />
+
                             <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
                                 <div class="card position-relative border-0">
                                     <div class="card-body p-0">

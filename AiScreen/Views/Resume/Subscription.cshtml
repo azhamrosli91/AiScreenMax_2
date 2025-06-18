@@ -1,62 +1,15 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout_new.cshtml";
 }
-<!DOCTYPE html>
-<html lang="en-US" dir="ltr" data-navigation-type="default" data-navbar-horizontal-shape="default">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>AI Resume Screening - Pricing</title>
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicons/favicon-16x16.png">
-    <link rel="shortcut icon" type="image/x-icon" href="../../assets/img/favicons/favicon.ico">
-    <link rel="manifest" href="../../assets/img/favicons/manifest.json">
-    <meta name="msapplication-TileImage" content="../../assets/img/favicons/mstile-150x150.png">
-    <meta name="theme-color" content="#ffffff">
-
     <!-- Stylesheets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="../../vendors/simplebar/simplebar.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <link href="../../assets/css/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
-    <link href="../../assets/css/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
-    <link href="../../assets/css/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
-    <link href="../../assets/css/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
-
-    <script>
-        var phoenixIsRTL = window.config.config.phoenixIsRTL;
-        if (phoenixIsRTL) {
-          var linkDefault = document.getElementById('style-default');
-          var userLinkDefault = document.getElementById('user-style-default');
-          linkDefault.setAttribute('disabled', true);
-          userLinkDefault.setAttribute('disabled', true);
-          document.querySelector('html').setAttribute('dir', 'rtl');
-        } else {
-          var linkRTL = document.getElementById('style-rtl');
-          var userLinkRTL = document.getElementById('user-style-rtl');
-          linkRTL.setAttribute('disabled', true);
-          userLinkRTL.setAttribute('disabled', true);
-        }
-    </script>
 </head>
 <body>
-    <div class="content">
-        @* <nav class="mb-3" aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="/AiResume/Index">Dashboard</a></li>
-                <li class="breadcrumb-item active">Pricing</li>
-            </ol>
-        </nav> *@
-
         <div class="pb-9">
-            @* <h2 class="mb-7">Choose Your Plan</h2> *@
             <h2 class="mb-7">Pricing</h2>
             <div class="row">
                 <div class="col-xl-12 col-xxl-9 mb-1">
@@ -94,7 +47,7 @@
                                                                 </div>
                                                                 <p class="fs-9 text-body-tertiary">For individuals who are interested in giving <br> it a try first on the screening.</p>
                                                                 <div class="d-flex align-items-end mb-md-5 mb-lg-0">
-                                                                    <h4 class="fw-bolder me-1">$Free</h4>
+                                                                    <h4 class="fw-bolder me-1">Free</h4>
                                                                     <h5 class="fs-9 fw-normal text-body-tertiary ms-1">Forever</h5>
                                                                 </div>
                                                             </div><img class="d-dark-none" src="/Images/aiscreen/rocket.png" width="54" height="54" alt="" /><img class="d-light-none" src="/Images/aiscreen/rocket-dark.png" width="54" height="54" alt="" />
@@ -103,7 +56,7 @@
                                                             <div class="col-sm-8 col-md-12">
                                                                 <div class="d-sm-flex d-md-block d-lg-flex justify-content-end align-items-end h-100">
                                                                     <ul class="list-unstyled mb-0 border-start-sm border-start-md-0 border-start-lg ps-sm-5 ps-md-0 ps-lg-5 border-translucent">
-                                                                        <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Up to 5 resume screenings/month</span></li>
+                                                                        <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Up to 5 resume screenings/day</span></li>
                                                                         <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Basic AI matching</span></li>
                                                                         <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Email support</span></li>
                                                                     </ul>
@@ -137,7 +90,7 @@
                                                                 </div>
                                                                 <p class="fs-9 text-body-tertiary">For teams that need to manage and<br> need advance screening to work across initiatives.</p>
                                                                 <div class="d-flex align-items-end mb-md-5 mb-lg-0">
-                                                                    <h4 class="fw-bolder me-1">$49.99</h4>
+                                                                    <h4 class="fw-bolder me-1">MYR 49.99</h4>
                                                                     <h5 class="fs-9 fw-normal text-body-tertiary ms-1">Per month</h5>
                                                                 </div>
                                                             </div><img class="d-dark-none" src="/Images/aiscreen/star.png" width="54" height="54" alt="" /><img class="d-light-none" src="/Images/aiscreen/star-dark.png" width="54" height="54" alt="" />
@@ -146,7 +99,7 @@
                                                             <div class="col-sm-8 col-md-12">
                                                                 <div class="d-sm-flex d-md-block d-lg-flex justify-content-end align-items-end h-100">
                                                                     <ul class="list-unstyled mb-0 border-start-sm border-start-md-0 border-start-lg ps-sm-5 ps-md-0 ps-lg-5 border-warning-subtle">
-                                                                        <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Up to 100 resume screenings/month</span></li>
+                                                                        <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Up to 100 resume screenings/day</span></li>
                                                                         <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Advanced AI matching</span></li>
                                                                         <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Priority email support</span></li>
                                                                         <li class="d-flex align-items-center"><span class="uil uil-check-circle text-success me-2"></span><span class="text-body-tertiary fw-semibold">Candidate Ranking</span></li>
@@ -181,7 +134,7 @@
                                                                 </div>
                                                                 <p class="fs-9 text-body-tertiary">For organizations that need <br> custom function.</p>
                                                                 <div class="d-flex align-items-end mb-md-5 mb-lg-0">
-                                                                    <h4 class="fw-bolder me-1">$149.99</h4>
+                                                                    <h4 class="fw-bolder me-1">MYR 149.99</h4>
                                                                     <h5 class="fs-9 fw-normal text-body-tertiary ms-1">Per month</h5>
                                                                 </div>
                                                             </div><img class="d-dark-none" src="/Images/aiscreen/shield-2.png" width="54" height="54" alt="" /><img class="d-light-none" src="/Images/aiscreen/shield-2-dark.png" width="54" height="54" alt="" />
@@ -232,7 +185,7 @@
                                                                 </div>
                                                                 <p class="fs-9 text-body-tertiary">For individuals who are interested in giving <br> it a try first on the screening.</p>
                                                                 <div class="d-flex align-items-end mb-md-5 mb-lg-0">
-                                                                    <h4 class="fw-bolder me-1">Free</h4>
+                                                                    <h4 class="fw-bolder me-1">MYR Free</h4>
                                                                     <h5 class="fs-9 fw-normal text-body-tertiary ms-1">Forever</h5>
                                                                 </div>
                                                             </div><img class="d-dark-none" src="/Images/aiscreen/rocket.png" width="54" height="54" alt="" /><img class="d-light-none" src="/Images/aiscreen/rocket-dark.png" width="54" height="54" alt="" />
@@ -275,7 +228,7 @@
                                                                 </div>
                                                                 <p class="fs-9 text-body-tertiary">For teams that need to manage and <br> need advance screening to work across initiatives.</p>
                                                                 <div class="d-flex align-items-end mb-md-5 mb-lg-0">
-                                                                    <h4 class="fw-bolder me-1">$599.88</h4>
+                                                                    <h4 class="fw-bolder me-1">MYR 599.88</h4>
                                                                     <h5 class="fs-9 fw-normal text-body-tertiary ms-1">Per year</h5>
                                                                 </div>
                                                             </div><img class="d-dark-none" src="/Images/aiscreen/star.png" width="54" height="54" alt="" /><img class="d-light-none" src="/Images/aiscreen/star-dark.png" width="54" height="54" alt="" />
@@ -319,7 +272,7 @@
                                                                 </div>
                                                                 <p class="fs-9 text-body-tertiary">For organizations that need <br> custom function.</p>
                                                                 <div class="d-flex align-items-end mb-md-5 mb-lg-0">
-                                                                    <h4 class="fw-bolder me-1">$1,799.88</h4>
+                                                                    <h4 class="fw-bolder me-1">MYR 1,799.88</h4>
                                                                     <h5 class="fs-9 fw-normal text-body-tertiary ms-1">Per year</h5>
                                                                 </div>
                                                             </div><img class="d-dark-none" src="/Images/aiscreen/shield-2.png" width="54" height="54" alt="" /><img class="d-light-none" src="/Images/aiscreen/shield-2-dark.png" width="54" height="54" alt="" />
@@ -354,77 +307,73 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-xxl-3 mt-8">
-                    <h3 class="fw-semibold mb-3">Included in our all packages</h3>
-                    <div class="row">
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">Timeline</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">Advanced Search</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">Custom fields</p><span class="badge badge-phoenix badge-phoenix-primary ms-2">New</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">Task dependencies</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">20TB of additional space </p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">Bandwidth of Upto 1 Gbps</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">Private teams & projects</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xxl-12">
-                            <div class="rounded-3 py-2 px-3 bg-body-emphasis d-flex align-items-center mb-3">
-                                <span class="fas fa-check text-primary me-3 fs-9"></span>
-                                <p class="mb-0 text-body-secondary">Customer Support and Training</p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="container py-9">
+                <h3 class="mb-5">Plan Benefit Comparison</h3>
+                <div class="table-responsive bg-white shadow-sm rounded">
+                    <table class="table table-hover mb-0">
+                        <thead class="bg-body-secondary">
+                            <tr>
+                                <th scope="col" class="ps-4">Feature</th>
+                                <th scope="col" class="text-center">Free</th>
+                                <th scope="col" class="text-center">Pro</th>
+                                <th scope="col" class="text-center">Enterprise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-4">Resume Screenings / Day</td>
+                                <td class="text-center">5</td>
+                                <td class="text-center">100</td>
+                                <td class="text-center">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">AI Matching</td>
+                                <td class="text-center">Basic</td>
+                                <td class="text-center">Advanced</td>
+                                <td class="text-center">Premium</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Team Users</td>
+                                <td class="text-center">1</td>
+                                <td class="text-center">Up to 3</td>
+                                <td class="text-center">Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Shortlisted Profiles</td>
+                                <td class="text-center"><span class="text-danger">✘</span></td>
+                                <td class="text-center"><span class="text-success">✔</span></td>
+                                <td class="text-center"><span class="text-success">✔</span></td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Screening History</td>
+                                <td class="text-center"><span class="text-danger">✘</span></td>
+                                <td class="text-center"><span class="text-success">✔</span></td>
+                                <td class="text-center"><span class="text-success">✔</span></td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Support</td>
+                                <td class="text-center"><span class="text-danger">✘</span></td>
+                                <td class="text-center">Priority email</td>
+                                <td class="text-center">24/7 phone & email</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Custom Integrations</td>
+                                <td class="text-center"><span class="text-danger">✘</span></td>
+                                <td class="text-center"><span class="text-danger">✘</span></td>
+                                <td class="text-center"><span class="text-success">✔</span></td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4">Dedicated Account Manager</td>
+                                <td class="text-center"><span class="text-danger">✘</span></td>
+                                <td class="text-center"><span class="text-danger">✘</span></td>
+                                <td class="text-center"><span class="text-success">✔</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            <!-- Rest of your pricing page content goes here -->
-            <!-- Keep all the pricing card HTML you already have -->
+            </div>
 
+            </div>
         </div>
-    </div>
-
-    <!-- JavaScripts -->
-    <script src="../../vendors/simplebar/simplebar.min.js"></script>
-    <script src="../../vendors/popper/popper.min.js"></script>
-    <script src="../../vendors/bootstrap/bootstrap.min.js"></script>
-    <script src="../../vendors/anchorjs/anchor.min.js"></script>
-    <script src="../../vendors/is/is.min.js"></script>
-    <script src="../../vendors/fontawesome/all.min.js"></script>
-    <script src="../../vendors/lodash/lodash.min.js"></script>
-    <script src="../../vendors/list.js/list.min.js"></script>
-    <script src="../../vendors/feather-icons/feather.min.js"></script>
-    <script src="../../vendors/dayjs/dayjs.min.js"></script>
-    <script src="../../assets/js/phoenix.js"></script>
-    <script src="../../assets/js/config.js"></script>
 </body>
 </html>
