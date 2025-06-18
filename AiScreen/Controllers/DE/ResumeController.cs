@@ -64,6 +64,11 @@ namespace MaxSystemWebSite.Controllers.DE
             return View();
         }
 
+        public IActionResult HelpCenter()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> UploadProxy([FromForm] IFormFile file, [FromForm] string jobDesc)
         {
