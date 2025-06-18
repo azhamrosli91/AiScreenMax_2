@@ -90,14 +90,14 @@
 
 </head>
 @{
-    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"]
-               ?? User.FindFirst(ClaimTypes.Name)?.Value
-               ?? User.Identity?.Name
-               ?? "Guest";
-    var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
-    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
-    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
-    var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
+        var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"]
+                              ?? User.FindFirst(ClaimTypes.Name)?.Value
+                              ?? User.Identity?.Name
+                              ?? "Guest";
+        var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
+        var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+        var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+        var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
 }
 
 <body>
@@ -109,199 +109,193 @@
     </div>
 
     <main class="main" id="top">
-        <header class="navbar-container">
-            <nav class="navbar navbar-expand-lg fixed-top navbar-top" id="navbarDefault">
-                <div class="container-fluid">
+        <nav class="navbar navbar-top fixed-top navbar-expand-lg" id="navbarTop">
+            <div class="navbar-logo">
 
-                    <div class="d-flex align-items-center justify-content-between w-100">
-                        <!-- Left side: Logo and name -->
-                        <a class="navbar-brand d-flex align-items-center mb-0" href="/" style="height: 40px;">
-                            <img src="~/Images/AIScreenMaxLogo1.png" width="32" style="background-color: transparent;" />
-                            <strong class="ms-2 d-none d-lg-inline fs-6">AI Screen Max</strong>
-                        </a>
-
-
-
-                        <!-- Right side: Menu toggler and icons -->
+                <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTopCollapse" aria-controls="navbarTopCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+                <a class="navbar-brand me-1 me-sm-3" href="/AiResume/Index">
+                    <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center">
-                            <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
+                            <img src="~/Images/AIScreenMaxLogo1.png" alt="MaxSystem" width="60" style="background-color: transparent" />
 
-
-
-                            <ul class="navbar-nav navbar-nav-icons flex-row align-items-center mb-0">
-
-
-                                <!-- Theme Toggle -->
-                                <li class="nav-item d-flex align-items-center">
-                                    <div class="theme-control-toggle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                        <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox" data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
-                                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle" title="Switch theme">
-                                            <span class="icon" data-feather="moon"></span>
-                                        </label>
-                                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle" title="Switch theme">
-                                            <span class="icon" data-feather="sun"></span>
-                                        </label>
-                                    </div>
-                                </li>
-
-                                <!-- Notification bell -->
-                                <li class="nav-item dropdown d-flex align-items-center justify-content-center mx-2">
-                                    <a class="nav-link p-0 d-flex align-items-center justify-content-center"
-                                       href="#" id="notificationDropdown"
-                                       role="button"
-                                       data-bs-toggle="dropdown"
-                                       aria-expanded="false"
-                                       style="width: 32px; height: 32px;">
-                                        <span class="d-block" style="height:20px;width:20px;"><span data-feather="bell"></span></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret"
-                                         style="left: auto; right: 0; transform: none; min-width: 280px; max-width: 90vw;">
-                                        <div class="card position-relative border-0">
-                                            <div class="card-header p-2">
-                                                <div class="d-flex justify-content-between">
-                                                    <h5 class="text-body-emphasis mb-0">Notifications</h5>
-                                                    <button class="btn btn-link p-0 fs-9 fw-normal" type="button">Mark all as read</button>
-                                                </div>
-                                            </div>
-                                            <div class="card-body p-0">
-                                                <div class="scrollbar-overlay">
-                                                    <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
-                                                        <div class="d-flex align-items-center justify-content-between position-relative">
-                                                            No Notification
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer p-0 border-top border-translucent border-0">
-                                                <div class="my-2 text-center fw-bold fs-10 text-body-tertiary text-opactity-85">
-                                                    <a class="fw-bolder" href="#">Notification history</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <!-- Profile dropdown -->
-                                <li class="nav-item dropdown d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                                    <a class="nav-link p-0 d-flex align-items-center justify-content-center"
-                                       href="#" id="navbarDropdownUser"
-                                       role="button"
-                                       data-bs-toggle="dropdown"
-                                       aria-expanded="false"
-                                       style="width: 32px; height: 32px;">
-                                        <img class="rounded-circle"
-                                             src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
-                                             alt="user image"
-                                             title="@username"
-                                             style="width: 100%; height: 100%; object-fit: cover;" />
-                                    </a>
-                                    <input type="hidden" value="@useremail" id="txtuseremail" />
-                                    <input type="hidden" value="@userID" id="txtUserID" />
-
-
-                                    <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border"
-                                         aria-labelledby="navbarDropdownUser"
-                                         style="left: auto !important;
-                                        right: 0 !important;
-                                        transform: translateX(0%) !important;
-                                        min-width: 320px;
-                                        max-width: 90vw;
-                                        width: auto;
-                                        z-index: 1055;
-                                        border-radius: 12px;
-                                        overflow: hidden;
-                                        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);">
-                                        <div class="card position-relative border-0">
-                                            <div class="card-body p-0">
-                                                <div class="text-center pt-4 pb-3">
-                                                    <div class="avatar avatar-xl ">
-                                                        @if (string.IsNullOrEmpty(profileImage))
-                                                        {
-                                                            <img class="rounded-circle img-userprofile" src="~/Images/user-avatar.png" alt="user image" />
-                                                        }
-                                                        else
-                                                        {
-                                                            <img src="@profileImage" id="img-userprofile" alt="user profile" class="img-userprofile rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
-                                                        }
-                                                    </div>
-                                                    <h6 class="mt-2 text-body-emphasis">@username</h6>
-                                                    @if (User.Identity.IsAuthenticated)
-                                                    {
-                                                        <span class="badge bg-success-subtle text-success fs-10">Subscription: FREE</span>
-                                                    }
-                                                </div>
-                                            </div>
-
-                                            <div class="overflow-auto scrollbar" style="height: auto;">
-                                                <ul class="nav d-flex flex-column mb-2 pb-1">
-                                                    @if (User.Identity.IsAuthenticated)
-                                                    {
-                                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"><span class="me-2 text-body align-bottom" data-feather="help-circle"></span>Help Center</a></li>
-                                                    }
-                                                </ul>
-                                            </div>
-
-                                            <div class="card-footer p-0 border-top border-translucent">
-                                                @if (User.Identity.IsAuthenticated)
-                                                {
-                                                    <div class="mt-3 px-3">
-                                                        <a href="@Url.Action("SignOut2", "Account")" class="btn btn-phoenix-danger d-flex flex-center w-100">
-                                                            <span class="me-2" data-feather="log-out"></span>Sign Out
-                                                        </a>
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="mt-3 px-3">
-                                                        <a class="btn btn-outline-primary d-flex align-items-center justify-content-center w-100"
-                                                           asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="Sign">
-                                                            <img src="~/Images/Microsoft_logo.svg" style="height: 20px; margin-right: 8px;" /> Sign in with Microsoft
-                                                        </a>
-                                                    </div>
-                                                    <div class="mt-2 px-3">
-                                                        <a class="btn btn-outline-danger d-flex align-items-center justify-content-center w-100"
-                                                           href="/login-google">
-                                                            <img src="~/Images/glogo.png" style="height: 20px; margin-right: 8px;" /> Sign in with Google
-                                                        </a>
-                                                    </div>
-                                                }
-
-                                                <div class="my-2 text-center fw-bold fs-10 text-body-quaternary">
-                                                    <a class="text-body-quaternary me-1" href="#!">Privacy policy</a> &bull;
-                                                    <a class="text-body-quaternary mx-1" href="#!">Terms</a>
-                                                </div>
-                                                <div class="text-center text-muted fs-10 mb-3">
-                                                    Powered by <strong>Max System Solution Sdn Bhd</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                            <h5 class="logo-text ms-2 d-none d-sm-block">AI Screen Max</h5>
 
                         </div>
-
                     </div>
-                    <!-- Navbar content -->
-                    <div class="collapse navbar-collapse justify-content-between" id="mainNavbar">
-                        <!-- Left menu -->
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item"><a class="nav-link" href="/AiResume/Index">Screening Resume</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/AiResume/History">History</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/AiResume/ShortListed">Shortlisted</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/AiResume/Guide">Guide</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/AiResume/Subscription">Subscription</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/AiResume/HelpCenter">Help Center</a></li>
-                        </ul>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center" id="navbarTopCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/Index">Screening Resume</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/History">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/ShortListed">Shortlisted</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/Guide">Guide</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Resume/Subscription">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/AiResume/HelpCenter">Help Center</a>
+                    </li>
+                </ul>
+            </div>
 
+            <ul class="navbar-nav navbar-nav-icons flex-row align-items-center mb-0">
+
+                <!-- Theme Toggle -->
+                <li class="nav-item d-flex align-items-center">
+                    <div class="theme-control-toggle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                        <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox"
+                               data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
+                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-light" for="themeControlToggle"
+                               title="Switch theme">
+                            <span class="icon" data-feather="moon"></span>
+                        </label>
+                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark" for="themeControlToggle"
+                               title="Switch theme">
+                            <span class="icon" data-feather="sun"></span>
+                        </label>
                     </div>
+                </li>
 
+                <!-- Notification Bell -->
+                <li class="nav-item dropdown d-flex align-items-center justify-content-center mx-2">
+                    <a class="nav-link p-0 d-flex align-items-center justify-content-center"
+                       href="#" id="notificationDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                       style="width: 32px; height: 32px;">
+                        <span class="d-block"><span class="icon" data-feather="bell" style="height:20px;width:20px;"></span></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret"
+                         style="left: auto; right: 0; transform: none; min-width: 280px; max-width: 90vw;">
+                        <div class="card position-relative border-0">
+                            <div class="card-header p-2">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="text-body-emphasis mb-0">Notifications</h5>
+                                    <button class="btn btn-link p-0 fs-9 fw-normal" type="button">Mark all as read</button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="scrollbar-overlay">
+                                    <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
+                                        <div class="d-flex align-items-center justify-content-between position-relative">
+                                            No Notification
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer p-0 border-top border-translucent border-0">
+                                <div class="my-2 text-center fw-bold fs-10 text-body-tertiary text-opacity-85">
+                                    <a class="fw-bolder" href="#">Notification history</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
 
-                </div>
-            </nav>
+                <!-- Profile Dropdown -->
+                <li class="nav-item dropdown d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                    <a class="nav-link p-0 d-flex align-items-center justify-content-center"
+                       href="#" id="navbarDropdownUser"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                       style="width: 32px; height: 32px;">
+                        <img class="rounded-circle"
+                             src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
+                             alt="User image" title="@username"
+                             style="width: 100%; height: 100%; object-fit: cover;" />
+                    </a>
+                    <input type="hidden" value="@useremail" id="txtuseremail" />
+                    <input type="hidden" value="@userID" id="txtUserID" />
 
+                    <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
+                        <div class="card position-relative border-0">
+                            <div class="card-body p-0">
+                                <div class="text-center pt-4 pb-3">
+                                    <div class="avatar avatar-xl ">
+
+                                        <input type="hidden" value="@useremail" id="txtuseremail" />
+                                        <input type="hidden" value="@userID" id="txtUserID" />
+
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+
+                                            if (string.IsNullOrEmpty(profileImage))
+                                            {
+
+                                                <img class="rounded-circle img-userprofile" src="~/Images/user-avatar.png" alt="user image" />
+                                            }
+                                            else
+                                            {
+                                                <img src="@profileImage" id="img-userprofile" alt="user profile" class="img-userprofile rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
+                                            }
+                                        }
+                                    </div>
+                                    <h6 class="mt-2 text-body-emphasis">
+                                        @(User.Identity.IsAuthenticated? username : "Login Required")
+                                    </h6>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <span class="badge bg-success-subtle text-success fs-10">Subscription: FREE</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="overflow-auto scrollbar" style="height: auto;">
+                                <ul class="nav d-flex flex-column mb-2 pb-1">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"><span class="me-2 text-body align-bottom" data-feather="help-circle"></span>Help Center</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="card-footer p-0 border-top border-translucent">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <div class="mt-3 px-3">
+                                        <a href="@Url.Action("SignOut2", "Account")" class="btn btn-phoenix-danger d-flex flex-center w-100">
+                                            <span class="me-2" data-feather="log-out"></span>Sign Out
+                                        </a>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mt-3 px-3">
+                                        <a class="btn btn-outline-primary d-flex align-items-center justify-content-center w-100"
+                                           asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="Sign">
+                                            <img src="~/Images/Microsoft_logo.svg" style="height: 20px; margin-right: 8px;" /> Sign in with Microsoft
+                                        </a>
+                                    </div>
+                                    <div class="mt-2 px-3">
+                                        <a class="btn btn-outline-danger d-flex align-items-center justify-content-center w-100"
+                                           href="/login-google">
+                                            <img src="~/Images/glogo.png" style="height: 20px; margin-right: 8px; background-color: transparent;" /> Sign in with Google
+                                        </a>
+                                    </div>
+                                }
+
+                                <div class="my-2 text-center fw-bold fs-10 text-body-quaternary">
+                                    <a class="text-body-quaternary me-1" href="#!">Privacy policy</a> &bull;
+                                    <a class="text-body-quaternary mx-1" href="#!">Terms</a>
+                                </div>
+                                <div class="text-center text-muted fs-10 mb-3">
+                                    Powered by <strong>Max System Solution Sdn Bhd</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            </div>
+        </nav>
         </header>
         <div class="content">
             @RenderBody()
