@@ -18,13 +18,13 @@
     <meta property="og:url" content="https://aiscreenmax.my/">
     <meta property="og:title" content="AI Resume Screening | AI Screen Max">
     <meta property="og:description" content="Upload resumes and let AI Screen Max evaluate candidates with intelligent scoring and hiring suggestions. Fast, accurate, and fully automated.">
-    <meta property="og:image" content="https://aiscreenmax.my/Images/meta-preview.png"> 
+    <meta property="og:image" content="https://aiscreenmax.my/Images/meta-preview.png">
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://aiscreenmax.my/">
     <meta property="twitter:title" content="AI Resume Screening | AI Screen Max">
     <meta property="twitter:description" content="Smart AI resume screening tool that delivers match scores, strengths, and hiring recommendations. Speed up your recruitment process with AI.">
-    <meta property="twitter:image" content="https://aiscreenmax.my/Images/meta-preview.png"> 
+    <meta property="twitter:image" content="https://aiscreenmax.my/Images/meta-preview.png">
     <!-- SEO Extras -->
     <meta name="robots" content="index, follow">
     <meta name="author" content="AI Screen Max">
@@ -80,6 +80,11 @@
         .subscription-badge {
             cursor: pointer;
         }
+
+        html[data-theme="dark"] .navbar-nav .rounded-circle {
+            background-color: #000 !important;
+            padding: 3px;
+        }
     </style>
     <script>
         var phoenixIsRTL = window.config.config.phoenixIsRTL;
@@ -129,18 +134,18 @@
 
 </head>
 @{
-        var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"]
-                              ?? User.FindFirst(ClaimTypes.Name)?.Value
-                              ?? User.Identity?.Name
-                              ?? "Guest";
-        var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
-        var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
-        var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
-        // var userPlan = HttpContextAccessor.HttpContext.Request.Cookies["USER_PLAN"];
-        var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
+    var username = HttpContextAccessor.HttpContext.Request.Cookies["NAME"]
+                          ?? User.FindFirst(ClaimTypes.Name)?.Value
+                          ?? User.Identity?.Name
+                          ?? "Guest";
+    var profileImage = HttpContextAccessor.HttpContext.Request.Cookies["PROFILE_IMAGE"];
+    var useremail = HttpContextAccessor.HttpContext.Request.Cookies["EMAIL"];
+    var userID = HttpContextAccessor.HttpContext.Request.Cookies["USER_ID"];
+    // var userPlan = HttpContextAccessor.HttpContext.Request.Cookies["USER_PLAN"];
+    var authenticationType = HttpContextAccessor.HttpContext.Request.Cookies["AUTH_TYPE"];
 }
 
-<body>
+<body style="visibility:hidden; transition:none !important;">
     <!--TOAST-->
     <div class="ms-toast-container"></div>
     <!-- Loading Spinner -->
@@ -244,10 +249,16 @@
                        href="#" id="navbarDropdownUser"
                        role="button" data-bs-toggle="dropdown" aria-expanded="false"
                        style="width: 32px; height: 32px;">
-                        <img class="rounded-circle"
-                             src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
-                             alt="User image" title="@username"
-                             style="width: 100%; height: 100%; object-fit: cover;" />
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <img src="@profileImage" id="img-userprofile" alt="user profile" class="img-userprofile rounded-circle" style="width: 28px; height: 28px; object-fit: cover;" />
+
+                        }
+                        else
+                        {
+                            <img class="rounded-circle" src="~/Images/user-avatar.png" alt="Guest" style="width: 28px; height: 28px; object-fit: cover;" />
+                        }
                     </a>
                     <input type="hidden" value="@useremail" id="txtuseremail" />
                     <input type="hidden" value="@userID" id="txtUserID" />
@@ -276,9 +287,18 @@
                                                 <img src="@profileImage" id="img-userprofile" alt="user profile" class="img-userprofile rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
                                             }
                                         }
+                                        else
+                                        {
+                                            <div class="d-flex justify-content-center align-items-center" style="height: 60px;">
+                                                <img class="rounded-circle"
+                                                     src="~/Images/user-avatar.png"
+                                                     alt="Guest"
+                                                     style="width: 40px; height: 40px; object-fit: cover;" />
+                                            </div>
+                                        }
                                     </div>
                                     <h6 class="mt-2 text-body-emphasis" style="padding: 5px;">
-                                        @(User.Identity.IsAuthenticated? username : "Login Required")
+                                        @(User.Identity.IsAuthenticated ? username : "Login Required")
                                     </h6>
                                     @if (User.Identity.IsAuthenticated)
                                     {
@@ -326,8 +346,8 @@
                                 }
 
                                 <div class="my-2 text-center fw-bold fs-10 text-body-quaternary">
-                                    <a class="text-body-quaternary me-1" href="#!">Privacy policy</a> &bull;
-                                    <a class="text-body-quaternary mx-1" href="#!">Terms</a>
+                                    <a class="text-body-quaternary me-1" href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Privacy policy</a> &bull;
+                                    <a class="text-body-quaternary mx-1" href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms</a>
                                 </div>
                                 <div class="text-center text-muted fs-10 mb-3">
                                     Powered by <strong>Max System Solution Sdn Bhd</strong>
@@ -354,6 +374,86 @@
             </footer> *@
         </div>
 
+        <!-- Modal Trigger -->
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#termsModal">
+            Terms & Policy
+        </button>
+
+        <!-- Terms and Policy Modal -->
+        <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                <div class="modal-content shadow-sm border-0">
+                    <div class="modal-header bg-white text-dark border-bottom">
+                        <h5 class="modal-title" id="termsModalLabel">
+                            <i class="fas fa-file-contract me-2"></i> Terms and Conditions
+                        </h5>
+                        <button class="btn-close btn-close-white p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body small text-body px-4 py-3">
+                        <p><strong>Effective as of June 20, 2025</strong></p>
+
+                        <p>
+                            <strong>1. Overview</strong><br />
+                            These Terms and Conditions apply to the use of the AI Resume Screening platform by Max System Solution. By using the service, you agree to comply with these terms under Malaysian law.
+                        </p>
+
+                        <p>
+                            <strong>2. Use of Service</strong><br />
+                            - Upload resumes in supported formats (PDF, Word, or image).<br />
+                            - Free users are limited to a set number of scans per month.<br />
+                            - Premium users gain batch upload & detailed scoring reports access.
+                        </p>
+
+                        <p>
+                            <strong>3. Data Privacy</strong><br />
+                            We comply with the Personal Data Protection Act 2010 (PDPA). Uploaded data is used solely for screening and deleted after 90 days unless extended by the user.
+                        </p>
+
+                        <p>
+                            <strong>4. Intellectual Property</strong><br />
+                            All platform code and AI models are proprietary to Max System Solution. Users are not permitted to reverse engineer or redistribute the system without prior consent.
+                        </p>
+
+                        <p>
+                            <strong>5. Limitation of Liability</strong><br />
+                            We are not liable for hiring outcomes based on AI-generated analysis. The platform may produce errors when handling poorly formatted or non-standard resume files.
+                        </p>
+
+                        <p>
+                            <strong>6. Subscriptions</strong><br />
+                            - Subscriptions are billed monthly or annually.<br />
+                            - Users can cancel at any time. Access remains valid through the billing cycle.<br />
+                            - No refunds for partial periods.
+                        </p>
+
+                        <p>
+                            <strong>7. Governing Law</strong><br />
+                            This agreement is governed by the laws of Malaysia. Legal disputes will be handled by the appropriate Malaysian courts.
+                        </p>
+
+                        <p>
+                            <strong>8. Changes to Terms</strong><br />
+                            We may revise these terms at any time. Updates will be posted on this page and major changes may be communicated via email.
+                        </p>
+
+                        <p>
+                            <strong>9. Contact Us</strong><br />
+                            For inquiries, please email us at <a href="mailto:hr@maxsys.com.my">hr@maxsys.com.my</a>.
+                        </p>
+
+                        <p>
+                            <strong>10. AI Usage Disclaimer</strong><br />
+                            This platform uses AI to analyze resumes. While we aim for accuracy, the results are not guaranteed. This tool is designed to assist, not replace, human judgment in hiring decisions.
+                        </p>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-end">
+                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Agree & Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <script>
             var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
             var navbarTop = document.querySelector('.navbar-top');
@@ -376,5 +476,24 @@
 
 
     @RenderSection("Scripts", required: false)
+    <script>
+        $(window).on('load', function () {
+            if (window.innerWidth < 576) {
+                // Optional carousel height fix
+                $('.carousel-inner').css('min-height', '180px');
+
+                // Force Bootstrap recalculation
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                    document.body.style.zoom = "1";
+                    document.body.style.visibility = "visible"; // Show after everything is ready
+                }, 300);
+            } else {
+                // Desktop view — just show immediately
+                document.body.style.visibility = "visible";
+            }
+        });
+    </script>
+
 </body>
 </html>

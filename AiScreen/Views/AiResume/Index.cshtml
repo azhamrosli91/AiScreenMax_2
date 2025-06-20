@@ -133,14 +133,6 @@
 <!-- Load Dropzone -->
 <script src="~/vendor/dropzone/dropzone-min.js"></script>
 
-<!-- Disable Dropzone auto-discover -->
-<script>
-    window.Dropzone = window.Dropzone || {};
-    Dropzone.autoDiscover = false;
-</script>
-
-<!-- Load Dropzone -->
-<script src="~/vendor/dropzone/dropzone-min.js"></script>
 
 <script>
     let myDropzone;
@@ -430,8 +422,8 @@
 </script>
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header bg-primary text-white rounded-top-4">
+        <div class="modal-content border-0 shadow-lg ">
+            <div class="modal-header bg-white text-dark border-bottom">
                 <h5 class="modal-title d-flex align-items-center" id="loginModalLabel">
                     <i class="fa-solid fa-lock me-2"></i> Sign In Required
                 </h5>
@@ -460,18 +452,75 @@
 
 <div class="modal fade" id="welcomeGuideModal" tabindex="-1" aria-labelledby="welcomeGuideModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content shadow-lg border-0 rounded-4">
+        <div class="modal-content shadow-lg border-0 ">
             <div class="modal-body px-4 py-3">
 
                 <!-- Step 1: Welcome -->
-                <div id="welcome-step-1">
-                    <div class="text-center mb-3">
-                        <img src="/images/welcome starter.jpg" alt="Welcome" class="img-fluid rounded" style="max-height: 220px;">
-                    </div>
-                    <h4 class="text-center fw-bold mb-2">Welcome to AI Screen Max</h4>
-                    <p class="text-center text-muted">Your smart assistant for resume screening.</p>
-                    <div class="d-flex justify-content-center mt-4">
-                        <button type="button" class="btn btn-primary px-4" onclick="showWelcomeStep2()">Get Started</button>
+                <!-- Inline CSS to override dark mode background -->
+                <style>
+                    /* Enable dark mode for all modals globally */
+                    html[data-theme="dark"] .modal-content,
+                    html[data-theme="dark"] .modal-header,
+                    html[data-theme="dark"] .modal-body,
+                    html[data-theme="dark"] .modal-footer {
+                        background-color: #000 !important;
+                        color: #f1f1f1 !important;
+                    }
+
+                    html[data-theme="dark"] .modal-title,
+                    html[data-theme="dark"] .form-check-label,
+                    html[data-theme="dark"] .form-check-input,
+                    html[data-theme="dark"] .text-muted,
+                    html[data-theme="dark"] p,
+                    html[data-theme="dark"] label,
+                    html[data-theme="dark"] li,
+                    html[data-theme="dark"] ul,
+                    html[data-theme="dark"] ol {
+                        color: #f1f1f1 !important;
+                    }
+
+                    /* Invert close button to remain visible */
+                    html[data-theme="dark"] .btn-close {
+                        filter: invert(1);
+                    }
+
+                    /* Fix background on grouped list items inside modals */
+                    html[data-theme="dark"] .list-group-item {
+                        background-color: transparent !important;
+                        color: #f1f1f1 !important;
+                    }
+
+                    /* Fix default bg-light blocks */
+                    html[data-theme="dark"] .bg-light {
+                        background-color: #111 !important;
+                    }
+
+                    /* Optional: borders and shadows in dark mode */
+                    html[data-theme="dark"] .modal-content {
+                        border: 1px solid #333;
+                        box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+                    }
+
+                    html[data-theme="dark"] #welcomeGuideModal img {
+                        background-color: #000 !important;
+                        padding: 10px;
+                        border-radius: 8px;
+                    }
+                </style>
+
+
+
+                <div class="modal-body px-4 py-3">
+                    <!-- Step 1: Welcome -->
+                    <div id="welcome-step-1">
+                        <div class="text-center mb-3">
+                            <img src="/images/welcome starter.png" alt="Welcome" class="img-fluid rounded" style="max-height: 220px; background-color: transparent;">
+                        </div>
+                        <h4 class="text-center fw-bold mb-2">Welcome to AI Screen Max</h4>
+                        <p class="text-center text-muted">Your smart assistant for resume screening.</p>
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="button" class="btn btn-primary px-4" onclick="showWelcomeStep2()">Get Started</button>
+                        </div>
                     </div>
                 </div>
 
@@ -559,8 +608,8 @@
 
 <div class="modal fade" id="ackModal" tabindex="-1" aria-labelledby="ackModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header bg-warning text-dark rounded-top-4">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-warning text-dark">
                 <h5 class="modal-title" id="ackModalLabel">
                     <i class="fa-solid fa-shield-halved me-2"></i> Privacy Acknowledgement Required
                 </h5>
@@ -664,4 +713,45 @@
         window.history.replaceState({}, document.title, window.location.pathname); // remove query string
         location.reload(); // force reload with cookies now available
     }
+</script>
+<script>
+    $(window).on('load', function () {
+        // ✅ Initialize TinyMCE
+        tinymce.init({
+            selector: '#txtJobDescription',
+            plugins: 'lists code table',
+            toolbar: 'undo redo | bold italic underline | bullist numlist | code table',
+            menubar: false,
+            branding: false,
+            license_key: 'gpl'
+        });
+
+        // ✅ Initialize Dropzone (if not already)
+        if ($('#dropzone-multiple').length && Dropzone.instances.length === 0) {
+            new Dropzone("#dropzone-multiple", {
+                url: "/dummy",
+                autoProcessQueue: false,
+                addRemoveLinks: true,
+                acceptedFiles: ".pdf,.doc,.docx,image/*"
+            });
+        }
+
+        // ✅ Fix carousel size for mobile (if needed)
+        if (window.innerWidth < 576) {
+            $('.carousel-inner').css('min-height', '180px');
+
+            // ✅ Force layout recalculation
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize')); // triggers Bootstrap/JS layout handlers
+                document.body.style.zoom = "1"; // trick to refresh layout
+            }, 200);
+        }
+
+        // ✅ Re-check modal if guide needs to show
+        if (!getCookie("ai_resume_guide_shown")) {
+            setTimeout(() => {
+                $('#welcomeGuideModal').modal('show');
+            }, 150);
+        }
+    });
 </script>
