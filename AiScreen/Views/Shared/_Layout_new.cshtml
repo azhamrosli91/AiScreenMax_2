@@ -8,6 +8,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Primary Meta Tags -->
+    <title>AI Resume Screening | AI Screen Max</title>
+    <meta name="title" content="AI Resume Screening | AI Screen Max">
+    <meta name="description" content="AI Screen Max helps you screen resumes instantly using advanced AI. Upload resumes and get match percentage, insights, and recommended hiring actions.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aiscreenmax.my/">
+    <meta property="og:title" content="AI Resume Screening | AI Screen Max">
+    <meta property="og:description" content="Upload resumes and let AI Screen Max evaluate candidates with intelligent scoring and hiring suggestions. Fast, accurate, and fully automated.">
+    <meta property="og:image" content="https://aiscreenmax.my/Images/AIScreenMaxLogo1.png"> 
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://aiscreenmax.my/">
+    <meta property="twitter:title" content="AI Resume Screening | AI Screen Max">
+    <meta property="twitter:description" content="Smart AI resume screening tool that delivers match scores, strengths, and hiring recommendations. Speed up your recruitment process with AI.">
+    <meta property="twitter:image" content="https://aiscreenmax.my/Images/AIScreenMaxLogo1.png"> 
+    <!-- SEO Extras -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="AI Screen Max">
+    <meta name="keywords" content="AI resume screening, resume analysis, candidate matching, resume parser, recruitment AI, HR automation, AI recruiting tool, hiring assistant">
+
     <title>@Configuration["ProjectName"]</title>
     <link rel="apple-touch-icon" sizes="180x180" href="~/images/Max_logo_2.png">
     <link rel="icon" type="image/png" sizes="32x32" href="~/images/icon32.png">
@@ -43,6 +65,22 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link href="~/vendor/choices/choices.min.css" rel="stylesheet" />
 
+    <style>
+        .subscription-badge i,
+        .subscription-badge span {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .subscription-badge:hover i,
+        .subscription-badge:hover span {
+            transform: scale(1.1);
+            color: #157347; /* Bootstrap's darker success green */
+        }
+
+        .subscription-badge {
+            cursor: pointer;
+        }
+    </style>
     <script>
         var phoenixIsRTL = window.config.config.phoenixIsRTL;
         if (phoenixIsRTL) {
@@ -244,9 +282,9 @@
                                     </h6>
                                     @if (User.Identity.IsAuthenticated)
                                     {
-                                        <span class="badge rounded-pill bg-light-success text-success d-inline-flex align-items-center px-3 py-1 fs-10">
-                                            <i class="bi bi-check-circle-fill me-1"></i>
-                                            Free Subscription
+                                        <span class="badge rounded-pill bg-light-success text-success d-inline-flex align-items-center px-3 py-1 subscription-badge">
+                                            <i class="bi bi-patch-check-fill me-2" style="font-size: 1rem;"></i>
+                                            <span class="fs-10">Subscription : Startup</span>
                                         </span>
                                     }
                                 </div>
