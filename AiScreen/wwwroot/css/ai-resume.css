@@ -1,0 +1,18 @@
+﻿body.modal-open {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+}
+
+#welcomeGuideModal .modal-dialog {
+    max-width: 600px;
+    width: 100%;
+    margin: 1.75rem auto;
+}
+
+@media (max-width: 576px) {
+    #welcomeGuideModal .modal-dialog {
+        max-width: 95vw;
+        margin: 1rem auto;
+    }
+}

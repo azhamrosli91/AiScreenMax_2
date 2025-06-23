@@ -1,15 +1,35 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout_new.cshtml";
 }
+
+<link rel="stylesheet" href="~/css/ai-resume.css" />
+
 <style>
-    /* Make the preview container scrollable */
+    body.modal-open {
+        overflow: hidden !important;
+        position: fixed;
+        width: 100%;
+    }
+
+    /* Prevent horizontal overflow globally */
+    html, body {
+        overflow-x: hidden;
+    }
+
+    /* Fix carousel image scaling */
+    #guideGallery .carousel-inner img {
+        max-height: 220px;
+        object-fit: contain;
+        width: 100%;
+    }
+
+    /* Dropzone styles */
     .dropzone .dz-preview.dz-preview-multiple {
         max-height: 200px;
         overflow-y: auto;
         padding-right: 5px;
     }
 
-    /* Make image thumbnails 15x15 */
     .dropzone .dz-preview .dz-image {
         width: 15px !important;
         height: 15px !important;
@@ -17,7 +37,6 @@
         display: block;
     }
 
-    /* Adjust text and spacing */
     .dropzone .dz-preview .media {
         padding: 5px;
         font-size: 12px;
@@ -31,8 +50,8 @@
         margin-bottom: 2px;
     }
 
-    .dropzone .dz-message{
-        margin : 0px !important;
+    .dropzone .dz-message {
+        margin: 0px !important;
     }
 </style>
 <div class="mb-9 w-100">
@@ -421,30 +440,31 @@
     });
 </script>
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow-lg ">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content border-0 shadow-sm">
             <div class="modal-header bg-white text-dark border-bottom">
-                <h5 class="modal-title d-flex align-items-center" id="loginModalLabel">
-                    <i class="fa-solid fa-lock me-2"></i> Sign In Required
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h6 class="modal-title d-flex align-items-center fs-7 fw-medium mb-1" id="loginModalLabel">
+                    <i class="fa-solid fa-lock me-2 text-primary fs-8"></i> Sign In Required
+                </h6>
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body px-5 py-4">
-                <p class="mb-4 fs-6 text-body-secondary">Please sign in to your account to submit resumes and access more features.</p>
-
-                <div class="d-grid gap-3">
-                    <a href="/Account/Sign" class="btn btn-outline-primary btn-lg d-flex align-items-center justify-content-center">
-                        <img src="/Images/Microsoft_logo.svg" alt="Microsoft" style="height: 22px; margin-right: 10px;" />
+            <div class="modal-body px-4 py-3">
+                <p class="fs-8 text-body mb-3">
+                    Please sign in to your account to submit resumes and access more features.
+                </p>
+                <div class="d-grid gap-2">
+                    <a href="/Account/Sign" class="btn btn-outline-primary btn d-flex align-items-center justify-content-center">
+                        <img src="/Images/Microsoft_logo.svg" alt="Microsoft" style="height: 20px;" class="me-2" />
                         Sign in with Microsoft
                     </a>
-                    <a href="/login-google" class="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center">
-                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="height: 22px; margin-right: 10px;" />
+                    <a href="/login-google" class="btn btn-outline-danger btn d-flex align-items-center justify-content-center">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" style="height: 20px;" class="me-2" />
                         Sign in with Google
                     </a>
                 </div>
             </div>
             <div class="modal-footer border-0 pt-0 text-muted small justify-content-center">
-                <p class="mb-0">We respect your privacy. No data will be shared without your consent.</p>
+                <p class="mb-0 text-body-quaternary fs-9">We respect your privacy. No data will be shared without your consent.</p>
             </div>
         </div>
     </div>
@@ -753,5 +773,14 @@
                 $('#welcomeGuideModal').modal('show');
             }, 150);
         }
+    });
+</script>
+<script>
+    // When welcome modal closes, trigger layout recalculation
+    $('#welcomeGuideModal').on('hidden.bs.modal', function () {
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize')); // Fix layout shift
+            document.body.style.zoom = "1"; // Optional trick to trigger reflow
+        }, 200);
     });
 </script>
