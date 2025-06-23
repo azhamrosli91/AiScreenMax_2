@@ -22,6 +22,7 @@ using E_Template.Helpers;
 using MaxSystemWebSite.Helpers.Graph;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +76,26 @@ builder.Services.AddAuthentication(options =>
     options.ClientId = googleClientId;
     options.ClientSecret = googleClientSecret;
     options.CallbackPath = "/signin-google";
+
+    options.ClaimActions.MapJsonKey("picture", "picture", "url");
+    options.ClaimActions.MapJsonKey("email", "email");
+
+    options.Events.OnCreatingTicket = async context =>
+    {
+        var user = context.User;
+        string picture = "";
+        string email = "";
+
+        if (user.TryGetProperty("picture", out var picProp))
+            picture = picProp.GetString();
+
+        if (user.TryGetProperty("email", out var emailProp))
+            email = emailProp.GetString();
+
+        context.Response.Cookies.Append("PROFILE_IMAGE", picture);
+        context.Response.Cookies.Append("EMAIL", email);
+    };
+
 })
 
 .AddJwtBearer(options =>

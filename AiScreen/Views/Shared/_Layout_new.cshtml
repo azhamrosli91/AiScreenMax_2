@@ -252,7 +252,11 @@
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <img src="@profileImage" id="img-userprofile" alt="user profile" class="img-userprofile rounded-circle" style="width: 28px; height: 28px; object-fit: cover;" />
+                            <img src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
+                                 id="img-userprofile"
+                                 alt="user profile"
+                                 class="img-userprofile rounded-circle"
+                                 style="width: 28px; height: 28px; object-fit: cover;" />
 
                         }
                         else
@@ -284,7 +288,13 @@
                                             }
                                             else
                                             {
-                                                <img src="@profileImage" id="img-userprofile" alt="user profile" class="img-userprofile rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover;" />
+                                                <img src="@(string.IsNullOrEmpty(profileImage) ? Url.Content("~/Images/user-avatar.png") : profileImage)"
+                                                     id="img-userprofile"
+                                                     alt="user profile"
+                                                     class="img-userprofile rounded-circle"
+                                                     style="width: 100%; height: 100%; object-fit: cover; border: 1px solid #ddd;"
+                                                     referrerpolicy="no-referrer"
+                                                     onerror="this.onerror=null; this.src='/Images/user-avatar.png';" />
                                             }
                                         }
                                         else
