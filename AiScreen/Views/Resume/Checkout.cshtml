@@ -30,12 +30,12 @@
                                 <td>Pro Plus Plan</td>
                                 <td>
                                     <select id="validity-select" class="form-select">
-                                        <option value="1" data-price="49">1 Month</option>
-                                        <option value="12" data-price="499">1 Year</option>
-                                        <option value="36" data-price="1299">3 Years</option>
+                                        <option value="1" data-price="49.99">1 Month</option>
+                                        <option value="12" data-price="529.00">1 Year (10% discount)</option>
+                                        <option value="36" data-price="1499.00">3 Years (15% discount)</option>
                                     </select>
                                 </td>
-                                <td class="text-end" id="price-display">MYR 49</td>
+                                <td class="text-end" id="price-display">MYR 49.99</td>
                             </tr>
                         </tbody>
                     </table>
@@ -48,7 +48,7 @@
                         <h4 class="mb-3">Summary</h4>
                         <div class="d-flex justify-content-between">
                             <p class="mb-1">Subtotal:</p>
-                            <p class="mb-1" id="summary-price">MYR 49</p>
+                            <p class="mb-1" id="summary-price">MYR 49.99</p>
                         </div>
                         <div class="mb-3">
                             <label for="payment-method" class="form-label fw-semibold">Payment Method</label>
@@ -64,6 +64,58 @@
     </div>
 </body>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const validitySelect = document.getElementById('validity-select');
+        const priceDisplay = document.getElementById('price-display');
+        const summaryPrice = document.getElementById('summary-price');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        validitySelect.addEventListener('change', function () {
+            const selectedOption = validitySelect.options[validitySelect.selectedIndex];
+            const price = selectedOption.getAttribute('data-price');
+            priceDisplay.textContent = 'MYR ' + price;
+            summaryPrice.textContent = 'MYR ' + price;
+        });
+
+        checkoutBtn.addEventListener('click', async function () {
+            const selectedOption = validitySelect.options[validitySelect.selectedIndex];
+            const validity = selectedOption.value;
+            const price = selectedOption.getAttribute('data-price');
+
+            checkoutBtn.disabled = true;
+            checkoutBtn.textContent = 'Processing...';
+
+            try {
+                const response = await fetch('/Payment/CreateBill', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        validity: validity,
+                        amount: price
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = result.billUrl;
+                } else {
+                    alert("Failed to create bill. Please try again.");
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.textContent = 'Proceed to Checkout';
+                }
+            } catch (error) {
+                alert("Unexpected error occurred.");
+                console.error(error);
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'Proceed to Checkout';
+            }
+        });
+    });
+</script>
+@* <script>
     document.addEventListener('DOMContentLoaded', function () {
       const validitySelect = document.getElementById('validity-select');
       const priceDisplay = document.getElementById('price-display');
@@ -81,5 +133,6 @@
         window.location.href = 'https://toyyibpay.com/Subscription-Pro-AiScreenMax';
       });
     });
-</script>
+</script> *@
+
 
