@@ -1,10 +1,12 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout_new.cshtml";
 }
+<link rel="stylesheet" href="~/css/mobilecss.css" />
 <style>
     .page-align-top {
         align-self: flex-start !important;
         width: 100%;
+   
     }
 </style>
 <div class="page-align-top w-100">
@@ -28,7 +30,7 @@
             <div class="col-12 col-xl-10 order-1 order-xl-0 w-100">
                 <div class="card shadow-none border my-4 w-100" data-component-card="data-component-card">
                     <div class="card-body p-3 w-100">
-                        <table id="example" class="table table-striped" style="width:100%">
+                        <table id="example" class="table table-striped table-hover tr-responsive-table default-list" style="width:100%">
                             <thead>
                                 <tr>
                                     <th style="min-width: 150px;">Title</th>
@@ -136,11 +138,28 @@
 
         const shortlistedStored = localStorage.getItem("ai_resume_shortlisted");
 
-        const table = $('#example').DataTable({
-            initComplete: function () {
-                $("#example").wrap(`<div class="tr-scrolledDataTable h-100"></div>`);
+            const table = $('#example').DataTable({
+        responsive: false,
+        scrollX: true,
+        autoWidth: false,
+        columnDefs: [
+            {
+                targets: "_all", // Apply to all columns
+                createdCell: function (td, cellData, rowData, row, col) {
+                    var api = this.api();
+                    var headerText = api.column(col).header().textContent;
+                    $(td).attr('data-title', headerText);
+                    // Optional: add class if header is empty or you want to skip some
+                    if ($(api.column(col).header()).hasClass('wd-md-none')) {
+                        $(td).addClass('wd-md-none');
+                    }
+                }
             }
-        });
+        ],
+        initComplete: function () {
+            $("#example").wrap(`<div style="overflow-x:auto; width:100%"></div>`);
+        }
+    });
 
         if (shortlistedStored) {
             try {
@@ -161,27 +180,32 @@
         buttonDisabled = "disabled";
     }
 
-    const actionHtml = `<div class="text-center">
-        <button class="btn ${buttonClass} btn-sm" ${buttonDisabled} title="${buttonText}">
+        const actionHtml = `<div class="text-center" style="width: 100%;">
+        <button class="btn ${buttonClass} btn-sm w-100" ${buttonDisabled} title="${buttonText}" style="white-space: normal;">
             ${buttonText}
         </button>
     </div>`;
 
-                    const contactHtml = `
-                        <strong>${item.name}</strong><br/>
-                        <span>${item.email}</span><br/>
-                        <span>${item.phone_number}</span>
-                    `;
+                            const contactHtml = `
+                            <div>${item.name}</div>
+                            <div><a href="mailto:${item.email}">${item.email}</a></div>
+                            <div><a href="tel:${item.phone_number}">${item.phone_number}</a></div>
+                        `;
 
-                    const row = table.row.add([
-                        item.jobtitle || "-",
-                        contactHtml,
-                        `<div style="text-align:center;">${item.percentage_match}%</div>`,
-                        `<div class="text-wrap" style="min-width: 300px;">${item.short_description}</div>`,
-                        formattedDate,
-                        actionHtml
-                    ]).draw(false).node();
 
+                            const row = table.row.add([
+                            item.jobtitle || '-',
+                            contactHtml,
+                            `${item.percentage_match}%`,
+                            item.short_description,
+                            formattedDate,
+                            actionHtml
+                        ]).draw(false).node();
+
+                        const titles = ["Title", "Contact", "Match %", "Short Description", "Date Run", "Action"];
+                        $(row).find('td').each(function(index) {
+                            $(this).attr('data-title', titles[index]);
+                        });
 
                     // Attach data to row for modal
                     $(row).data("resume", item);

@@ -3,6 +3,7 @@
 }
 
 <link rel="stylesheet" href="~/css/ai-resume.css" />
+<link rel="stylesheet" href="~/css/mobilecss.css" />
 
 <style>
     body.modal-open {
@@ -124,7 +125,7 @@
                     <hr />
                     <div class="mb-3">
                         <!-- Your table -->
-                        <table id="example" class="table table-striped" style="width:100%">
+                        <table id="example" class="table table-striped table-hover tr-responsive-table default-list" style="width:100%">
                             <thead>
                                 <tr>
                                     <th style="min-width: 250px;">Contact</th>
@@ -336,30 +337,23 @@
 
                     const isShortlisted = resumeResults.some(x => x.email === response.email && x.short_listed === true);
 
-                    const newRow = table.row.add([
-                        `<div><strong>${response.name}</strong><br><span>${response.email}</span><br><span>${response.phone_number}</span></div>`,
-                        `<div style="text-align:center;">${response.percentage_match}%</div>`,
-                        response.short_description,
-                        isShortlisted
-                            ? ''
-                            : `<div class="text-center">
-                                    <button class="btn btn-success btn-sm shortlisted" title="Shortlisted">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                               </div>`
-                    ]).draw(false).node();
+                         const isMobile = window.innerWidth <= 768; // or use 576 for stricter mobile
 
-                     // 💡 Store full data for later use
-                     $(newRow).data("resume", {
-                         jobtitle: title,
-                         name: response.name,
-                         email: response.email,
-                         phone_number: response.phone_number,
-                         percentage_match: response.percentage_match,
-                         short_description: response.short_description,
-                         timestamp: new Date().toISOString(),
-                         short_listed: false
-                     });
+    const newRow = table.row.add([
+      `${isMobile ? `<div class="responsive-label">Contact:</div>` : ""}
+       ${response.name}<br>
+       <a href="mailto:${response.email}">${response.email}</a><br>
+       <a href="tel:${response.phone_number}">${response.phone_number}</a>`,
+
+      `${isMobile ? `<div class="responsive-label">Match %:</div>` : ""}
+       <div style="text-align:center;">${response.percentage_match}%</div>`,
+
+      `${isMobile ? `<div class="responsive-label">Short Description:</div>` : ""}
+       ${response.short_description}`,
+
+      `${isMobile ? `<div class="responsive-label">Action:</div>` : ""}
+       ${isShortlisted ? '' : `<div class="text-center"><button class="btn btn-success btn-sm shortlisted"><i class="fas fa-check"></i></button></div>`}`
+    ]).draw(false).node();
 
                     // $('#upload-bar').css("width", "100%");
                 } catch (error) {

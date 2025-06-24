@@ -9,6 +9,9 @@
 
 /**--MOBILE VIEW-------------------------------------------------------------------**/
 @media (max-width: 768px) {
+    .responsive-label {
+        display: block;
+    }
     .d-none-mv, .mv-d-none {
         display: none;
     }
@@ -16,12 +19,15 @@
     .tr-responsive-table {
     }
 
-    table.tr-responsive-table.dataTable.table-striped > tbody > tr.odd {
-        box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.05);
+    table.tr-responsive-table.dataTable.table-striped > tbody > tr.odd,
+    table.tr-responsive-table.dataTable.table-striped > tbody > tr.even {
+        box-shadow: inset 0 0 0 9999px rgba(0, 0, 0, 0.05); /* Background effect */
     }
-    table.tr-responsive-table.dataTable.table-striped > tbody > tr.odd > * {
-        box-shadow: unset;
-    }
+
+        table.tr-responsive-table.dataTable.table-striped > tbody > tr.odd > *,
+        table.tr-responsive-table.dataTable.table-striped > tbody > tr.even > * {
+            box-shadow: unset; /* Prevents inner shadow effects */
+        }
 
     table.tr-responsive-table.dataTable.table-hover > tbody > tr:hover > * {
         box-shadow: unset;
@@ -214,7 +220,76 @@
             justify-content: center;
         }
 
+
 }
+.responsive-label {
+    display: none;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+@media (max-width: 768px) {
+    .tr-responsive-table.default-list thead {
+        display: none !important;
+    }
+
+    .tr-responsive-table.default-list tbody tr {
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        background-color: #fff;
+    }
+
+    .tr-responsive-table.default-list tbody td {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        white-space: normal !important;
+        word-break: break-word !important;
+        padding: 0.4rem 0;
+        position: relative;
+    }
+
+        .tr-responsive-table.default-list tbody td[data-title]::before {
+            content: attr(data-title) ": ";
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #000; /* Darker for clarity */
+            font-weight: bold; /* or use 700 */
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .tr-responsive-table.default-list tbody td div,
+        .tr-responsive-table.default-list tbody td a {
+            display: block !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            text-align: left !important;
+            margin-bottom: 0.25rem;
+        }
+
+        .tr-responsive-table.default-list tbody td:last-child {
+            text-align: center;
+            margin-top: 0.75rem;
+        }
+
+            .tr-responsive-table.default-list tbody td:last-child .btn {
+                width: 100% !important;
+                white-space: normal !important;
+            }
+
+    #example,
+    .card-body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden;
+    }
+}
+
 
 /**--MANUAL CHANGING------------------------------------------------------------------------------**/
 .boostrap-sm .d-none-mv, .boostrap-sm .mv-d-none,
