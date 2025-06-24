@@ -1,42 +1,67 @@
-﻿using BaseSQL.Interface;
+﻿using Base.Model;
+using BaseSQL.Interface;
 using BaseWebApi.Interface;
+using Dapper;
+using MaxSys.Controllers;
 using MaxSys.Helpers;
 using MaxSys.Interface;
+using MaxSys.Models;
+using MaxSys.Models.DE;
+using MaxSystemWebSite.Controllers.DE;
 using MaxSystemWebSite.Controllers.MM;
 using MaxSystemWebSite.Models.DE;
-using Microsoft.AspNetCore.Mvc;
-using System.Net.Mail;
-using System.Net;
-using System.Text.Encodings.Web;
-using MaxSys.Models;
+using MaxSystemWebSite.Models.EMAIL;
 using MaxSystemWebSite.Models.SETTING;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Extensions.Logging;
 using Microsoft.Graph.Models;
 using SmartTemplateCore.Models.Common;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Net;
+using System.Net.Http;
+using System.Net.Mail;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace MaxSystemWebSite.Controllers.DE
 {
     public class ResumeController : BaseController
     {
         private readonly HtmlEncoder _htmlEncoder;
-        private readonly ILogger<AiResumeController> _logger;
+        private readonly ILogger<ResumeController> _logger;
         private readonly IActionResult _result;
         private readonly IJWTToken _jwtToken;
         private readonly ISQL _SQL;
         private readonly IDapper_Oracle _dapper_Oracle;
-        private readonly UserProfileService _userProfileService;
-        private readonly ISharePoint _sharePoint;
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IBotFrameworkHttpAdapter _adapter;
+        private readonly IBot _bot;
         private readonly IEmail _emailService;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ResumeController(ILogger<AiResumeController> logger, IConfiguration configuration, IWebApi webApi,
-           IDapper dapper, IAuthenticator authenticator, UserProfileService userProfileService, ISharePoint sharePoint, IHttpClientFactory clientFactory,IEmail emailService)
-            : base(configuration, webApi, dapper, authenticator) // Call the base constructor
+        public ResumeController(ILogger<ResumeController> logger, IConfiguration configuration, IWebApi webApi,
+            IDapper dapper, IJWTToken jWTToken, ISQL sql,
+            IDapper_Oracle dapper_Oracle, HtmlEncoder htmlEncoder, IAuthenticator authenticator, IWebHostEnvironment environment,
+            IBotFrameworkHttpAdapter adapter, IBot bot, IEmail emailService, IHttpClientFactory httpClientFactory)
+        : base(configuration, webApi, dapper, authenticator) // Call the base constructor
         {
             _logger = logger;
-            _userProfileService = userProfileService;
-            _clientFactory = clientFactory;
+            _jwtToken = jWTToken;
+            _SQL = sql;
+            _htmlEncoder = htmlEncoder;
+            _dapper_Oracle = dapper_Oracle;
             _emailService = emailService;
+            _environment = environment;
+            _adapter = adapter;
+            _bot = bot;
+            _httpClientFactory = httpClientFactory;
         }
 
         public IActionResult Index()
@@ -82,7 +107,7 @@ namespace MaxSystemWebSite.Controllers.DE
                 return BadRequest("Missing file or job description");
             }
 
-            var client = _clientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient();
             using var content = new MultipartFormDataContent();
 
             // ✅ Correct field name for API
@@ -102,6 +127,109 @@ namespace MaxSystemWebSite.Controllers.DE
             var responseBody = await response.Content.ReadAsStringAsync();
 
             return Content(responseBody, "application/json");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ContactSubmit(IFormCollection form)
+        {
+            var name = form["name"];
+            var email = form["email"];
+            var subject = form["subject"];
+            var message = form["message"];
+
+            var emailBody = $"<p><strong>Name:</strong> {name}</p>" +
+                            $"<p><strong>Email:</strong> {email}</p>" +
+                            $"<p><strong>Message:</strong></p><p>{message}</p>";
+
+            var modelTemp = new Emai_TemplateSent
+            {
+                Recipient = new List<Recipient>
+                {
+                     new Recipient
+                     {
+                         EmailAddress = new EmailAddress
+                         {
+                             Address = "hr@maxsys.com.my",
+                             Name = "Muhammad Azham Bin Rosli"
+                         }
+                     }
+                 },
+                CC = new List<Recipient>
+                {
+                     new Recipient
+                     {
+                         EmailAddress = new EmailAddress
+                         {
+                             Address = "azham@maxsys.com.my",
+                             Name = "Muhammad Azham Bin Rosli"
+                         }
+                     },
+                     new Recipient
+                     {
+                         EmailAddress = new EmailAddress
+                         {
+                             Address = "shazwanie@maxsys.com.my",
+                             Name = "Shazwanie (HR)"
+                         }
+                     },
+                     new Recipient
+                     {
+                         EmailAddress = new EmailAddress
+                         {
+                             Address = "afina@maxsys.com.my",
+                             Name = "Afina (HR)"
+                         }
+                     }
+                 },
+                Subject = $"Contact From : {name} {subject}",
+                subTemplate = $"<p>Subject: {subject}</p>" +
+                        $"<p>Contact Name: {name}</p>" +
+                        $"<p>Email: {email}</p>" +
+                        $"<p>Message: {message}</p>",
+                WORD_REPLACE = new List<(string ori, string replace)>
+                 {
+                     ("[NAME]", name),
+                     ("[EMAIL]", email),
+                 },
+                Attachments = new List<Emai_TemplateSent.EmailAttachment>()
+            };
+
+
+            modelTemp.mainTemplate = await modelTemp.EmailBodyTemplate();
+            modelTemp.bodyContent = modelTemp.mainTemplate.Replace("[BODY]", modelTemp.subTemplate);
+            var wordResult = modelTemp.WordReplacer(modelTemp.bodyContent);
+            if (wordResult.Item1)
+            {
+                modelTemp.bodyContent = wordResult.Item2;
+            }
+            SETTING_EMAIL settingEmail = new SETTING_EMAIL();
+
+            settingEmail.TENANT_ID = _configuration["Settings:TenantId"];
+            settingEmail.CLIENT_ID = _configuration["Settings:ClientId"];
+            settingEmail.CLIENT_SECRET = _configuration["Settings:ClientSecret"];
+            settingEmail.GRAPH_USER = _configuration.GetSection("Settings:GraphUserScopes").Get<string[]>()[0];
+
+
+
+            modelTemp.Setting_Setup = new Setting_Setup();
+            modelTemp.Setting_Setup.SMTP_ACCOUNT = "hr@maxsys.com.my";
+            modelTemp.WORD_REPLACE = new List<(string ori, string replace)>();
+            modelTemp.WORD_REPLACE.Add(("[NAME]", ""));
+            modelTemp.WORD_REPLACE.Add(("[HELP_DESK_EMAIL]", "hr@maxsys.com.my"));
+            modelTemp.WORD_REPLACE.Add(("[APPLICATION_NAME]", "CONTACT FROM CUSTOMER"));
+            modelTemp.WORD_REPLACE.Add(("[URL]", $"www.azhamrosli.com"));
+
+            _emailService.InitGraph(settingEmail);
+
+            (bool status, string message) result = await _emailService.SendEmailAsync(modelTemp);
+
+            if (!result.status)
+            {
+                return Json(new { success = false, message = $"Failed to send message. {result.message}" });
+            }
+
+            return Json(new { success = true, message = "Your message has been sent. Thank you!" });
         }
 
         [HttpPost]
