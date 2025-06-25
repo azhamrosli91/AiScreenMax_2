@@ -75,7 +75,7 @@ namespace AiScreen.Controllers.DE
                     // Handle non-success status code
                     return Json(new { success = false, message = $"Request data is empty." });
                 }
-
+                request.Amount = request.Amount * 100;
                 var client = _clientFactory.CreateClient();
 
                 Random rnd = new Random();
@@ -151,7 +151,7 @@ namespace AiScreen.Controllers.DE
                     BILL_DESCRIPTION = $"{request.Validity}-Month Subscription Plan",
                     BILL_PRICE_SETTING = 1,
                     BILL_PAYOR_INFO = 1,
-                    BILL_AMOUNT = request.Amount,
+                    BILL_AMOUNT = (request.Amount / 100),
                     BILL_RETURN_URL = $"{_configuration["AppUrl"]}/Resume/Subscription?status={{status}}",
                     BILL_CALLBACK_URL = $"{_configuration["AppUrl"]}/Payment/ToyyibPayCallback",
                     BILL_EXTERNAL_REFNO = $"INV{DateTime.Now:yyMMddHHmmss}{new Random().Next(1, 100000):D5}",
