@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Base.Model;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MaxSystemWebSite.Models.DE
@@ -18,8 +19,8 @@ namespace MaxSystemWebSite.Models.DE
     }
     public class ToyyibPayBillRequest
     {
-        public string Validity { get; set; }
-        public string Amount { get; set; }
+        public int Validity { get; set; }
+        public decimal Amount { get; set; }
     }
 }
 

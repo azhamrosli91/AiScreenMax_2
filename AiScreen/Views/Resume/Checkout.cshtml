@@ -64,55 +64,46 @@
     </div>
 </body>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const validitySelect = document.getElementById('validity-select');
-        const priceDisplay = document.getElementById('price-display');
-        const summaryPrice = document.getElementById('summary-price');
-        const checkoutBtn = document.getElementById('checkout-btn');
+        $(document).ready(function () {
+        const $validitySelect = $('#validity-select');
+        const $priceDisplay = $('#price-display');
+        const $summaryPrice = $('#summary-price');
+        const $checkoutBtn = $('#checkout-btn');
 
-        validitySelect.addEventListener('change', function () {
-            const selectedOption = validitySelect.options[validitySelect.selectedIndex];
-            const price = selectedOption.getAttribute('data-price');
-            priceDisplay.textContent = 'MYR ' + price;
-            summaryPrice.textContent = 'MYR ' + price;
+        $validitySelect.on('change', function () {
+            const $selectedOption = $validitySelect.find('option:selected');
+            const price = $selectedOption.data('price');
+            $priceDisplay.text('MYR ' + price);
+            $summaryPrice.text('MYR ' + price);
         });
 
-        checkoutBtn.addEventListener('click', async function () {
-            const selectedOption = validitySelect.options[validitySelect.selectedIndex];
-            const validity = selectedOption.value;
-            const price = selectedOption.getAttribute('data-price');
+        $checkoutBtn.on('click', function () {
+        const $selectedOption = $validitySelect.find('option:selected');
+        const validity = $selectedOption.val();
+        const price = $selectedOption.data('price');
 
-            checkoutBtn.disabled = true;
-            checkoutBtn.textContent = 'Processing...';
+        $checkoutBtn.prop('disabled', true).text('Processing...');
 
-            try {
-                const response = await fetch('/Payment/CreateBill', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        validity: validity,
-                        amount: price
-                    })
-                });
-
-                const result = await response.json();
-
+        $.ajax({
+            url: '/Payment/CreateBill',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ validity: validity, amount: price }),
+            success: function (result) {
                 if (result.success) {
                     window.location.href = result.billUrl;
                 } else {
                     alert("Failed to create bill. Please try again.");
-                    checkoutBtn.disabled = false;
-                    checkoutBtn.textContent = 'Proceed to Checkout';
+                    $checkoutBtn.prop('disabled', false).text('Proceed to Checkout');
                 }
-            } catch (error) {
+            },
+            error: function (xhr, status, error) {
                 alert("Unexpected error occurred.");
                 console.error(error);
-                checkoutBtn.disabled = false;
-                checkoutBtn.textContent = 'Proceed to Checkout';
+                $checkoutBtn.prop('disabled', false).text('Proceed to Checkout');
             }
         });
+    });
     });
 </script>
 @* <script>

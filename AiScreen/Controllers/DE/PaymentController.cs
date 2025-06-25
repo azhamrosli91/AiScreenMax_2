@@ -69,41 +69,108 @@ namespace AiScreen.Controllers.DE
             {
                 string userId = USER_ID;
                 string userEmail = EMAIL;
-                int validity = int.Parse(request.Validity);
-                string amount = request.Amount.Replace(".", "");
+
+                if (request == null)
+                {
+                    // Handle non-success status code
+                    return Json(new { success = false, message = $"Request data is empty." });
+                }
 
                 var client = _clientFactory.CreateClient();
 
+                Random rnd = new Random();
                 var content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("userSecretKey", _configuration["ToyyibPay:SecretKey"]),
                     new KeyValuePair<string, string>("categoryCode", _configuration["ToyyibPay:CategoryCode"]),
                     new KeyValuePair<string, string>("billName", "AiScreen Pro Plan Subscription"),
-                    new KeyValuePair<string, string>("billDescription", $"{validity}-Month Subscription Plan"),
+                    new KeyValuePair<string, string>("billDescription", $"{request.Validity}-Month Subscription Plan"),
                     new KeyValuePair<string, string>("billPriceSetting", "1"),
                     new KeyValuePair<string, string>("billPayorInfo", "1"),
-                    new KeyValuePair<string, string>("billAmount", amount),
+                    new KeyValuePair<string, string>("billAmount", request.Amount.ToString()),
                     new KeyValuePair<string, string>("billReturnUrl", $"{_configuration["AppUrl"]}/Resume/Subscription?status={{status}}"),
                     new KeyValuePair<string, string>("billCallbackUrl", $"{_configuration["AppUrl"]}/Payment/ToyyibPayCallback"),
-                    new KeyValuePair<string, string>("billExternalReferenceNo", $"INV{DateTime.Now.ToString("yyMMddHHmmss")}"),
+                    new KeyValuePair<string, string>("billExternalReferenceNo", $"INV{DateTime.Now.ToString("yyMMddHHmmss")}{rnd.Next(1, 100000).ToString("D5")}"),
                     new KeyValuePair<string, string>("billTo", userEmail),
                     new KeyValuePair<string, string>("billEmail", userEmail),
-                    new KeyValuePair<string, string>("billPhone", "0172210940"),
+                    new KeyValuePair<string, string>("billPhone", "01110245454"),
                 });
 
                 var response = await client.PostAsync("https://toyyibpay.com/index.php/api/createBill", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = false, message = $"ToyyibPay createBill API returned status code {response.StatusCode}" });
+                }
+
                 var responseString = await response.Content.ReadAsStringAsync();
 
-                var json = JArray.Parse(responseString);
-                var billCode = json[0]["BillCode"].ToString();
-                var billUrl = $"https://toyyibpay.com/{billCode}";
+                if (string.IsNullOrWhiteSpace(responseString))
+                {
+                    return Json(new { success = false, message = "ToyyibPay createBill API returned empty response." });
+                }
 
-                return Json(new { success = true, billUrl });
+                var trimmedResponse = responseString.Trim();
+                string billUrl = "";
+                string billCode = "";
+
+                if (trimmedResponse.StartsWith("["))
+                {
+                    // Success response is a JSON array
+                    var jsonArray = JArray.Parse(trimmedResponse);
+                    if (jsonArray.Count > 0)
+                    {
+                        billCode = jsonArray[0]["BillCode"]?.ToString();
+                        if (!string.IsNullOrEmpty(billCode))
+                        {
+                            billUrl = $"https://toyyibpay.com/{billCode}";
+                        }
+                    }
+                }
+                else
+                {
+                    // Error response is a JSON object
+                    var jsonObj = JObject.Parse(trimmedResponse);
+                    var status = jsonObj["status"]?.ToString()?.ToLower();
+                    if (status == "error")
+                    {
+                        var msg = jsonObj["msg"]?.ToString() ?? "Unknown error from ToyyibPay API.";
+                        return Json(new { success = false, message = msg });
+                    }
+                    return Json(new { success = false, message = "Unexpected response format from ToyyibPay API." });
+
+                }
+
+                var objparam = new
+                {
+                    USER_ID = userId,
+                    DE_SUBCRIPTION_TRANS_ID = (string)null,
+                    CATEGORY_CODE = _configuration["ToyyibPay:CategoryCode"],
+                    BILL_CODE = billCode,
+                    BILL_NAME = "AiScreen Pro Plan Subscription",
+                    BILL_DESCRIPTION = $"{request.Validity}-Month Subscription Plan",
+                    BILL_PRICE_SETTING = 1,
+                    BILL_PAYOR_INFO = 1,
+                    BILL_AMOUNT = request.Amount,
+                    BILL_RETURN_URL = $"{_configuration["AppUrl"]}/Resume/Subscription?status={{status}}",
+                    BILL_CALLBACK_URL = $"{_configuration["AppUrl"]}/Payment/ToyyibPayCallback",
+                    BILL_EXTERNAL_REFNO = $"INV{DateTime.Now:yyMMddHHmmss}{new Random().Next(1, 100000):D5}",
+                    BILL_TO = userEmail,
+                    BILL_EMAIL = userEmail,
+                    BILL_PHONE = "01110245454",
+                    STATUS = 1
+                };
+
+                (bool status, string message, ReturnSQL model) data = await _dapper.PSP_COMMON_DAPPER_SINGLE<ReturnSQL>("PSP_DE_SUBCRIPTION_TRANS_MAINT", CommandType.StoredProcedure, objparam);
+
+                if (data.status == false || data.model == null) return Json(new { success = false, message = "Failed to save ToyyibPay bill." });
+
+                return Json(new { success = true, message = "Successfully created bill", billUrl });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to create ToyyibPay bill.");
-                return Json(new { success = false });
+                return Json(new { success = false, message = "Failed to create ToyyibPay bill." });
             }
         }
         //[HttpPost]
