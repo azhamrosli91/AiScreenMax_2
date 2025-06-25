@@ -63,6 +63,9 @@
         <div class="col-auto">
             <div class="row g-3">
                 <div class="col-auto">
+                    <a class="btn btn-primary" id="newScreeningBtn" href="../AiResume/Index"><span class="fas fa-plus me-2"></span>New Screening</a>
+                </div>
+                <div class="col-auto">
                     <a class="btn btn-phoenix-secondary" href="../AiResume/History"><span class="fas fa-history me-2"></span>History</a>
                 </div>
                 <div class="col-auto">
@@ -96,7 +99,7 @@
                                 <div class="p-4 code-to-copy">
                                     <div class="dropzone dropzone-multiple p-0" id="dropzone-multiple" data-dropzone="data-dropzone">
                                         <div class="fallback">
-                                            <input name="file" type="file" multiple accept="image/*,.doc,.docx,application/pdf" />
+                                            <input name="file" type="file" multiple accept="image,.doc,.docx,application/pdf" />
                                         </div>
                                         <div class="dz-message" data-dz-message="data-dz-message"><img class="me-2" src="~/images/icons/cloud-upload.svg" width="25" alt="" />Drop your files here</div>
                                         <div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
@@ -156,7 +159,15 @@
 
 <script>
     let myDropzone;
-  
+
+    $(document).on('submit', 'form', function () {
+        var editor = tinymce.get('txtJobDescription');
+        if (editor) {
+            var content = editor.getContent();
+            editor.setContent('<pre>' + content + '</pre>');
+        }
+    });
+
     $(document).ready(function () {
 
         const guideCookie = getCookie("ai_resume_guide_shown");
@@ -167,6 +178,21 @@
         $('#welcomeGuideModal').modal('show');
     }
 
+    $(document).ready(function () {
+      $('#newScreeningBtn').on('click', function (e) {
+        e.preventDefault(); 
+
+        // Reset title input
+        $('#txtTitle').val('');
+
+        // Reset TinyMCE editor
+        if (tinymce.get('txtJobDescription')) {
+          tinymce.get('txtJobDescription').setContent('');
+        }
+
+      });
+    });
+
         // Prefill Job Title & Description from localStorage
         const storedTitle = localStorage.getItem("ai_job_title");
         const storedDescription = localStorage.getItem("ai_job_description");
@@ -176,7 +202,7 @@
         }
 
        if (storedDescription) {
-            $('#txtJobDescription').val(storedDescription);
+            $('#txtJobDescription').val('<pre>' + storedDescription + '</pre>');
         }
 
 
@@ -207,7 +233,7 @@
                     url: "/dummy", // dummy; real upload is manual
                     autoProcessQueue: false,
                     addRemoveLinks: true,
-                    acceptedFiles: ".pdf,.doc,.docx,image/*"
+                    acceptedFiles: ".pdf,.doc,.docx,image"
                 });
                 console.log("Dropzone initialized");
             }
@@ -474,7 +500,7 @@
                 <!-- Step 1: Welcome -->
                 <!-- Inline CSS to override dark mode background -->
                 <style>
-                    /* Enable dark mode for all modals globally */
+                    /* Enable dark mode for all modals globally
                     html[data-theme="dark"] .modal-content,
                     html[data-theme="dark"] .modal-header,
                     html[data-theme="dark"] .modal-body,
@@ -495,7 +521,7 @@
                         color: #f1f1f1 !important;
                     }
 
-                    /* Invert close button to remain visible */
+                    /* Invert close button to remain visible
                     html[data-theme="dark"] .btn-close {
                         filter: invert(1);
                     }

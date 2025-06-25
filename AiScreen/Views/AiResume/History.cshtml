@@ -187,8 +187,8 @@
              $('#modalEmail').text(data.email);
              $('#modalPhone').text(data.phone_number);
              $('#modalMatch').text(data.percentage_match + '%');
-             $('#modalDesc').text(data.short_description);
-             $('#modalDate').text(formatDate(new Date(data.timestamp)));
+             $('#modalDesc').html(data.short_description);
+             $('#modalDate').html(formatDate(new Date(data.timestamp)));
 
              const modal = new bootstrap.Modal(document.getElementById('resumeDetailModal'));
              modal.show();
