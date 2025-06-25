@@ -101,12 +101,19 @@
                         <input type="text" class="form-control" id="candidateName" readonly>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Interview Date & Time</label>
+                        <label class="form-label">Interview Date & Time (GMT +8)</label>
                         <input class="form-control datetimepicker" id="interviewDateTime" type="text" placeholder="dd/mm/yyyy hour : minute" data-options='{"enableTime":true,"dateFormat":"d/m/y H:i","disableMobile":true}' required />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Location</label>
-                        <input type="text" class="form-control" id="interviewLocation" value="Online">
+                        <label class="form-label" for="interviewLocation">Location</label>
+                        <select id="interviewLocation" name="interviewLocation" class="form-control">
+                            <option value="Online" selected>Online</option>
+                            <option value="Physical">Physical</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="locationLink">Location Link</label>
+                        <input type="text" id="locationLink" name="locationLink" class="form-control" placeholder="Enter Interview Location link (e.g., Teams, Maps)">
                     </div>
                     <div id="interviewersContainer">
                         <label class="form-label">Interviewers</label>
@@ -226,7 +233,7 @@
             const suffix = hours >= 12 ? 'PM' : 'AM';
             const hour12 = hours % 12 || 12;
 
-           return `${day}/${month}/${year}<br/><small class="text-muted">${pad(hour12)}:${minutes} ${suffix}</small>`;
+           return `${day}/${month}/${year} ${pad(hour12)}:${minutes} ${suffix}`;
 
         }
 
@@ -266,6 +273,20 @@
     $(document).ready(function () {
         let selectedCandidate = null;
 
+        // $('#interviewLocation').on('change', function () {
+        //     $('#locationLink').val(''); Always clear the link on change
+        // });
+        //Location link
+        let lastLocationValue = 'Online';
+
+        $('#interviewLocation').on('change', function () {
+            const newValue = $(this).val();
+            if (newValue !== lastLocationValue) {
+                $('#locationLink').val(''); // Clear only when it’s changed
+                lastLocationValue = newValue;
+            }
+        });
+
         // Open modal on Proceed Interview click
         $('#example tbody').on('click', '.proceed-interview', function (e) {
             e.stopPropagation(); // Prevent row modal
@@ -277,6 +298,7 @@
             $('#candidateName').val(`${data.name} (${data.email})`);
             $('#interviewDateTime').val('');
             $('#interviewLocation').val('Online');
+            $('#locationLink').val(''); 
             $('#interviewersContainer').find('.interviewer:not(:first)').remove(); // Keep 1 row
             $('#interviewersContainer input').val('');
 
@@ -314,6 +336,7 @@
                 candidate: selectedCandidate,
                 datetime: $('#interviewDateTime').val(),
                 location: $('#interviewLocation').val(),
+                locationLink: $('#locationLink').val(),
                 interviewers: []
             };
 
