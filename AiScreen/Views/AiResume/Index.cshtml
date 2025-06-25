@@ -339,21 +339,23 @@
 
                          const isMobile = window.innerWidth <= 768; // or use 576 for stricter mobile
 
-    const newRow = table.row.add([
-      `${isMobile ? `<div class="responsive-label">Contact:</div>` : ""}
-       ${response.name}<br>
-       <a href="mailto:${response.email}">${response.email}</a><br>
-       <a href="tel:${response.phone_number}">${response.phone_number}</a>`,
+                   const newRow = table.row.add([
+                  `${isMobile ? `<div class="responsive-label">Contact:</div>` : ""}
+                   ${response.name}<br>
+                   <a href="mailto:${response.email}">${response.email}</a>
+                   <a href="tel:${response.phone_number}">${response.phone_number}</a>`,
 
-      `${isMobile ? `<div class="responsive-label">Match %:</div>` : ""}
-       <div style="text-align:center;">${response.percentage_match}%</div>`,
+                  `${isMobile ? `<div class="responsive-label">Match %:</div>` : ""}
+                   <div style="text-align:center;">${response.percentage_match}%</div>`,
 
-      `${isMobile ? `<div class="responsive-label">Short Description:</div>` : ""}
-       ${response.short_description}`,
+                  `${isMobile ? `<div class="responsive-label">Short Description:</div>` : ""}
+                   ${response.short_description}`,
 
-      `${isMobile ? `<div class="responsive-label">Action:</div>` : ""}
-       ${isShortlisted ? '' : `<div class="text-center"><button class="btn btn-success btn-sm shortlisted"><i class="fas fa-check"></i></button></div>`}`
-    ]).draw(false).node();
+                  `${isMobile ? `<div class="responsive-label">Action:</div>` : ""}
+                   ${isShortlisted ? '' : `<div class="text-center"><button class="btn btn-success btn-sm shortlisted"><i class="fas fa-check"></i></button></div>`}`
+                ]).draw(false).node();
+
+                $(newRow).data("resume", newResume);
 
                     // $('#upload-bar').css("width", "100%");
                 } catch (error) {
