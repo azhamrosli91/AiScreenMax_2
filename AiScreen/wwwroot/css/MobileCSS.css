@@ -228,6 +228,30 @@
     margin-bottom: 0.25rem;
     color: #333;
 }
+#example tbody td {
+    padding: 12px 10px !important;
+    vertical-align: top;
+}
+
+    #example tbody td:first-child {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+    #example tbody td:last-child {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+#example .btn {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+#example td:nth-child(4) {
+    white-space: normal !important;
+    word-break: break-word;
+}
 @media (max-width: 768px) {
     .tr-responsive-table.default-list thead {
         display: none !important;
@@ -252,6 +276,25 @@
         padding: 0.4rem 0;
         position: relative;
     }
+
+    #interviewersContainer .interviewer {
+        flex-wrap: wrap;
+    }
+
+        #interviewersContainer .interviewer .col-md-5 {
+            width: 100%;
+        }
+
+        #interviewersContainer .interviewer .col-md-2 {
+            width: 100%;
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        #interviewersContainer .interviewer .remove-interviewer {
+            width: auto;
+        }
+
 
         .tr-responsive-table.default-list tbody td[data-title]::before {
             content: attr(data-title) ": ";
