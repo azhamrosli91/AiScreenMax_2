@@ -252,6 +252,7 @@ namespace MaxSystemWebSite.Controllers.DE
             <p><strong>Candidate:</strong> {data.Candidate.Name} ({data.Candidate.Email})</p>
             <p><strong>Interview Date:</strong> {formattedDate}</p>
             <p><strong>Location:</strong> {data.Location}</p>
+            <p><strong>Location:</strong> {data.Link}</p>
             <p><strong>Interviewers:</strong></p>
             <ul>
                 {string.Join("", data.Interviewers.Select(i => $"<li>{i.Name} ({i.Email})</li>"))}

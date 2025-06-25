@@ -5,6 +5,7 @@
         public CandidateModel Candidate { get; set; }
         public string Datetime { get; set; }
         public string Location { get; set; }
+        public string Link { get; set; }
         public List<InterviewerModel> Interviewers { get; set; }
     }
 
