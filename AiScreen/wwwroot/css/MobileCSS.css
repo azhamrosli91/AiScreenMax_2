@@ -332,7 +332,60 @@
         overflow-x: hidden;
     }
 }
+@media (max-width: 991.98px) {
+    .navbar-vertical {
+        position: fixed;
+        top: 56px; /* ensure this matches your navbar-top height */
+        left: 0;
+        width: 250px;
+        height: calc(100% - 56px);
+        background-color: #fff;
+        z-index: 1020; /* LOWER than .navbar-top (e.g., 1030) */
+        display: none;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
 
+        .navbar-vertical.show-mobile {
+            display: block;
+        }
+
+    .navbar-top {
+        z-index: 1030 !important; /* bring top navbar above sidebar */
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    .main {
+        padding-top: 56px; /* push content down to account for fixed topbar */
+    }
+
+    .content {
+        margin-left: 0 !important; /* ignore left margin in mobile */
+    }
+}
+@media (max-width: 576px) {
+    .navbar-vertical {
+        position: fixed;
+        top: 60px; 
+        left: 0;
+        width: 200px;
+        height: calc(100% - 60px);
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1060 !important;
+    }
+
+        .navbar-vertical.show-mobile {
+            transform: translateX(0);
+        }
+    .content {
+        margin-top: 55px !important;
+        padding-top: 0 !important;
+    }
+}
 
 /**--MANUAL CHANGING------------------------------------------------------------------------------**/
 .boostrap-sm .d-none-mv, .boostrap-sm .mv-d-none,

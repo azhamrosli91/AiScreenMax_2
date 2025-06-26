@@ -59,11 +59,16 @@
     <div class="row align-items-center justify-content-between g-3">
         <div class="col-auto">
             <h2 class="mb-0">AI Resume Screening</h2>
+            <div class="mt-2">
+                <label for="sessionSelect" class="form-label small">Resume Sessions</label>
+                <select id="sessionSelect" class="form-select form-select-sm d-inline-block w-auto"></select>
+                <button class="btn btn-sm btn-secondary ms-2" onclick="loadSelectedSession()">Load</button>
+            </div>
         </div>
         <div class="col-auto">
             <div class="row g-3">
                 <div class="col-auto">
-                    <a class="btn btn-primary" id="newScreeningBtn" href="../AiResume/Index"><span class="fas fa-plus me-2"></span>New Screening</a>
+                    <a class="btn btn-primary" id="newScreeningBtn" href="../AiResume/Index?refresh=1"><span class="fas fa-plus me-2"></span>New Screening</a>
                 </div>
                 <div class="col-auto">
                     <a class="btn btn-phoenix-secondary" href="../AiResume/History"><span class="fas fa-history me-2"></span>History</a>
@@ -177,21 +182,34 @@
     if (!guideCookie) {
         $('#welcomeGuideModal').modal('show');
     }
+        // ⬇️ Call on page load
+    loadSessionDropdown();
 
-    $(document).ready(function () {
-      $('#newScreeningBtn').on('click', function (e) {
-        e.preventDefault(); 
+    // ⬇️ Create session dropdown
+    function loadSessionDropdown() {
+        const sessions = JSON.parse(localStorage.getItem("ai_resume_sessions") || "[]");
+        const $select = $('#sessionSelect');
+        $select.empty();
 
-        // Reset title input
-        $('#txtTitle').val('');
-
-        // Reset TinyMCE editor
-        if (tinymce.get('txtJobDescription')) {
-          tinymce.get('txtJobDescription').setContent('');
+        if (sessions.length === 0) {
+            $select.append('<option disabled>No saved sessions</option>');
+        } else {
+            sessions.forEach((s, index) => {
+                const label = `${s.jobtitle} (${new Date(s.id.split("_")[1] * 1).toLocaleString()})`;
+                $select.append(`<option value="${s.id}">${label}</option>`);
+            });
         }
+    }
 
-      });
-    });
+
+
+    
+
+function clearSessions() {
+    localStorage.removeItem('ai_resume_sessions');
+    loadSessionDropdown();
+    alert("✅ All resume sessions cleared.");
+}
 
         // Prefill Job Title & Description from localStorage
         const storedTitle = localStorage.getItem("ai_job_title");
@@ -297,6 +315,8 @@
                 return;
             }
 
+                localStorage.removeItem("ai_resume_results");
+                      let resumeResults = [];
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 const formData = new FormData();
@@ -324,9 +344,8 @@
                     localStorage.setItem("ai_job_title", title);
                     localStorage.setItem("ai_job_description", jobDesc);
 
-                    // Save Resume Results
-                    const existing = localStorage.getItem("ai_resume_results");
-                    let resumeResults = [];
+                           const existing = localStorage.getItem("ai_resume_results");
+
 
                     if (existing) {
                         try {
@@ -339,6 +358,9 @@
                         }
                     }
 
+                      
+                        // Save Resume Results
+                   
                     const newResume = {
                         jobtitle: title,
                         name: response.name,
@@ -346,9 +368,10 @@
                         phone_number: response.phone_number,
                         percentage_match: response.percentage_match,
                         short_description: response.short_description,
-                        timestamp: new Date().toISOString(),
+                            timestamp: Date.now(),
                         short_listed: false
                     };
+
 
                     // Check if resume with same email exists
                     const existingIndex = resumeResults.findIndex(r => r.email === newResume.email);
@@ -359,7 +382,6 @@
                         resumeResults.push(newResume); // Add new
                     }
 
-                    localStorage.setItem("ai_resume_results", JSON.stringify(resumeResults));
 
                     const isShortlisted = resumeResults.some(x => x.email === response.email && x.short_listed === true);
 
@@ -383,6 +405,10 @@
 
                 $(newRow).data("resume", newResume);
 
+                       localStorage.setItem("ai_resume_results", JSON.stringify(resumeResults));
+
+                           
+
                     // $('#upload-bar').css("width", "100%");
                 } catch (error) {
                     table.row(tempRow).remove().draw(false);
@@ -391,6 +417,22 @@
                 }
             }
 
+                   if (resumeResults.length > 0) {
+        const resumeSession = {
+            id: `session_${Date.now()}`,
+            jobtitle: title,
+            jobDesc: jobDesc,
+            resumes: resumeResults
+        };
+
+        let sessions = JSON.parse(localStorage.getItem("ai_resume_sessions") || "[]");
+        sessions.push(resumeSession);
+        localStorage.setItem("ai_resume_sessions", JSON.stringify(sessions));
+        loadSessionDropdown(); // ✅ Refresh dropdown
+    }
+
+
+                myDropzone.removeAllFiles(true);
             // Unlock button
             resetButton();
 
@@ -688,6 +730,41 @@
 </div>
 
 <script>
+        function loadSelectedSession() {
+        const selectedId = $('#sessionSelect').val();
+        if (!selectedId) return;
+
+        const sessions = JSON.parse(localStorage.getItem("ai_resume_sessions") || "[]");
+        const session = sessions.find(s => s.id === selectedId);
+        if (!session) return;
+
+        // Update Job Title and Description
+        $('#txtTitle').val(session.jobtitle);
+        if (tinymce.get('txtJobDescription')) {
+            tinymce.get('txtJobDescription').setContent(session.jobDesc);
+        }
+
+        const table = $('#example').DataTable();
+
+        // ❗ Refresh: Clear old rows but keep headers
+        table.clear().draw();
+
+        // Add new rows
+        session.resumes.forEach(response => {
+            const newRow = table.row.add([
+                `${response.name}<br><a href="mailto:${response.email}">${response.email}</a><br><a href="tel:${response.phone_number}">${response.phone_number}</a>`,
+                `<div style="text-align:center;">${response.percentage_match}%</div>`,
+                response.short_description,
+                response.short_listed ? '' : `<div class="text-center"><button class="btn btn-success btn-sm shortlisted"><i class="fas fa-check"></i></button></div>`
+            ]).draw(false).node();
+
+            // Attach full resume object to the row for later use
+            $(newRow).data("resume", response);
+        });
+    }
+</script>
+
+<script>
     // Enable confirm button if checkbox ticked
     $('#ackPrivacyModal').on('change', function () {
         $('#ackConfirmBtn').prop('disabled', !this.checked);
@@ -752,6 +829,8 @@
 
 <script>
     if (window.location.search.includes("refresh=1")) {
+         localStorage.removeItem("ai_job_title");
+         localStorage.removeItem("ai_job_description");
         window.history.replaceState({}, document.title, window.location.pathname); // remove query string
         location.reload(); // force reload with cookies now available
     }

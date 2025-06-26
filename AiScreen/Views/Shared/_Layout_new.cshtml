@@ -85,6 +85,7 @@
             background-color: #000 !important;
             padding: 3px;
         }
+
     </style>
     <script>
         var phoenixIsRTL = window.config.config.phoenixIsRTL;
@@ -154,8 +155,40 @@
     </div>
 
     <main class="main" id="top">
+
+        <!-- START Vertical Sidebar -->
+        <nav class="navbar navbar-vertical navbar-expand-lg d-block">
+            <div class="navbar-vertical-content">
+                <ul class="navbar-nav flex-column" id="navbarVerticalNav">
+                    <li class="nav-item">
+                        <div class="nav-link">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link-icon"><span data-feather="layers"></span></span>
+                                <span class="nav-link-text">Cached Resumes</span>
+                            </div>
+                        </div>
+                        <ul class="nav flex-column ms-4 mt-2" id="cachedResumeListSidebar" style="max-height: 300px; overflow-y: auto;">
+                            <!-- Resume items will go here -->
+                        </ul>
+                    </li>
+                </ul>
+                    <div class="navbar-vertical-footer mt-auto">
+                        <button class="btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center">
+                            <span class="uil uil-left-arrow-to-left fs-8"></span>
+                            <span class="uil uil-arrow-from-right fs-8"></span>
+                            <span class="navbar-vertical-footer-text ms-2">Collapsed View</span>
+                        </button>
+                    </div>
+            </div>
+    </nav>
+
         <nav class="navbar navbar-top fixed-top navbar-expand-lg" id="navbarTop">
             <div class="navbar-logo">
+
+                <!-- Mobile Sidebar Toggle -->
+                <button class="btn btn-sm d-lg-none me-2" id="mobileSidebarToggle" style="border:none; background:none;">
+                    <i id="sidebarIcon" class="fa fa-history"></i>
+                </button>
 
                 <button class="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTopCollapse" aria-controls="navbarTopCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
                 <a class="navbar-brand me-1 me-sm-3" href="/AiResume/Index">
@@ -370,7 +403,7 @@
             </div>
         </nav>
         </header>
-        <div class="content">
+        <div class="content ms-lg-15">
             @RenderBody()
             @* <footer class="footer position-absolute">
                 <div class="row g-0 justify-content-between align-items-center h-100">
@@ -500,6 +533,71 @@
             }
         });
     </script>
+    <script>
+        // Sidebar collapse toggle
+        document.querySelector('.navbar-vertical-toggle')?.addEventListener('click', () => {
+            document.querySelector('.navbar-vertical')?.classList.toggle('collapsed');
+        });
+    </script>
+    
+    <script>
+        const toggleBtn = document.getElementById('mobileSidebarToggle');
+        const sidebar = document.querySelector('.navbar-vertical');
+        const icon = document.getElementById('sidebarIcon');
 
+        toggleBtn?.addEventListener('click', () => {
+          sidebar.classList.toggle('show-mobile');
+
+          // Ensure icon exists
+          if (icon) {
+            const isOpen = sidebar.classList.contains('show-mobile');
+            icon.className = isOpen ? 'fa fa-times' : 'fa fa-history';
+          }
+        });
+    </script>
+    <script>
+        window.addEventListener('load', () => {
+            feather.replace(); // <-- This renders the icons inside sidebar (like bookmark, file-text)
+        });
+    </script>
+    <script>
+        function populateCachedResumeDropdown() {
+            const cached = localStorage.getItem("ai_resume_sessions");
+            const sidebarDropdown = document.getElementById("cachedResumeListSidebar");
+
+            if (!cached || !sidebarDropdown) return;
+
+            const sessions = JSON.parse(cached);
+            sidebarDropdown.innerHTML = "";
+
+            sessions.forEach((session, index) => {
+                const label = `${session.jobtitle || "Untitled"} (${new Date(session.resumes[0]?.timestamp).toLocaleString()})`;
+
+                const itemHtml = `
+                    <li class="nav-item">
+                        <a class="nav-link px-0 py-1 text-secondary" href="#" onclick="loadSingleCachedResume(${index})">
+                            <i class="bi bi-person-circle me-2"></i>${label}
+                        </a>
+                    </li>
+                `;
+                sidebarDropdown.insertAdjacentHTML("beforeend", itemHtml);
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", populateCachedResumeDropdown);
+    </script>
+    <script>
+    function loadSingleCachedResume(index) {
+            const cached = JSON.parse(localStorage.getItem("ai_resume_sessions") || "[]");
+    const selected = cached[index];
+    if (!selected) return;
+
+    // ⚠️ Replace below with your resume loading logic
+    alert(`Loaded resume: ${selected.name}`);
+
+    // Example: you can re-render resume content on screen
+    // renderResume(selected);
+}
+    </script>
 </body>
 </html>
