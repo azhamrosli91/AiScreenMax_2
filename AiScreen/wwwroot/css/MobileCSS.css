@@ -367,9 +367,9 @@
 @media (max-width: 576px) {
     .navbar-vertical {
         position: fixed;
-        top: 60px; 
+        top: 70px; 
         left: 0;
-        width: 200px;
+        width: 220px;
         height: calc(100% - 60px);
         background-color: white;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);

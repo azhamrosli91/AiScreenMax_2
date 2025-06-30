@@ -157,21 +157,30 @@
     <main class="main" id="top">
 
         <!-- START Vertical Sidebar -->
-        <nav class="navbar navbar-vertical navbar-expand-lg d-block">
-            <div class="navbar-vertical-content">
-                <ul class="navbar-nav flex-column" id="navbarVerticalNav">
-                    <li class="nav-item">
-                        <div class="nav-link">
-                            <div class="d-flex align-items-center">
-                                <span class="nav-link-icon"><span data-feather="layers"></span></span>
-                                <span class="nav-link-text">Cached Resumes</span>
+        @{
+            var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+            var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+        }
+
+        @if (currentController == "AiResume" && currentAction == "Index")
+        {
+            <nav class="navbar navbar-vertical navbar-expand-lg d-block">
+                <div class="navbar-vertical-content">
+                    <ul class="navbar-nav flex-column" id="navbarVerticalNav">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                               href="#cachedResumeCollapse" role="button" aria-expanded="false" aria-controls="cachedResumeCollapse">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon"><span data-feather="layers"></span></span>
+                                    <span class="nav-link-text">Cached Resumes</span>
+                                </div>
+                                <i class="bi bi-chevron-down ms-2"></i>
+                            </a>
+                            <div class="collapse" id="cachedResumeCollapse">
+                                <ul class="nav flex-column ms-4 mt-2" id="cachedResumeListSidebar" style="max-height: 300px; overflow-y: auto;"></ul>
                             </div>
-                        </div>
-                        <ul class="nav flex-column ms-4 mt-2" id="cachedResumeListSidebar" style="max-height: 300px; overflow-y: auto;">
-                            <!-- Resume items will go here -->
-                        </ul>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
                     <div class="navbar-vertical-footer mt-auto">
                         <button class="btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center">
                             <span class="uil uil-left-arrow-to-left fs-8"></span>
@@ -179,8 +188,10 @@
                             <span class="navbar-vertical-footer-text ms-2">Collapsed View</span>
                         </button>
                     </div>
-            </div>
-    </nav>
+                </div>
+            </nav>
+        }
+        }
 
         <nav class="navbar navbar-top fixed-top navbar-expand-lg" id="navbarTop">
             <div class="navbar-logo">
@@ -403,7 +414,7 @@
             </div>
         </nav>
         </header>
-        <div class="content ms-lg-15">
+        <div class="content @(currentController == "AiResume" && currentAction == "Index" ? "ms-lg-15" : "")">
             @RenderBody()
             @* <footer class="footer position-absolute">
                 <div class="row g-0 justify-content-between align-items-center h-100">
@@ -561,43 +572,65 @@
         });
     </script>
     <script>
-        function populateCachedResumeDropdown() {
-            const cached = localStorage.getItem("ai_resume_sessions");
-            const sidebarDropdown = document.getElementById("cachedResumeListSidebar");
+       function populateCachedResumeDropdown() {
+    const cached = localStorage.getItem("ai_resume_sessions");
+    const sidebarDropdown = document.getElementById("cachedResumeListSidebar");
 
-            if (!cached || !sidebarDropdown) return;
+    if (!cached || !sidebarDropdown) return;
 
-            const sessions = JSON.parse(cached);
-            sidebarDropdown.innerHTML = "";
+    const sessions = JSON.parse(cached);
+    sidebarDropdown.innerHTML = "";
 
-            sessions.forEach((session, index) => {
-                const label = `${session.jobtitle || "Untitled"} (${new Date(session.resumes[0]?.timestamp).toLocaleString()})`;
+    sessions.forEach((session, index) => {
+        const label = `${session.jobtitle || "Untitled"} (${new Date(session.resumes[0]?.timestamp).toLocaleString()})`;
 
-                const itemHtml = `
-                    <li class="nav-item">
-                        <a class="nav-link px-0 py-1 text-secondary" href="#" onclick="loadSingleCachedResume(${index})">
-                            <i class="bi bi-person-circle me-2"></i>${label}
-                        </a>
-                    </li>
-                `;
-                sidebarDropdown.insertAdjacentHTML("beforeend", itemHtml);
-            });
-        }
+        const itemHtml = `
+            <li class="nav-item">
+                <a class="nav-link px-0 py-1 text-secondary" href="#" onclick="loadSingleCachedResume(${index})">
+                    <i class="bi bi-person-circle me-2"></i>${label}
+                </a>
+            </li>
+        `;
+        sidebarDropdown.insertAdjacentHTML("beforeend", itemHtml);
+    });
+}
 
-        window.addEventListener("DOMContentLoaded", populateCachedResumeDropdown);
+// ✅ Correct place for it:
+window.addEventListener("DOMContentLoaded", populateCachedResumeDropdown);
     </script>
     <script>
-    function loadSingleCachedResume(index) {
+            function loadSingleCachedResume(index) {
             const cached = JSON.parse(localStorage.getItem("ai_resume_sessions") || "[]");
-    const selected = cached[index];
-    if (!selected) return;
+            const selected = cached[index];
+            if (!selected) return;
 
-    // ⚠️ Replace below with your resume loading logic
-    alert(`Loaded resume: ${selected.name}`);
+            // Set the selected session ID if needed
+            $('#sessionSelect').val(selected.id);
 
-    // Example: you can re-render resume content on screen
-    // renderResume(selected);
-}
+            // Set job title
+            const titleInput = document.getElementById("txtTitle");
+            if (titleInput) titleInput.value = selected.jobtitle || "";
+
+            // Set job description using TinyMCE
+            if (tinymce.get("txtJobDescription")) {
+                tinymce.get("txtJobDescription").setContent(selected.jobDesc || "");
+            }
+
+            // Load resumes into the table
+            const table = $('#example').DataTable();
+            table.clear();
+
+            selected.resumes.forEach(response => {
+                const newRow = table.row.add([
+                    `${response.name}<br><a href="mailto:${response.email}">${response.email}</a><br><a href="tel:${response.phone_number}">${response.phone_number}</a>`,
+                    `<div style="text-align:center;">${response.percentage_match}%</div>`,
+                    response.short_description,
+                    response.short_listed ? '' : `<div class="text-center"><button class="btn btn-success btn-sm shortlisted"><i class="fas fa-check"></i></button></div>`
+                ]).draw(false).node();
+
+                $(newRow).data("resume", response);
+            });
+        }
     </script>
 </body>
 </html>
